@@ -3,8 +3,7 @@
 import { getMealRecords } from "@/db/queries";
 
 const getMealRecordAction = async (userId: string) => {
-  const res = await getMealRecords(userId);
-  return res;
+  return await getMealRecords(userId);
 };
 
 export { getMealRecordAction };
