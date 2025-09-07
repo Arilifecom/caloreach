@@ -3,7 +3,6 @@ import {
   date,
   numeric,
   pgTable,
-  serial,
   text,
   timestamp,
   uuid,
@@ -20,14 +19,14 @@ const timestamps = {
 
 // meal_records Table
 export const mealRecords = pgTable("meal_records", {
-  id: serial().primaryKey(),
+  id: uuid().primaryKey(),
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
-  foodName: text().notNull(),
+  foodName: varchar({ length: 255 }).notNull(),
   gram: numeric().notNull(),
   kcal: numeric().notNull(),
-  ...timestamp,
+  ...timestamps,
 });
 
 // profiles Table
@@ -39,7 +38,7 @@ export const profiles = pgTable("profiles", {
 
 // foods Table
 export const foods = pgTable("foods", {
-  id: serial().primaryKey(),
+  id: uuid().primaryKey().defaultRandom(),
   foodName: text().notNull(),
   reading: text().notNull(),
   kcalPer100g: numeric("kcal_per_100g").notNull(),
@@ -47,11 +46,11 @@ export const foods = pgTable("foods", {
 
 // regular_foods Table
 export const regularFoods = pgTable("regular_foods", {
-  id: serial().primaryKey(),
+  id: uuid().primaryKey(),
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
-  foodName: text().notNull(),
+  foodName: varchar({ length: 255 }).notNull(),
   gram: numeric().notNull(),
   kcal: numeric().notNull(),
   ...timestamps,
@@ -59,7 +58,7 @@ export const regularFoods = pgTable("regular_foods", {
 
 // target_kcal_history Table
 export const targetKcalHistory = pgTable("target_kcal_history", {
-  id: serial("id").primaryKey(),
+  id: uuid().primaryKey(),
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
@@ -70,11 +69,13 @@ export const targetKcalHistory = pgTable("target_kcal_history", {
 
 // user_food_selections Table
 export const userFoodSelections = pgTable("user_food_selections", {
-  id: serial().primaryKey(),
+  id: uuid().primaryKey(),
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
-  foodId: numeric().notNull(),
+  foodId: uuid()
+    .notNull()
+    .references(() => foods.id),
   ...timestamps,
 });
 

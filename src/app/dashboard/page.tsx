@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 const DashBoard = () => {
   const [meals, setMeals] = useState<SelectMealRecord[]>([]);
 
-  const userId = "10245416-dd23-4329-93ef-79c87f4816cf";
+  const userId = "ded6e710-8c55-45b8-a7ed-8cd57b7d06ff";
 
   useEffect(() => {
     const fetchFoods = async () => {
