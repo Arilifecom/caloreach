@@ -161,3 +161,21 @@ export const OnigiriIcon = ({ className, ...props }: IconProps) => (
     <rect width={18.182} height={18.182} x={16} y={25} fill="#0F172B" rx={1} />
   </svg>
 );
+
+export const CloseiIcon = ({ className, ...props }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 50 50"
+    {...props}
+    className={` h-auto ${className}`}
+    fill="none"
+  >
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={8}
+      d="M45 4 4 45M4 4l41 41"
+    />
+  </svg>
+);
