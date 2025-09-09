@@ -4,7 +4,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CloseiIcon } from "@/components/ui/icons";
+import { CloseiIcon } from "@/components/icons/icons";
+import { memo } from "react";
 
 interface FormHeaderProps {
   title: string;
@@ -15,7 +16,7 @@ const handleClose = () => {
   console.log("閉じるクリック");
 };
 
-function FormHeader({ title, description }: FormHeaderProps) {
+function Component({ title, description }: FormHeaderProps) {
   return (
     <CardHeader className="flex justify-between">
       <div>
@@ -33,5 +34,7 @@ function FormHeader({ title, description }: FormHeaderProps) {
     </CardHeader>
   );
 }
+
+const FormHeader = memo(Component);
 
 export { FormHeader };

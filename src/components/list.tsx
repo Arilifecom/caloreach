@@ -1,9 +1,10 @@
 import * as React from "react";
 import { EllipsisVertical } from "lucide-react";
+import { memo } from "react";
 
 import { cn } from "@/lib/utils";
 
-function List({ children, ...props }: React.ComponentProps<"input">) {
+function Component({ children, ...props }: React.ComponentProps<"input">) {
   return (
     <div
       data-slot="card"
@@ -21,4 +22,5 @@ function List({ children, ...props }: React.ComponentProps<"input">) {
   );
 }
 
+const List = memo(Component);
 export { List };

@@ -1,11 +1,12 @@
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { memo } from "react";
 
 interface PageHeaderProps {
   title: string;
   description?: string;
 }
 
-function PageHeader({ title, description }: PageHeaderProps) {
+function Component({ title, description }: PageHeaderProps) {
   return (
     <CardHeader className="w-full px-0">
       <div>
@@ -16,4 +17,5 @@ function PageHeader({ title, description }: PageHeaderProps) {
   );
 }
 
+const PageHeader = memo(Component);
 export { PageHeader };
