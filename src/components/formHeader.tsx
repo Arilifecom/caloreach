@@ -1,10 +1,10 @@
+import { CloseiIcon } from "@/components/icons/closeiIcon";
 import {
   CardAction,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CloseiIcon } from "@/components/icons/icons";
 import { memo } from "react";
 
 interface FormHeaderProps {
