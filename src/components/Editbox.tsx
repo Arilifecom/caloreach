@@ -1,6 +1,7 @@
 import { Pencil, Trash2, X } from "lucide-react";
+import { memo } from "react";
 
-function EditBox() {
+function Component() {
   return (
     <div className="absolute border-1 rounded-lg  right-0 -top-[190px] flex flex-col gap-2 items-center justify-center bg-muted p-6">
       <button className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg">
@@ -15,5 +16,7 @@ function EditBox() {
     </div>
   );
 }
+
+const EditBox = memo(Component);
 
 export { EditBox };

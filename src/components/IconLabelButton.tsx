@@ -1,10 +1,12 @@
+import { memo } from "react";
+
 interface IconLabelButtonProps {
   icon: React.ReactNode;
   label: string;
   // onClick?: () => void;
 }
 
-export function IconLabelButton({
+function Component({
   icon,
   label,
 }: // onClick,
@@ -22,3 +24,7 @@ IconLabelButtonProps) {
     </div>
   );
 }
+
+const IconLabelButton = memo(Component);
+
+export { IconLabelButton };
