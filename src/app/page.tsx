@@ -18,7 +18,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-6 pb-20 sm:p-20">
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen text-sm p-6 pb-20 sm:p-20">
       <main className="flex flex-col gap-[32px] w-full max-w-md row-start-2 items-center">
         <ul>
           <h2 className="text-2xl font-bold mb-4">ユーザーの食事記録</h2>

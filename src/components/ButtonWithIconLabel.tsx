@@ -12,7 +12,7 @@ function Component({
 }: // onClick,
 IconLabelButtonProps) {
   return (
-    <div className="relative grid w-32 h-28 place-items-center bg-background rounded-lg border-2 border-foreground hover:bg-primary-foreground/98">
+    <div className="relative grid w-32 h-28 place-items-center bg-background rounded-lg border-2 border-foreground hover:bg-primary-foreground/98 md:text-sm">
       <button
         // onClick={onClick}
         className="flex flex-col items-center justify-center space-y-1"
@@ -25,6 +25,6 @@ IconLabelButtonProps) {
   );
 }
 
-const IconLabelButton = memo(Component);
+const ButtonWithIconLabel = memo(Component);
 
-export { IconLabelButton };
+export { ButtonWithIconLabel };
