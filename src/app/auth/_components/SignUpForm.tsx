@@ -1,5 +1,4 @@
 "use client";
-
 import { signup } from "@/actions/auth";
 import { loginGoogle } from "@/actions/auth/login";
 import { signupDefaultstValues } from "@/app/auth/_components/_constant";
@@ -17,11 +16,13 @@ import {
 } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const router = useRouter();
 
   const {
     reset,
@@ -41,6 +42,8 @@ export const SignupForm = () => {
       await signup(formData);
 
       reset();
+      //go to mailnotice UI page
+      router.push("/auth/mailnotice?type=verify");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
