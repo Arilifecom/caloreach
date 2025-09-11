@@ -2,7 +2,7 @@ interface SvgProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const CloseiIcon = ({ className, ...props }: SvgProps) => (
+const CloseIcon = ({ className, ...props }: SvgProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 50 50"
@@ -20,4 +20,4 @@ const CloseiIcon = ({ className, ...props }: SvgProps) => (
   </svg>
 );
 
-export { CloseiIcon };
+export { CloseIcon };

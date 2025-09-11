@@ -1,4 +1,4 @@
-import { CloseiIcon } from "@/components/icons/closeiIcon";
+import { CloseIcon } from "@/components/icons";
 import {
   CardAction,
   CardDescription,
@@ -28,7 +28,7 @@ function Component({ title, description }: FormHeaderProps) {
           onClick={() => handleClose()}
           className="text-black hover:text-red-500"
         >
-          <CloseiIcon className="w-4 h-4" />
+          <CloseIcon className="w-4 h-4" />
         </button>
       </CardAction>
     </CardHeader>

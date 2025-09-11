@@ -4,11 +4,12 @@ import { memo } from "react";
 interface PageHeaderProps {
   title: string;
   description?: string;
+  className?: string;
 }
 
-function Component({ title, description }: PageHeaderProps) {
+function Component({ title, description, className }: PageHeaderProps) {
   return (
-    <CardHeader className="w-full px-0">
+    <CardHeader className={`w-full px-0 ${className}`}>
       <div>
         <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
