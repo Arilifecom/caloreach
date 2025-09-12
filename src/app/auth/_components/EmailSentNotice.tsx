@@ -7,9 +7,15 @@ interface EmailSentNoticeProps {
   title: string;
   description: string;
   body: string;
+  actionButton?: React.ReactNode;
 }
 
-const Component = ({ title, description, body }: EmailSentNoticeProps) => {
+const Component = ({
+  title,
+  description,
+  body,
+  actionButton,
+}: EmailSentNoticeProps) => {
   return (
     <>
       <SiteLogo className="w-28" />
@@ -22,6 +28,7 @@ const Component = ({ title, description, body }: EmailSentNoticeProps) => {
           <div>
             <p>{body}</p>
           </div>
+          {actionButton}
         </CardContent>
         <VerticalLine className="px-6" />
         <p className="text-xs text-gray-500 mx-auto">

@@ -1,4 +1,4 @@
-import { EmailSentNotice } from "@/app/auth/_components";
+import { EmailSentNotice, LoginButton } from "@/app/auth/_components";
 import { use } from "react";
 
 type MailNoticePageProps = {
@@ -21,9 +21,18 @@ export default function MailNoticePage({ searchParams }: MailNoticePageProps) {
     case "reset":
       return (
         <EmailSentNotice
-          title="Reset your password"
-          description="パスワードをお忘れですか？"
-          body="登録したメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。"
+          title="Check your Email"
+          description="パスワードリセットメールを送信しました"
+          body="メール内のリンクをクリックして、新しいパスワードを設定してください。"
+        />
+      );
+    case "reset-success":
+      return (
+        <EmailSentNotice
+          title="Password Updated"
+          description="パスワードの更新が完了しました"
+          body="新しいパスワードでログインしてください。"
+          actionButton={<LoginButton />}
         />
       );
   }
