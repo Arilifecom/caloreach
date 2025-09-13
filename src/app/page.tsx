@@ -15,7 +15,8 @@ export default function Home() {
   const userId = "ded6e710-8c55-45b8-a7ed-8cd57b7d06ff";
 
   const handleLogOut = async () => {
-    const supabase = await createClient();
+    const supabase = createClient();
+
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error("サインアウトに失敗しました", error);
