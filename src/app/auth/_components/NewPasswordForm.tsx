@@ -1,6 +1,5 @@
 "use client";
 
-import { newPassWordDefaultstValues } from "@/app/auth/_components/_constant";
 import { newPassWordSchema } from "@/app/auth/_components/_schema";
 import { newPasswordFormInput } from "@/app/auth/_components/_types";
 import { PageHeader, VerticalLine } from "@/components";
@@ -12,6 +11,12 @@ import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const newPassWordDefaultstValues: {
+  password: string;
+} = {
+  password: "",
+};
 
 export const NewPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");

@@ -1,7 +1,6 @@
 "use client";
 import { signup } from "@/actions/auth";
 import { loginGoogle } from "@/actions/auth/login";
-import { signupDefaultstValues } from "@/app/auth/_components/_constant";
 import { signupSchema } from "@/app/auth/_components/_schema";
 import { signupFormInput } from "@/app/auth/_components/_types";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
@@ -19,6 +18,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const signupDefaultstValues: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+} = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");

@@ -1,7 +1,6 @@
 "use client";
 
 import { resetPassWord } from "@/actions/auth";
-import { resetPassWordDefaultstValues } from "@/app/auth/_components/_constant";
 import { resetPassWordSchema } from "@/app/auth/_components/_schema";
 import { resetPassWordFormInput } from "@/app/auth/_components/_types";
 import { PageHeader, VerticalLine } from "@/components";
@@ -12,6 +11,12 @@ import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const resetPassWordDefaultstValues: {
+  email: string;
+} = {
+  email: "",
+};
 
 export const ResetPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");

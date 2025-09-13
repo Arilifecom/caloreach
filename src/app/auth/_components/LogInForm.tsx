@@ -1,7 +1,6 @@
 "use client";
 
 import { login, loginGoogle } from "@/actions/auth/login";
-import { loginDefaultstValues } from "@/app/auth/_components/_constant";
 import { loginSchema } from "@/app/auth/_components/_schema";
 import { loginFormInput } from "@/app/auth/_components/_types";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
@@ -19,6 +18,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const loginDefaultstValues: {
+  email: string;
+  password: string;
+} = {
+  email: "",
+  password: "",
+};
 
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
