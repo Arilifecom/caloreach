@@ -16,11 +16,13 @@ import {
 } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const router = useRouter();
 
   const {
     reset,
@@ -36,11 +38,11 @@ export const LogInForm = () => {
   const submitEmailLogin = async (values: loginFormInput) => {
     try {
       await login(values);
-
       reset();
+      router.push("/");
     } catch (error) {
       console.error(error);
-      setErrorMessage("登録に失敗しました");
+      setErrorMessage("ログインに失敗ました");
     }
   };
 
@@ -96,6 +98,14 @@ export const LogInForm = () => {
                   <p className="text-destructive">{errors.password.message}</p>
                 )}
               </div>
+              <p className="text-right">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm underline text-right"
+                >
+                  パスワードをお忘れの方
+                </Link>
+              </p>
               <Button type="submit" className="rounded-lg mt-4 h-10">
                 ログイン
               </Button>
@@ -110,10 +120,6 @@ export const LogInForm = () => {
             </Link>
           </p>
         </div>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
       </CardWithShadow>
     </>
   );
