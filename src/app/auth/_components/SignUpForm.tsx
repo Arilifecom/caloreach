@@ -134,10 +134,10 @@ export const SignupForm = () => {
             </Link>
           </p>
         </div>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
+        {/* <VerticalLine className="px-6" /> */}
+        {/* <p className="text-xs text-gray-500 mx-auto">
           © {new Date().getFullYear()} カロリーチ
-        </p>
+        </p> */}
       </CardWithShadow>
     </>
   );
