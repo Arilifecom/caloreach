@@ -1,9 +1,15 @@
 "use server";
 
-import { getMealRecords } from "@/db/queries";
+import { db } from "@/db";
+import { mealRecords } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
+//Get user meal Record
 const getMealRecordAction = async (userId: string) => {
-  return await getMealRecords(userId);
+  const res = await db.query.mealRecords.findMany({
+    where: eq(mealRecords.userId, userId),
+  });
+  return res;
 };
 
 export { getMealRecordAction };
