@@ -4,7 +4,7 @@ import { loginGoogle } from "@/actions/auth/login";
 import { signupSchema } from "@/app/auth/_components/_schema";
 import { signupFormInput } from "@/app/auth/_components/_types";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
-import { PageHeader, VerticalLine, VerticalLineWithText } from "@/components";
+import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import {
   Button,
@@ -85,7 +85,7 @@ export const SignupForm = () => {
             text="Googleアカウントで登録"
             submitGoogle={submitGoogle}
           />
-          <VerticalLineWithText text="or" />
+          <VerticalLine text="or" />
           <form onSubmit={handleSubmit(submitEmailLogin)}>
             <div className="flex flex-col gap-4 ">
               <div className="grid gap-1">

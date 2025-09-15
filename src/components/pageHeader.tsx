@@ -1,4 +1,5 @@
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { memo } from "react";
 
 interface PageHeaderProps {
@@ -9,7 +10,7 @@ interface PageHeaderProps {
 
 function Component({ title, description, className }: PageHeaderProps) {
   return (
-    <CardHeader className={`w-full px-0 ${className}`}>
+    <CardHeader className={cn("w-full px-0", className)}>
       <div>
         <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
