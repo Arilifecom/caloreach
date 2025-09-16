@@ -2,7 +2,6 @@
 
 import { loginFormInput } from "@/app/auth/_components/_types";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function login(formData: loginFormInput) {
@@ -19,11 +18,8 @@ export async function login(formData: loginFormInput) {
 
   if (error) {
     console.error(error);
-    return;
+    throw new Error("登録に失敗しました");
   }
-
-  revalidatePath("/");
-  redirect("/");
 }
 
 export async function loginGoogle() {

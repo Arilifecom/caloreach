@@ -1,29 +1,36 @@
 "use client";
 
-import { newPassWordDefaultstValues } from "@/app/auth/_components/_constant";
 import { newPassWordSchema } from "@/app/auth/_components/_schema";
 import { newPasswordFormInput } from "@/app/auth/_components/_types";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardContent, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardWithShadow, Input } from "@/components/ui";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const newPassWordDefaultstValues: {
+  password: string;
+} = {
+  password: "",
+};
 
 export const NewPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
   const supabase = createClient();
 
-  //react-hook-form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<newPasswordFormInput>({
+  const form = useForm<newPasswordFormInput>({
     resolver: zodResolver(newPassWordSchema),
     defaultValues: newPassWordDefaultstValues,
   });
@@ -54,34 +61,36 @@ export const NewPassWordForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <CardContent>
-          <form onSubmit={handleSubmit(UpdateNewPassWord)}>
-            <div className="flex flex-col gap-4 ">
-              <div className="grid gap-1">
-                <Label>新しいパスワード</Label>
-                <Input
-                  id="pasword"
-                  type="password"
-                  placeholder="6字以上を入力してください"
-                  {...register("password")}
-                  required
-                />
-                {errors.password && (
-                  <p className="text-destructive">{errors.password.message}</p>
-                )}
-              </div>
-              <div className="flex justify-end mt-4 h-10">
-                <Button type="submit" className="rounded-lg">
-                  パスワード再登録
-                </Button>
-              </div>
-            </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(UpdateNewPassWord)}
+            className="space-y-4 px-6"
+          >
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>新しいパスワード</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="6字以上を入力してください"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="rounded-lg block mx-auto mt-4 h-10"
+            >
+              パスワード再登録
+            </Button>
           </form>
-        </CardContent>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
+        </Form>
       </CardWithShadow>
     </>
   );

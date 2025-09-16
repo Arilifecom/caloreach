@@ -29,26 +29,8 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Get session
+  // Update session
   await supabase.auth.getClaims();
-
-  // Get user info
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const publicPaths = ["/auth"];
-
-  if (publicPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
-    return supabaseResponse;
-  }
-
-  // If no user info redirect to login page
-  if (!user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
-    return NextResponse.redirect(url);
-  }
 
   return supabaseResponse;
 }

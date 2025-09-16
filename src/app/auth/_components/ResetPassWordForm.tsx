@@ -1,27 +1,35 @@
 "use client";
 
 import { resetPassWord } from "@/actions/auth";
-import { resetPassWordDefaultstValues } from "@/app/auth/_components/_constant";
 import { resetPassWordSchema } from "@/app/auth/_components/_schema";
 import { resetPassWordFormInput } from "@/app/auth/_components/_types";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardContent, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardWithShadow, Input } from "@/components/ui";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const resetPassWordDefaultstValues: {
+  email: string;
+} = {
+  email: "",
+};
 
 export const ResetPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<resetPassWordFormInput>({
+  const form = useForm<resetPassWordFormInput>({
     resolver: zodResolver(resetPassWordSchema),
     defaultValues: resetPassWordDefaultstValues,
   });
@@ -58,41 +66,43 @@ export const ResetPassWordForm = () => {
             ご登録のメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。
           </p>
         </div>
-        <CardContent>
-          <form onSubmit={handleSubmit(submitEmailSent)}>
-            <div className="flex flex-col gap-4 ">
-              <div className="grid gap-1">
-                <Label>メールアドレス</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="example@caloreach.com"
-                  {...register("email")}
-                  required
-                />
-                {errors.email && (
-                  <p className="text-destructive">{errors.email.message}</p>
-                )}
-              </div>
-              <div className="flex justify-center gap-2 mt-4 h-10">
-                <Button
-                  onClick={cancelPasswordReset}
-                  className="rounded-lg"
-                  variant={"outline"}
-                >
-                  ログインに戻る
-                </Button>
-                <Button type="submit" className="rounded-lg">
-                  リセットメール送信
-                </Button>
-              </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(submitEmailSent)}
+            className="space-y-4 px-6"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>メールアドレス</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="emal"
+                      placeholder="example@caloreach.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-center gap-2 mt-8 h-10">
+              <Button
+                type="button"
+                onClick={cancelPasswordReset}
+                className="rounded-lg"
+                variant={"outline"}
+              >
+                ログインに戻る
+              </Button>
+              <Button type="submit" className="rounded-lg">
+                リセットメール送信
+              </Button>
             </div>
           </form>
-        </CardContent>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
+        </Form>
       </CardWithShadow>
     </>
   );

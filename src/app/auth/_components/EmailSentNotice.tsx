@@ -1,39 +1,55 @@
+import { LoginButton } from "@/app/auth/_components/LoginButton";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { CardContent, CardWithShadow } from "@/components/ui";
 import { memo } from "react";
 
 interface EmailSentNoticeProps {
-  title: string;
-  description: string;
-  body: string;
-  actionButton?: React.ReactNode;
+  type: string;
 }
 
-const Component = ({
-  title,
-  description,
-  body,
-  actionButton,
-}: EmailSentNoticeProps) => {
+const Component = ({ type }: EmailSentNoticeProps) => {
+  const switchText = () => {
+    switch (type) {
+      case "verify":
+      default:
+        return {
+          title: "Check your Email",
+          description: "確認メールを送信しました",
+          body: "メール内のリンクをクリックして登録を完了してください。",
+        };
+      case "reset":
+        return {
+          title: "Check your Email",
+          description: "パスワードリセットメールを送信しました",
+          body: "メール内のリンクをクリックして、新しいパスワードを設定してください。",
+        };
+      case "reset-success":
+        return {
+          title: "Password Updated",
+          description: "パスワードの更新が完了しました",
+          body: "新しいパスワードでログインしてください。",
+          actionButton: <LoginButton />,
+        };
+    }
+  };
+
+  const text = switchText();
+
   return (
     <>
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
-          <PageHeader title={title} description={description} />
+          <PageHeader title={text.title} description={text.description} />
         </div>
         <VerticalLine className="px-6" />
         <CardContent>
           <div>
-            <p>{body}</p>
+            <p>{text.body}</p>
           </div>
-          {actionButton}
+          {text.actionButton}
         </CardContent>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
       </CardWithShadow>
     </>
   );

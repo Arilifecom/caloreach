@@ -1,47 +1,52 @@
 "use client";
 import { signup } from "@/actions/auth";
 import { loginGoogle } from "@/actions/auth/login";
-import { signupDefaultstValues } from "@/app/auth/_components/_constant";
 import { signupSchema } from "@/app/auth/_components/_schema";
 import { signupFormInput } from "@/app/auth/_components/_types";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
-import { PageHeader, VerticalLine, VerticalLineWithText } from "@/components";
+import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
+import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Button,
-  CardContent,
-  CardWithShadow,
-  Input,
-  Label,
-} from "@/components/ui";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+const signupDefaultstValues: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+} = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
 
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<signupFormInput>({
+  const form = useForm<signupFormInput>({
     resolver: zodResolver(signupSchema),
     defaultValues: signupDefaultstValues,
   });
 
   //Signin with email and password
-  const submitEmailLogin = async (values: signupFormInput) => {
+  const submitEmailSignup = async (values: signupFormInput) => {
     try {
       //Delete confirmPassword from values
       const { confirmPassword: _, ...formData } = values;
       await signup(formData);
 
-      reset();
       //go to mailnotice UI page
       router.push("/auth/mailnotice?type=verify");
     } catch (error) {
@@ -71,61 +76,75 @@ export const SignupForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <CardContent>
-          <ButtonWithGooleIcon
-            text="Googleアカウントで登録"
-            submitGoogle={submitGoogle}
-          />
-          <VerticalLineWithText text="or" />
-          <form onSubmit={handleSubmit(submitEmailLogin)}>
-            <div className="flex flex-col gap-4 ">
-              <div className="grid gap-1">
-                <Label>メールアドレス</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="example@caloreach.com"
-                  {...register("email")}
-                  required
-                />
-                {errors.email && (
-                  <p className="text-destructive">{errors.email.message}</p>
-                )}
-              </div>
-              <div className="grid gap-1">
-                <Label>パスワード</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="6字以上を入力してください"
-                  {...register("password")}
-                  required
-                />
-                {errors.password && (
-                  <p className="text-destructive">{errors.password.message}</p>
-                )}
-              </div>
-              <div className="grid gap-1">
-                <Label>パスワード再入力</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="再度パスワードを入力してください"
-                  {...register("confirmPassword")}
-                  required
-                />
-                {errors.confirmPassword && (
-                  <p className="text-destructive">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
-              <Button type="submit" className="rounded-lg mt-4 h-10">
-                アカウント登録
-              </Button>
-            </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(submitEmailSignup)}
+            className="space-y-4 px-6"
+          >
+            <ButtonWithGooleIcon
+              text="Googleアカウントで登録"
+              submitGoogle={submitGoogle}
+            />
+            <VerticalLine text="or" className="px-6" />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>メールアドレス</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="example@caloreach.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>パスワード</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="6字以上を入力してください"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>パスワード再入力</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="confirmPassword"
+                      placeholder="再度パスワードを入力してください"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" className="w-full rounded-lg mt-4 h-10">
+              アカウント登録
+            </Button>
           </form>
-        </CardContent>
+        </Form>
+
         <div className="grid gap-6 justify-center">
           <p>
             アカウントをお持ちの方は
@@ -134,10 +153,6 @@ export const SignupForm = () => {
             </Link>
           </p>
         </div>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
       </CardWithShadow>
     </>
   );

@@ -1,46 +1,48 @@
 "use client";
 
 import { login, loginGoogle } from "@/actions/auth/login";
-import { loginDefaultstValues } from "@/app/auth/_components/_constant";
 import { loginSchema } from "@/app/auth/_components/_schema";
 import { loginFormInput } from "@/app/auth/_components/_types";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
-import { PageHeader, VerticalLine, VerticalLineWithText } from "@/components";
+import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
+import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Button,
-  CardContent,
-  CardWithShadow,
-  Input,
-  Label,
-} from "@/components/ui";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+const loginDefaultValues: loginFormInput = {
+  email: "",
+  password: "",
+};
+
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const router = useRouter();
 
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<loginFormInput>({
+  const form = useForm<loginFormInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: loginDefaultstValues,
+    defaultValues: loginDefaultValues,
   });
 
-  //Signin with email and password
+  //Login with email and password
   const submitEmailLogin = async (values: loginFormInput) => {
     try {
       await login(values);
-
-      reset();
+      router.push("/");
     } catch (error) {
       console.error(error);
-      setErrorMessage("登録に失敗しました");
+      setErrorMessage("ログインに失敗しました");
     }
   };
 
@@ -58,51 +60,72 @@ export const LogInForm = () => {
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
-          <PageHeader title="ログイン" description="Welcom back!" />
+          <PageHeader title="ログイン" description="Welcome back!" />
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <CardContent>
-          <ButtonWithGooleIcon
-            text="Googleアカウントでログイン"
-            submitGoogle={submitGoogle}
-          />
-          <VerticalLineWithText text="or" />
-          <form onSubmit={handleSubmit(submitEmailLogin)}>
-            <div className="flex flex-col gap-4 ">
-              <div className="grid gap-1">
-                <Label>メールアドレス</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="example@caloreach.com"
-                  {...register("email")}
-                  required
-                />
-                {errors.email && (
-                  <p className="text-destructive">{errors.email.message}</p>
-                )}
-              </div>
-              <div className="grid gap-1">
-                <Label>パスワード</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="6字以上を入力してください"
-                  {...register("password")}
-                  required
-                />
-                {errors.password && (
-                  <p className="text-destructive">{errors.password.message}</p>
-                )}
-              </div>
-              <Button type="submit" className="rounded-lg mt-4 h-10">
-                ログイン
-              </Button>
-            </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(submitEmailLogin)}
+            className="space-y-4 px-6"
+          >
+            <ButtonWithGooleIcon
+              text="Googleアカウントでログイン"
+              submitGoogle={submitGoogle}
+            />
+            <VerticalLine text="or" className="px-6" />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>メールアドレス</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="example@mail.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>パスワード</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="パスワードを入力してください"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <p className="text-right">
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm underline text-right"
+              >
+                パスワードをお忘れの方
+              </Link>
+            </p>
+
+            <Button type="submit" className="w-full rounded-lg mt-4">
+              ログイン
+            </Button>
           </form>
-        </CardContent>
-        <div className="grid gap-6 justify-center">
+        </Form>
+
+        <div className="grid gap-6 justify-center py-4">
           <p>
             アカウントをお持ちでない方は
             <Link href="/auth/signup" className="font-bold">
@@ -110,10 +133,6 @@ export const LogInForm = () => {
             </Link>
           </p>
         </div>
-        <VerticalLine className="px-6" />
-        <p className="text-xs text-gray-500 mx-auto">
-          © {new Date().getFullYear()} カロリーチ
-        </p>
       </CardWithShadow>
     </>
   );
