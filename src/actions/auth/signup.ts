@@ -15,8 +15,11 @@ export async function signup(formData: SignupInput) {
   if (!email || !password) return;
 
   const { error } = await supabase.auth.signUp({
-    email: email as string,
-    password: password as string,
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/auth/callback`,
+    },
   });
 
   if (error) {
