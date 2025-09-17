@@ -5,14 +5,13 @@ import { CardContent, CardWithShadow } from "@/components/ui";
 import { memo } from "react";
 
 interface EmailSentNoticeProps {
-  type: string;
+  type: "verify" | "reset" | "reset-success";
 }
 
 const Component = ({ type }: EmailSentNoticeProps) => {
   const switchText = () => {
     switch (type) {
       case "verify":
-      default:
         return {
           title: "Check your Email",
           description: "確認メールを送信しました",

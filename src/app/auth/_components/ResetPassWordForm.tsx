@@ -26,7 +26,7 @@ const resetPassWordDefaultstValues: {
 };
 
 export const ResetPassWordForm = () => {
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const form = useForm<resetPassWordFormInput>({

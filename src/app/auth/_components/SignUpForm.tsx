@@ -129,7 +129,7 @@ export const SignupForm = () => {
                   <FormLabel>パスワード再入力</FormLabel>
                   <FormControl>
                     <Input
-                      type="confirmPassword"
+                      type="password"
                       placeholder="再度パスワードを入力してください"
                       {...field}
                     />
