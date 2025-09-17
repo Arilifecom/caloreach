@@ -91,3 +91,6 @@ export const schema = {
 // 型
 export type InsertMealRecord = typeof mealRecords.$inferInsert;
 export type SelectMealRecord = typeof mealRecords.$inferSelect;
+
+export type InsertProfileRecord = typeof profiles.$inferInsert;
+export type SelectProfileRecord = typeof profiles.$inferSelect;
