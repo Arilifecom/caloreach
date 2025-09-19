@@ -45,7 +45,7 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
     try {
       await createProfile(profileData);
       //go to next setup
-      router.push("/");
+      router.push("/setup/step-2-target-kcal");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
@@ -73,7 +73,7 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
                   <FormLabel className="mb-2 mx-auto">ユーザー名</FormLabel>
                   <FormControl>
                     <Input
-                      type="name"
+                      type="text"
                       placeholder="名前を入力してください"
                       {...field}
                     />

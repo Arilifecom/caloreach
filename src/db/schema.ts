@@ -62,7 +62,7 @@ export const targetKcalHistory = pgTable("target_kcal_history", {
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
-  targetKcal: numeric().notNull(),
+  targetKcal: numeric({ mode: "number" }).notNull(),
   effectiveDate: date().notNull(),
   ...timestamps,
 });
@@ -94,3 +94,8 @@ export type SelectMealRecord = typeof mealRecords.$inferSelect;
 
 export type InsertProfileRecord = typeof profiles.$inferInsert;
 export type SelectProfileRecord = typeof profiles.$inferSelect;
+
+export type InsertTargetKcalHistoryRecord =
+  typeof targetKcalHistory.$inferInsert;
+export type SelectTargetKcalHistoryRecord =
+  typeof targetKcalHistory.$inferSelect;
