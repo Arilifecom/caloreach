@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import { getProfileByUserId } from "@/actions/setup";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -24,11 +25,7 @@ export async function GET(request: Request) {
       const userId = user.id;
 
       // check profile data
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
+      const profile = await getProfileByUserId(userId);
 
       //if no profile data, redirect to /setup/step-1-user-profile
       const redirectPath =
@@ -38,9 +35,8 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}${redirectPath}`);
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`);
-      } else {
-        return NextResponse.redirect(`${origin}${redirectPath}`);
       }
+      return NextResponse.redirect(`${origin}${redirectPath}`);
     }
   }
 
