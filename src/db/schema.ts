@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   date,
-  numeric,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -24,8 +24,8 @@ export const mealRecords = pgTable("meal_records", {
     .notNull()
     .references(() => profiles.id),
   foodName: varchar({ length: 255 }).notNull(),
-  gram: numeric().notNull(),
-  kcal: numeric().notNull(),
+  gram: integer().notNull(),
+  kcal: integer().notNull(),
   ...timestamps,
 });
 
@@ -41,7 +41,7 @@ export const foods = pgTable("foods", {
   id: uuid().primaryKey().defaultRandom(),
   foodName: text().notNull(),
   reading: text().notNull(),
-  kcalPer100g: numeric("kcal_per_100g").notNull(),
+  kcalPer100g: integer("kcal_per_100g").notNull(),
 });
 
 // regular_foods Table
@@ -51,8 +51,8 @@ export const regularFoods = pgTable("regular_foods", {
     .notNull()
     .references(() => profiles.id),
   foodName: varchar({ length: 255 }).notNull(),
-  gram: numeric().notNull(),
-  kcal: numeric().notNull(),
+  gram: integer().notNull(),
+  kcal: integer().notNull(),
   ...timestamps,
 });
 
@@ -62,7 +62,7 @@ export const targetKcalHistory = pgTable("target_kcal_history", {
   userId: uuid()
     .notNull()
     .references(() => profiles.id),
-  targetKcal: numeric({ mode: "number" }).notNull(),
+  targetKcal: integer().notNull(),
   effectiveDate: date().notNull(),
   ...timestamps,
 });
