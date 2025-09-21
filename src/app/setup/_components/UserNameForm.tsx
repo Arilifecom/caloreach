@@ -1,8 +1,10 @@
 "use client";
 
 import { createProfile } from "@/actions/setup";
-import { userNameInputSchema } from "@/app/setup/_components/_schema";
-import { userNameFormInput } from "@/app/setup/_components/_types";
+import {
+  userNameInputResolver,
+  UserNameInputSchema,
+} from "@/app/setup/_components/_schema";
 import { PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
@@ -13,33 +15,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-const userNameDefaultValues: {
-  name: string;
-} = {
-  name: "",
-};
 
 interface UserNameFormProps {
   userId: string;
 }
 
+const userNameDefaultValues: UserNameInputSchema = {
+  userName: "",
+};
+
 export const UserNameForm = ({ userId }: UserNameFormProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const form = useForm<userNameFormInput>({
-    resolver: zodResolver(userNameInputSchema),
+  const form = useForm<UserNameInputSchema>({
+    resolver: userNameInputResolver,
     defaultValues: userNameDefaultValues,
   });
 
-  const submitUserProfileSent = async (values: userNameFormInput) => {
+  const submitUserProfileSent = async (values: UserNameInputSchema) => {
     const profileData = {
-      userName: values.name,
+      userName: values.userName,
       id: userId,
     };
     try {
@@ -67,7 +66,7 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="userName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="mb-2 mx-auto">ユーザー名</FormLabel>
@@ -84,16 +83,8 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
             />
             <p className="text-red-500">{errorMessage}</p>
 
-            <div className="flex justify-center gap-2 mt-8 h-10">
-              <Button
-                type="button"
-                onClick={() => form.reset()}
-                className="rounded-lg"
-                variant={"outline"}
-              >
-                リセット
-              </Button>
-              <Button type="submit" className="rounded-lg">
+            <div className="flex justify-center gap-2 mt-6 h-10">
+              <Button type="submit" className="rounded-lg w-28">
                 登録
               </Button>
             </div>
