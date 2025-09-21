@@ -14,7 +14,7 @@ export const TargetKcalInputSchema = z.object({
     }),
 });
 
-export const TargetKcalInputInputResolver = zodResolver(TargetKcalInputSchema);
+export const TargetKcalInputResolver = zodResolver(TargetKcalInputSchema);
 export type TargetKcalInputSchemaInput = z.input<typeof TargetKcalInputSchema>;
 export type TargetKcalInputSchemaOutput = z.output<
   typeof TargetKcalInputSchema

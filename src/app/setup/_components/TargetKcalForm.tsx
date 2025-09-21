@@ -2,7 +2,7 @@
 
 import { createTargetKcal } from "@/actions/setup";
 import {
-  TargetKcalInputInputResolver,
+  TargetKcalInputResolver,
   TargetKcalInputSchemaInput,
   TargetKcalInputSchemaOutput,
 } from "@/app/setup/_components/_schema";
@@ -32,7 +32,7 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
     unknown,
     TargetKcalInputSchemaOutput
   >({
-    resolver: TargetKcalInputInputResolver,
+    resolver: TargetKcalInputResolver,
     defaultValues: defaultValues,
   });
 
@@ -97,16 +97,8 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
               )}
             />
 
-            <div className="flex justify-center gap-2 mt-8 h-10">
-              <Button
-                type="button"
-                onClick={() => form.reset()}
-                className="rounded-lg"
-                variant={"outline"}
-              >
-                リセット
-              </Button>
-              <Button type="submit" className="rounded-lg">
+            <div className="flex justify-center gap-2 mt-6 h-10">
+              <Button type="submit" className="rounded-lg w-28">
                 登録
               </Button>
             </div>
