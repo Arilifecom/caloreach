@@ -25,6 +25,7 @@ export async function GET(request: Request) {
       const userId = user.id;
 
       // check profile data
+
       const profile = await getProfileByUserId(userId);
 
       //if no profile data, redirect to /setup/step-1-user-profile
@@ -33,9 +34,11 @@ export async function GET(request: Request) {
 
       if (isLocalEnv) {
         return NextResponse.redirect(`${origin}${redirectPath}`);
-      } else if (forwardedHost) {
+      }
+      if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`);
       }
+
       return NextResponse.redirect(`${origin}${redirectPath}`);
     }
   }
