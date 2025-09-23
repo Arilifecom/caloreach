@@ -23,7 +23,7 @@ interface UserNameFormProps {
   userId: string;
 }
 
-const userNameDefaultValues: UserNameInputSchema = {
+const defaultValues: UserNameInputSchema = {
   userName: "",
 };
 
@@ -33,7 +33,7 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
 
   const form = useForm<UserNameInputSchema>({
     resolver: userNameInputResolver,
-    defaultValues: userNameDefaultValues,
+    defaultValues,
   });
 
   const submitUserProfileSent = async (values: UserNameInputSchema) => {
