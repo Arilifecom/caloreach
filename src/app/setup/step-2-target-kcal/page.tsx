@@ -1,10 +1,10 @@
-import { authenticated, getUserId } from "@/actions/auth";
 import { TargetKcalForm } from "@/app/setup/_components";
+import { checkAuth, getUser } from "@/utils/auth";
 import React from "react";
 
 export default async function SetFirstTargetKcal() {
-  await authenticated();
-  const userId = await getUserId();
+  await checkAuth();
+  const userId = await getUser();
 
   return <TargetKcalForm userId={userId} />;
 }

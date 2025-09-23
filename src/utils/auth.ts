@@ -1,10 +1,7 @@
-"use server";
-
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-//Check user session
-const authenticated = async () => {
+export const checkAuth = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
 
@@ -15,8 +12,7 @@ const authenticated = async () => {
   }
 };
 
-//Get user ID
-const getUserId = async () => {
+export const getUser = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
 
@@ -27,5 +23,3 @@ const getUserId = async () => {
 
   return data.user.id;
 };
-
-export { authenticated, getUserId };

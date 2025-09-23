@@ -1,11 +1,11 @@
-import { authenticated, getUserId } from "@/actions/auth";
-import { getMealRecordAction } from "@/actions/mealRecords/getList";
 import { LogoutButton } from "@/components";
+import { checkAuth, getUser } from "@/utils/auth";
+import { getMealRecordByUserId } from "@/utils/mealRecords";
 
 export default async function Home() {
-  await authenticated();
-  const userId = await getUserId();
-  const meals = await getMealRecordAction(userId);
+  await checkAuth();
+  const userId = await getUser();
+  const meals = await getMealRecordByUserId(userId);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen text-sm p-6 pb-20 sm:p-20">

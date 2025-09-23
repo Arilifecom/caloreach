@@ -1,10 +1,10 @@
-import { authenticated, getUserId } from "@/actions/auth";
 import { UserNameForm } from "@/app/setup/_components";
+import { checkAuth, getUser } from "@/utils/auth";
 import React from "react";
 
 export default async function SetUserProfile() {
-  await authenticated();
-  const userId = await getUserId();
+  await checkAuth();
+  const userId = await getUser();
 
   return <UserNameForm userId={userId} />;
 }
