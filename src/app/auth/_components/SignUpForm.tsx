@@ -1,31 +1,21 @@
 "use client";
-import { signup } from "@/actions/auth";
-import { loginGoogle } from "@/actions/auth/login";
-import { signupSchema } from "@/app/auth/_components/_schema";
-import { signupFormInput } from "@/app/auth/_components/_types";
+import {
+  signupInputSchemaInput,
+  signupInputSchemaOutput,
+  signupSchemaResolver,
+} from "@/app/auth/_components/_schema";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import { loginGoogle, signup } from "@/utils/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
-const signupDefaultstValues: {
-  email: string;
-  password: string;
-  confirmPassword: string;
-} = {
+const defaultValues: signupInputSchemaInput = {
   email: "",
   password: "",
   confirmPassword: "",
@@ -35,17 +25,19 @@ export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
 
-  const form = useForm<signupFormInput>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: signupDefaultstValues,
+  const form = useForm<
+    signupInputSchemaInput,
+    unknown,
+    signupInputSchemaOutput
+  >({
+    resolver: signupSchemaResolver,
+    defaultValues: defaultValues,
   });
 
   //Signin with email and password
-  const submitEmailSignup = async (values: signupFormInput) => {
+  const submitEmailSignup = async (values: signupInputSchemaOutput) => {
     try {
-      //Delete confirmPassword from values
-      const { confirmPassword: _, ...formData } = values;
-      await signup(formData);
+      await signup(values);
 
       //go to mailnotice UI page
       router.push("/auth/mailnotice?type=verify");
@@ -87,10 +79,10 @@ export const SignupForm = () => {
             />
             <VerticalLine text="or" className="px-6" />
 
-            <FormField
+            <Controller
               control={form.control}
               name="email"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>メールアドレス</FormLabel>
                   <FormControl>
@@ -100,14 +92,18 @@ export const SignupForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  {fieldState.error && (
+                    <p className="text-red-500 mx-auto">
+                      {fieldState.error.message}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />
-            <FormField
+            <Controller
               control={form.control}
               name="password"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>パスワード</FormLabel>
                   <FormControl>
@@ -117,14 +113,18 @@ export const SignupForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  {fieldState.error && (
+                    <p className="text-red-500 mx-auto">
+                      {fieldState.error.message}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />
-            <FormField
+            <Controller
               control={form.control}
               name="confirmPassword"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>パスワード再入力</FormLabel>
                   <FormControl>
@@ -134,7 +134,11 @@ export const SignupForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  {fieldState.error && (
+                    <p className="text-red-500 mx-auto">
+                      {fieldState.error.message}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />

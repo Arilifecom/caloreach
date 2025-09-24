@@ -1,6 +1,6 @@
 import { LogoutButton } from "@/components";
 import { checkAuth, getUser } from "@/utils/auth";
-import { getMealRecordByUserId } from "@/utils/mealRecords";
+import { getMealRecordByUserId } from "@/utils/api/mealRecords";
 
 export default async function Home() {
   await checkAuth();

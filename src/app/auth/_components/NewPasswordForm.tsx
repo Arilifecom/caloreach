@@ -1,7 +1,9 @@
 "use client";
 
-import { newPassWordSchema } from "@/app/auth/_components/_schema";
-import { newPasswordFormInput } from "@/app/auth/_components/_types";
+import {
+  newPassWordInputResolver,
+  NewPassWordInputSchema,
+} from "@/app/auth/_components/_schema";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
@@ -14,14 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const newPassWordDefaultstValues: {
-  password: string;
-} = {
+const defaultValues: NewPassWordInputSchema = {
   password: "",
 };
 
@@ -30,13 +29,13 @@ export const NewPassWordForm = () => {
   const router = useRouter();
   const supabase = createClient();
 
-  const form = useForm<newPasswordFormInput>({
-    resolver: zodResolver(newPassWordSchema),
-    defaultValues: newPassWordDefaultstValues,
+  const form = useForm<NewPassWordInputSchema>({
+    resolver: newPassWordInputResolver,
+    defaultValues,
   });
 
   //Update password
-  const UpdateNewPassWord = async (data: newPasswordFormInput) => {
+  const UpdateNewPassWord = async (data: NewPassWordInputSchema) => {
     const { error } = await supabase.auth.updateUser({
       password: data.password,
     });

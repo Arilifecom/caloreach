@@ -1,8 +1,9 @@
 "use client";
 
-import { login, loginGoogle } from "@/actions/auth/login";
-import { loginSchema } from "@/app/auth/_components/_schema";
-import { loginFormInput } from "@/app/auth/_components/_types";
+import {
+  loginFormInputResolver,
+  LoginFormInputSchema,
+} from "@/app/auth/_components/_schema";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
@@ -15,13 +16,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { login, loginGoogle } from "@/utils/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const loginDefaultValues: loginFormInput = {
+const loginDefaultValues: LoginFormInputSchema = {
   email: "",
   password: "",
 };
@@ -30,13 +31,13 @@ export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
 
-  const form = useForm<loginFormInput>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<LoginFormInputSchema>({
+    resolver: loginFormInputResolver,
     defaultValues: loginDefaultValues,
   });
 
   //Login with email and password
-  const submitEmailLogin = async (values: loginFormInput) => {
+  const submitEmailLogin = async (values: LoginFormInputSchema) => {
     try {
       await login(values);
       router.push("/");
