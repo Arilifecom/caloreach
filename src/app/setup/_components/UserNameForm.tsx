@@ -1,6 +1,5 @@
 "use client";
 
-import { createProfile } from "@/actions/setup";
 import {
   userNameInputResolver,
   UserNameInputSchema,
@@ -15,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { createProfile } from "@/utils/api/setup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

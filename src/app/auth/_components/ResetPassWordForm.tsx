@@ -1,8 +1,9 @@
 "use client";
 
-import { resetPassWord } from "@/actions/auth";
-import { resetPassWordSchema } from "@/app/auth/_components/_schema";
-import { resetPassWordFormInput } from "@/app/auth/_components/_types";
+import {
+  resetPassWordInputResolver,
+  ResetPassWordInputSchema,
+} from "@/app/auth/_components/_schema";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
@@ -14,14 +15,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { resetPassWord } from "@/utils/api/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const resetPassWordDefaultstValues: {
-  email: string;
-} = {
+const defaultValues: ResetPassWordInputSchema = {
   email: "",
 };
 
@@ -29,12 +28,12 @@ export const ResetPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const form = useForm<resetPassWordFormInput>({
-    resolver: zodResolver(resetPassWordSchema),
-    defaultValues: resetPassWordDefaultstValues,
+  const form = useForm<ResetPassWordInputSchema>({
+    resolver: resetPassWordInputResolver,
+    defaultValues,
   });
 
-  const submitEmailSent = async (values: resetPassWordFormInput) => {
+  const submitEmailSent = async (values: ResetPassWordInputSchema) => {
     try {
       await resetPassWord(values);
       //go to mailnotice UI page

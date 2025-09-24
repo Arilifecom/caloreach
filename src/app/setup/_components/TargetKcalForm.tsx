@@ -1,6 +1,5 @@
 "use client";
 
-import { createTargetKcal } from "@/actions/setup";
 import {
   TargetKcalInputResolver,
   TargetKcalInputSchemaInput,
@@ -9,6 +8,7 @@ import {
 import { PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import { createTargetKcal } from "@/utils/api/setup";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
