@@ -48,7 +48,7 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
 
     try {
       await createTargetKcal(targetkcalData);
-      router.push("/");
+      router.push("/app");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
