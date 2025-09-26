@@ -5,7 +5,7 @@ import { getProfileByUserId } from "@/utils/api/profile";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  const next = searchParams.get("next") ?? "/app";
 
   if (code) {
     const supabase = await createClient();
@@ -25,7 +25,6 @@ export async function GET(request: Request) {
       const userId = user.id;
 
       // check profile data
-
       const profile = await getProfileByUserId(userId);
 
       //if no profile data, redirect to /setup/step-1-user-profile

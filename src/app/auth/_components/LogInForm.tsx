@@ -40,7 +40,7 @@ export const LogInForm = () => {
   const submitEmailLogin = async (values: LoginFormInputSchema) => {
     try {
       await login(values);
-      router.push("/");
+      router.push("/app");
     } catch (error) {
       console.error(error);
       setErrorMessage("ログインに失敗しました");

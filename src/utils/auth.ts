@@ -12,6 +12,17 @@ export const checkAuth = async () => {
   }
 };
 
+export const checkAuthClient = async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getClaims();
+
+  if (error || !data) {
+    return false;
+  }
+
+  return true;
+};
+
 export const getUser = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();

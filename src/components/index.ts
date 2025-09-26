@@ -5,3 +5,4 @@ export * from "./List";
 export * from "./PageHeader";
 export * from "./VerticalLine";
 export * from "./LogoutButton";
+export * from "./GetStartedButton";
