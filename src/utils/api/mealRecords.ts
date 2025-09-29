@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { mealRecords } from "@/db/schema";
+import { InsertMealRecord, mealRecords } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 //Get user meal Record
@@ -10,4 +10,9 @@ export const getMealRecordByUserId = async (userId: string) => {
     where: eq(mealRecords.userId, userId),
   });
   return res;
+};
+
+//Insert user meal Record
+export const addMealRecord = async (InputData: InsertMealRecord) => {
+  await db.insert(mealRecords).values(InputData);
 };
