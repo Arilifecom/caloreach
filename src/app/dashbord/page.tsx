@@ -2,6 +2,7 @@ import { LogoutButton, PageHeader } from "@/components";
 import { checkAuth, getUser } from "@/utils/auth";
 import { getMealRecordByUserId } from "@/utils/api/mealRecords";
 import { getTodayMMDD } from "@/utils/format";
+import { MealRecordAddOption } from "@/app/dashbord/_components";
 
 export default async function Dashboard() {
   await checkAuth();
@@ -34,6 +35,7 @@ export default async function Dashboard() {
             </p>
           )}
         </ul>
+        <MealRecordAddOption userId={userId} />
       </main>
     </div>
   );
