@@ -3,18 +3,14 @@ import { memo } from "react";
 interface IconLabelButtonProps {
   icon: React.ReactNode;
   label: string;
-  // onClick?: () => void;
+  onClick: () => void;
 }
 
-function Component({
-  icon,
-  label,
-}: // onClick,
-IconLabelButtonProps) {
+function Component({ icon, label, onClick }: IconLabelButtonProps) {
   return (
     <div className="relative grid w-32 h-28 place-items-center bg-background rounded-lg border-2 border-foreground hover:bg-primary-foreground/98 md:text-sm">
       <button
-        // onClick={onClick}
+        onClick={onClick}
         className="flex flex-col items-center justify-center space-y-1"
       >
         {icon}
