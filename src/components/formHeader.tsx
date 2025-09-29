@@ -1,3 +1,5 @@
+"use client";
+
 import { CloseIcon } from "@/components/icons";
 import {
   CardAction,
@@ -10,15 +12,12 @@ import { memo } from "react";
 interface FormHeaderProps {
   title: string;
   description?: string;
-  // handleClose: ()=> void;
+  handleClose: () => void;
 }
-const handleClose = () => {
-  console.log("閉じるクリック");
-};
 
-function Component({ title, description }: FormHeaderProps) {
+function Component({ title, description, handleClose }: FormHeaderProps) {
   return (
-    <CardHeader className="flex justify-between">
+    <CardHeader className="flex justify-between mb-8">
       <div>
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

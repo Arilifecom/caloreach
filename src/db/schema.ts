@@ -26,6 +26,7 @@ export const mealRecords = pgTable("meal_records", {
   foodName: varchar({ length: 255 }).notNull(),
   gram: integer().notNull(),
   kcal: integer().notNull(),
+  eatenAt: timestamp({ withTimezone: true }).notNull(),
   ...timestamps,
 });
 

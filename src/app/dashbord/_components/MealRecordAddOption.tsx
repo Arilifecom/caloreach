@@ -1,0 +1,74 @@
+"use client";
+
+import { useMealRecordWindows } from "@/app/dashbord/_components/hooks";
+import { MealRecordForm } from "@/app/dashbord/_components/MealRecordForm";
+import { ButtonWithIconLabel, FormHeader } from "@/components";
+import { OnigiriIcon, RegularIcon } from "@/components/icons";
+import { Button } from "@/components/ui";
+import { PlusIcon } from "lucide-react";
+
+type MealRecordOptionProps = {
+  userId: string;
+};
+
+export const MealRecordAddOption = ({ userId }: MealRecordOptionProps) => {
+  const {
+    handleOptionWindow,
+    optionWindowOpen,
+    handleRegularMealsWindow,
+    handleInputFormWindow,
+    inputFormOpen,
+  } = useMealRecordWindows();
+
+  return (
+    <>
+      <Button
+        onClick={handleOptionWindow}
+        className="w-14 h-14 absolute bottom-8 right-4"
+      >
+        <PlusIcon />
+      </Button>
+
+      {optionWindowOpen && (
+        <div
+          className="fixed inset-0 bg-foreground/20 z-10"
+          onClick={handleOptionWindow}
+        />
+      )}
+
+      <div
+        className={`fixed bottom-0 bg-background w-full rounded-tr-lg rounded-tl-lg max-w-lg z-20 overflow-hidden transition-all duration-300 ease-in-out
+      ${
+        optionWindowOpen
+          ? "h-72 pt-8 border-2 border-foreground"
+          : "h-0 pt-0 border-0"
+      }`}
+      >
+        <FormHeader
+          title="食事を記録"
+          description="食事の追加方法を選択してください"
+          handleClose={handleOptionWindow}
+        />
+        <div className="flex gap-4 justify-center">
+          <ButtonWithIconLabel
+            icon={<RegularIcon className="w-12" />}
+            label="レギュラーフード"
+            onClick={handleRegularMealsWindow}
+          />
+          <ButtonWithIconLabel
+            icon={<OnigiriIcon className="w-12" />}
+            label="検索 or 手入力"
+            onClick={handleInputFormWindow}
+          />
+        </div>
+      </div>
+
+      <MealRecordForm
+        userId={userId}
+        inputFormOpen={inputFormOpen}
+        handleInputFormWindow={handleInputFormWindow}
+        handleOptionWindow={handleOptionWindow}
+      />
+    </>
+  );
+};
