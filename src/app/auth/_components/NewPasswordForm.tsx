@@ -25,7 +25,7 @@ const defaultValues: NewPassWordInputSchema = {
 };
 
 export const NewPassWordForm = () => {
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const supabase = createClient();
 
