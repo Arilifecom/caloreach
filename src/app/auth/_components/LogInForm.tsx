@@ -28,7 +28,7 @@ const loginDefaultValues: LoginFormInputSchema = {
 };
 
 export const LogInForm = () => {
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const form = useForm<LoginFormInputSchema>({
@@ -40,7 +40,7 @@ export const LogInForm = () => {
   const submitEmailLogin = async (values: LoginFormInputSchema) => {
     try {
       await login(values);
-      router.push("/app");
+      router.push("/dashbord");
     } catch (error) {
       console.error(error);
       setErrorMessage("ログインに失敗しました");
