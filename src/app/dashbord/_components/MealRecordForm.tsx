@@ -66,17 +66,12 @@ export const MealRecordForm = ({
   }, [inputFormOpen, form]);
 
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
-    const InputData = {
-      id: uuidv7(),
-      userId: userId,
-      foodName: data.foodName,
-      gram: data.gram,
-      kcal: data.kcal,
-      eatenAt: data.eatenAt,
-    };
-
     try {
-      await addRecord(InputData);
+      await addRecord({
+        ...data,
+        id: uuidv7(),
+        userId: userId,
+      });
       handleInputFormWindow();
       handleOptionWindow();
     } catch (error) {
