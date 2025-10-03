@@ -4,12 +4,17 @@ import { memo } from "react";
 
 import { cn } from "@/lib/utils";
 
-function Component({ children, ...props }: React.ComponentProps<"input">) {
+function Component({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "relative w-full bg-card text-card-foreground flex items-center justify-between rounded-lg border-2 border-foreground gap-2 px-4 py-2"
+        "relative w-full bg-card text-card-foreground flex items-center justify-between rounded-lg border-2 border-foreground gap-2 px-4 py-2",
+        className
       )}
       {...props}
     >
