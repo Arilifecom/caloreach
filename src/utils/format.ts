@@ -1,14 +1,13 @@
 import { format } from "date-fns";
-import { ja } from "date-fns/locale";
 
-export const getTodayMMDD = (): string => {
-  return format(new Date(), "M月d日", { locale: ja });
+export const getTodayMMDD = (date: Date) => {
+  return format(date, "M月d日");
 };
 
-export const getTodayYYMMDD = (): string => {
+export const getTodayYYMMDD = () => {
   return format(new Date(), "yyyy-MM-dd");
 };
 
-export const getNowTime = (): string => {
+export const getNowTime = () => {
   return format(new Date(), "HH:mm");
 };
