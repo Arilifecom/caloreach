@@ -5,13 +5,18 @@ import { MealRecordForm } from "@/app/dashbord/_components/MealRecordForm";
 import { ButtonWithIconLabel, FormHeader } from "@/components";
 import { OnigiriIcon, RegularIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
+import { InsertMealRecord } from "@/db/schema";
 import { PlusIcon } from "lucide-react";
 
 type MealRecordOptionProps = {
   userId: string;
+  addRecord: (newRecord: InsertMealRecord) => void;
 };
 
-export const MealRecordAddOption = ({ userId }: MealRecordOptionProps) => {
+export const MealRecordAddOption = ({
+  userId,
+  addRecord,
+}: MealRecordOptionProps) => {
   const {
     handleOptionWindow,
     optionWindowOpen,
@@ -68,6 +73,7 @@ export const MealRecordAddOption = ({ userId }: MealRecordOptionProps) => {
         inputFormOpen={inputFormOpen}
         handleInputFormWindow={handleInputFormWindow}
         handleOptionWindow={handleOptionWindow}
+        addRecord={addRecord}
       />
     </>
   );

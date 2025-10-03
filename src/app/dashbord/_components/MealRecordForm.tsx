@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
-import { addMealRecord } from "@/utils/api/mealRecords";
+import { InsertMealRecord } from "@/db/schema";
 import { getNowTime, getTodayYYMMDD } from "@/utils/format";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ type MealRecordFormProps = {
   inputFormOpen: boolean;
   handleInputFormWindow: () => void;
   handleOptionWindow: () => void;
+  addRecord: (newRecord: InsertMealRecord) => void;
 };
 
 const defaultValues: mealRecordInputSchemaInput = {
@@ -40,6 +41,7 @@ export const MealRecordForm = ({
   inputFormOpen,
   handleInputFormWindow,
   handleOptionWindow,
+  addRecord,
 }: MealRecordFormProps) => {
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -74,7 +76,7 @@ export const MealRecordForm = ({
     };
 
     try {
-      await addMealRecord(InputData);
+      await addRecord(InputData);
       handleInputFormWindow();
       handleOptionWindow();
     } catch (error) {
