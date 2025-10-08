@@ -1,7 +1,11 @@
 "use client";
 
 import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
-import { addMealRecord, getMealRecordByUserId } from "@/utils/api/mealRecords";
+import {
+  addMealRecord,
+  deleteMealRecord,
+  getMealRecordByUserId,
+} from "@/utils/api/mealRecords";
 import { useCallback, useEffect, useState } from "react";
 
 export function useMealRecords(userId: string, date: Date) {
@@ -19,9 +23,14 @@ export function useMealRecords(userId: string, date: Date) {
     fetchLists();
   }, []);
 
+  const deleteRecord = useCallback(async (id: string) => {
+    await deleteMealRecord(id);
+    fetchLists();
+  }, []);
+
   useEffect(() => {
     fetchLists();
   }, [fetchLists]);
 
-  return { mealRecords, setMealRecords, addRecord };
+  return { mealRecords, setMealRecords, addRecord, deleteRecord };
 }
