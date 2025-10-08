@@ -21,3 +21,8 @@ export const getMealRecordByUserId = async (userId: string, date: Date) => {
 export const addMealRecord = async (InputData: InsertMealRecord) => {
   await db.insert(mealRecords).values(InputData);
 };
+
+//Delete user meal Record
+export const deleteMealRecord = async (itemId: string) => {
+  await db.delete(mealRecords).where(eq(mealRecords.id, itemId));
+};
