@@ -14,35 +14,50 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
-import { InsertMealRecord } from "@/db/schema";
-import { getNowTime, getTodayYYMMDD } from "@/utils/format";
-import { useEffect } from "react";
+import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
+import {
+  formatTime,
+  formatYYMMDD,
+  getCurrentDate,
+  getCurrentTime,
+} from "@/utils/format";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 
 type MealRecordFormProps = {
   userId: string;
-  inputFormOpen: boolean;
+  mode: "add" | "edit";
+  editItem?: SelectMealRecord;
+  isFormOpen: boolean;
   handleInputFormWindow: () => void;
   handleOptionWindow: () => void;
-  addRecord: (newRecord: InsertMealRecord) => void;
-};
-
-const defaultValues: mealRecordInputSchemaInput = {
-  date: "",
-  time: "",
-  foodName: "",
-  gram: "",
-  kcal: "",
+  handleCloseAllWindows: () => void;
+  onSubmit: (newRecord: InsertMealRecord) => void;
 };
 
 export const MealRecordForm = ({
   userId,
-  inputFormOpen,
+  isFormOpen,
   handleInputFormWindow,
   handleOptionWindow,
-  addRecord,
+  handleCloseAllWindows,
+  onSubmit,
+  mode,
+  editItem,
 }: MealRecordFormProps) => {
+  //set defaultValues each mode "add" or "edit"
+  const defaultValues: mealRecordInputSchemaInput =
+    mode === "edit" && editItem
+      ? {
+          date: formatYYMMDD(editItem.eatenAt).toString(),
+          time: formatTime(editItem.eatenAt).toString(),
+          foodName: editItem.foodName,
+          gram: editItem.gram.toString(),
+          kcal: editItem.kcal.toString(),
+        }
+      : { date: "", time: "", foodName: "", gram: "", kcal: "" };
+
   const form = useForm<
     mealRecordInputSchemaInput,
     unknown,
@@ -52,26 +67,27 @@ export const MealRecordForm = ({
     defaultValues,
   });
 
-  //update date and time when user open form
+  // set date automaticaly for mode "add"
   useEffect(() => {
-    if (inputFormOpen) {
+    if (mode === "add") {
       form.reset({
-        date: getTodayYYMMDD(),
-        time: getNowTime(),
+        date: getCurrentDate(),
+        time: getCurrentTime(),
         foodName: "",
         gram: "",
         kcal: "",
       });
     }
-  }, [inputFormOpen, form]);
+  }, [mode, isFormOpen, form]);
 
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
+    const sentDate =
+      mode === "edit" && editItem
+        ? { ...data, id: editItem.id, userId: editItem.userId }
+        : { ...data, id: uuidv7(), userId: userId };
+
     try {
-      await addRecord({
-        ...data,
-        id: uuidv7(),
-        userId: userId,
-      });
+      await onSubmit(sentDate);
       handleInputFormWindow();
       handleOptionWindow();
     } catch (error) {
@@ -79,16 +95,21 @@ export const MealRecordForm = ({
     }
   };
 
+  const title = useMemo(() => {
+    return mode === "add" ? "食事を記録" : "食事記録を編集";
+  }, [mode]);
+
+  const dsc = useMemo(() => {
+    return mode === "add" ? "食事を追加してください" : "食事を編集してください";
+  }, [mode]);
+
   return (
-    <Dialog open={inputFormOpen} onOpenChange={handleInputFormWindow}>
-      <DialogContent
-        style={{ transform: "translate(-50%, -50%)" }}
-        className="p-0 bg-transparent border-0"
-      >
+    <Dialog open={isFormOpen} onOpenChange={handleInputFormWindow}>
+      <DialogContent className="p-0 bg-transparent border-0">
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
-            <DialogTitle>食事を記録</DialogTitle>
-            <DialogDescription>食事を追加してください</DialogDescription>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
           <Form {...form}>
             <form
@@ -205,10 +226,10 @@ export const MealRecordForm = ({
                 <Button
                   type="button"
                   variant={"outline"}
-                  onClick={() => form.reset()}
+                  onClick={handleCloseAllWindows}
                   className="rounded-lg w-28"
                 >
-                  リセット
+                  キャンセル
                 </Button>
 
                 <Button type="submit" className="rounded-lg w-28">
