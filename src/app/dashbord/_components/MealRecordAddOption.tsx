@@ -1,11 +1,11 @@
 "use client";
 
-import { useMealRecordWindows } from "@/app/dashbord/_components/hooks";
 import { MealRecordForm } from "@/app/dashbord/_components/MealRecordForm";
 import { ButtonWithIconLabel, FormHeader } from "@/components";
 import { OnigiriIcon, RegularIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
 import { InsertMealRecord } from "@/db/schema";
+import { useWindowControl } from "@/hooks";
 import { PlusIcon } from "lucide-react";
 
 type MealRecordOptionProps = {
@@ -19,11 +19,12 @@ export const MealRecordAddOption = ({
 }: MealRecordOptionProps) => {
   const {
     handleOptionWindow,
-    optionWindowOpen,
+    isOptionOpen,
     handleRegularMealsWindow,
     handleInputFormWindow,
-    inputFormOpen,
-  } = useMealRecordWindows();
+    isFormOpen,
+    handleCloseAllWindows,
+  } = useWindowControl();
 
   return (
     <>
@@ -34,7 +35,7 @@ export const MealRecordAddOption = ({
         <PlusIcon />
       </Button>
 
-      {optionWindowOpen && (
+      {isOptionOpen && (
         <div
           className="fixed inset-0 bg-foreground/20 z-10"
           onClick={handleOptionWindow}
@@ -44,7 +45,7 @@ export const MealRecordAddOption = ({
       <div
         className={`fixed bottom-0 bg-background w-full rounded-tr-lg rounded-tl-lg max-w-lg z-20 overflow-hidden transition-all duration-300 ease-in-out
       ${
-        optionWindowOpen
+        isOptionOpen
           ? "h-72 pt-8 border-2 border-foreground"
           : "h-0 pt-0 border-0"
       }`}
@@ -70,10 +71,12 @@ export const MealRecordAddOption = ({
 
       <MealRecordForm
         userId={userId}
-        inputFormOpen={inputFormOpen}
+        isFormOpen={isFormOpen}
         handleInputFormWindow={handleInputFormWindow}
         handleOptionWindow={handleOptionWindow}
-        addRecord={addRecord}
+        handleCloseAllWindows={handleCloseAllWindows}
+        onSubmit={addRecord}
+        mode="add"
       />
     </>
   );

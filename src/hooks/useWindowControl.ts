@@ -1,17 +1,19 @@
+"use client";
+
 import { useCallback, useState } from "react";
 
-export const useMealRecordWindows = () => {
-  const [optionWindowOpen, setOptionWindowOpen] = useState(false);
-  const [inputFormOpen, setInputFormOpen] = useState(false);
+export const useWindowControl = () => {
+  const [isOptionOpen, setIsOptionOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   //Handle Option Window
   const handleOptionWindow = useCallback(() => {
-    setOptionWindowOpen((prev) => !prev);
+    setIsOptionOpen((prev) => !prev);
   }, []);
 
   //Handle Input Form Window
   const handleInputFormWindow = useCallback(() => {
-    setInputFormOpen((prev) => !prev);
+    setIsFormOpen((prev) => !prev);
   }, []);
 
   //Handle Regular Meals Window
@@ -19,11 +21,18 @@ export const useMealRecordWindows = () => {
     console.log("Open Regular Meals Window");
   }, []);
 
+  //Close all window
+  const handleCloseAllWindows = () => {
+    setIsOptionOpen(false);
+    setIsFormOpen(false);
+  };
+
   return {
-    inputFormOpen,
+    isFormOpen,
     handleOptionWindow,
     handleInputFormWindow,
-    optionWindowOpen,
+    isOptionOpen,
     handleRegularMealsWindow,
+    handleCloseAllWindows,
   };
 };
