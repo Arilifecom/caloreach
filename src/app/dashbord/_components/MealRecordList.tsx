@@ -1,17 +1,19 @@
 "use clinet";
 
 import { ActionMenu, List, Loading } from "@/components";
-import { SelectMealRecord } from "@/db/schema";
+import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
 import { format } from "date-fns";
 
 type MealRecordListProps = {
   mealRecords: SelectMealRecord[] | null;
   deleteRecord: (id: string) => void;
+  editRecord: (InputData: InsertMealRecord) => void;
 };
 
 export const MealRecordList = ({
   mealRecords,
   deleteRecord,
+  editRecord,
 }: MealRecordListProps) => {
   return (
     <>
@@ -35,8 +37,9 @@ export const MealRecordList = ({
                     </div>
                   </div>
                   <ActionMenu
-                    deleteRecord={deleteRecord}
                     mealRecord={mealRecord}
+                    deleteRecord={deleteRecord}
+                    editRecord={editRecord}
                   />
                 </div>
               </List>

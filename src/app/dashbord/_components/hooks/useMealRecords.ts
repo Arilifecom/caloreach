@@ -4,6 +4,7 @@ import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
 import {
   addMealRecord,
   deleteMealRecord,
+  editMealRecord,
   getMealRecordByUserId,
 } from "@/utils/api/mealRecords";
 import { useCallback, useEffect, useState } from "react";
@@ -28,9 +29,14 @@ export function useMealRecords(userId: string, date: Date) {
     fetchLists();
   }, []);
 
+  const editRecord = useCallback(async (InputData: InsertMealRecord) => {
+    await editMealRecord(InputData);
+    fetchLists();
+  }, []);
+
   useEffect(() => {
     fetchLists();
   }, [fetchLists]);
 
-  return { mealRecords, setMealRecords, addRecord, deleteRecord };
+  return { mealRecords, setMealRecords, addRecord, deleteRecord, editRecord };
 }

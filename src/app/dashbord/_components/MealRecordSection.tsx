@@ -9,14 +9,18 @@ type MealRecordSectionProps = {
 
 export const MealRecordSection = ({ userId }: MealRecordSectionProps) => {
   const today = new Date();
-  const { mealRecords, addRecord, deleteRecord } = useMealRecords(
+  const { mealRecords, addRecord, deleteRecord, editRecord } = useMealRecords(
     userId,
     today
   );
 
   return (
     <>
-      <MealRecordList mealRecords={mealRecords} deleteRecord={deleteRecord} />
+      <MealRecordList
+        mealRecords={mealRecords}
+        deleteRecord={deleteRecord}
+        editRecord={editRecord}
+      />
       <MealRecordAddOption userId={userId} addRecord={addRecord} />
     </>
   );
