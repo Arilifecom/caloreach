@@ -1,15 +1,28 @@
 import { format } from "date-fns";
+import { ja } from "date-fns/locale";
 
-export const getTodayMMDD = (date: Date) => {
-  return format(date, "M月d日");
+const now = () => {
+  return new Date();
 };
 
-export const getTodayYYMMDD = () => {
-  return format(new Date(), "yyyy-MM-dd");
+export const formatDateWithDay = (date: Date) => {
+  return format(date, "M月d日(E)", { locale: ja });
 };
 
-export const getNowTime = () => {
-  return format(new Date(), "HH:mm");
+export const formatYYMMDD = (date: Date) => {
+  return format(date, "yyyy-MM-dd");
+};
+
+export const formatTime = (date: Date) => {
+  return format(date, "HH:mm");
+};
+
+export const getCurrentDate = () => {
+  return format(now(), "yyyy-MM-dd");
+};
+
+export const getCurrentTime = () => {
+  return format(now(), "HH:mm");
 };
 
 //convert Number full-width to half-width

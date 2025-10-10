@@ -1,4 +1,3 @@
-export * from "./Editbox";
 export * from "./FormHeader";
 export * from "./ButtonWithIconLabel";
 export * from "./List";
@@ -7,3 +6,4 @@ export * from "./VerticalLine";
 export * from "./LogoutButton";
 export * from "./GetStartedButton";
 export * from "./Loading";
+export * from "./ActionMenu";
