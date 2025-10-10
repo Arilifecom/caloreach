@@ -3,7 +3,7 @@
 import { db } from "@/db";
 import { InsertMealRecord, mealRecords } from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
-import { and, eq, gte, lte } from "drizzle-orm";
+import { and, asc, eq, gte, lte, sql } from "drizzle-orm";
 
 //Get user meal Record
 export const getMealRecordByUserId = async (userId: string, date: Date) => {
@@ -13,6 +13,7 @@ export const getMealRecordByUserId = async (userId: string, date: Date) => {
       gte(mealRecords.eatenAt, startOfDay(date)),
       lte(mealRecords.eatenAt, endOfDay(date))
     ),
+    orderBy: asc(mealRecords.eatenAt),
   });
   return res;
 };
@@ -25,4 +26,20 @@ export const addMealRecord = async (InputData: InsertMealRecord) => {
 //Delete user meal Record
 export const deleteMealRecord = async (itemId: string) => {
   await db.delete(mealRecords).where(eq(mealRecords.id, itemId));
+};
+
+//Edit user meal Record
+export const editMealRecord = async (InputData: InsertMealRecord) => {
+  await db
+    .update(mealRecords)
+    .set({
+      id: InputData.id,
+      userId: InputData.userId,
+      foodName: InputData.foodName,
+      gram: InputData.gram,
+      kcal: InputData.kcal,
+      eatenAt: InputData.eatenAt,
+      updatedAt: sql`NOW()`,
+    })
+    .where(eq(mealRecords.id, InputData.id));
 };
