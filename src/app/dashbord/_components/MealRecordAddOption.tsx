@@ -7,16 +7,14 @@ import { Button } from "@/components/ui";
 import { InsertMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { PlusIcon } from "lucide-react";
+import { memo } from "react";
 
 type MealRecordOptionProps = {
   userId: string;
   addRecord: (newRecord: InsertMealRecord) => void;
 };
 
-export const MealRecordAddOption = ({
-  userId,
-  addRecord,
-}: MealRecordOptionProps) => {
+export const Component = ({ userId, addRecord }: MealRecordOptionProps) => {
   const {
     handleOptionWindow,
     isOptionOpen,
@@ -81,3 +79,6 @@ export const MealRecordAddOption = ({
     </>
   );
 };
+
+const MealRecordAddOption = memo(Component);
+export { MealRecordAddOption };
