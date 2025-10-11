@@ -3,11 +3,9 @@ import { memo } from "react";
 
 import { cn } from "@/lib/utils";
 
-function Component({
-  children,
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+type Props = React.HTMLAttributes<HTMLDivElement>;
+
+const Component: React.FC<Props> = ({ children, className, ...props }) => {
   return (
     <div
       data-slot="card"
@@ -21,7 +19,7 @@ function Component({
       <div className="absolute top-1 -right-1.5 -z-10 w-[100%] h-[101%] rounded-lg bg-foreground" />
     </div>
   );
-}
+};
 
 const List = memo(Component);
 export { List };

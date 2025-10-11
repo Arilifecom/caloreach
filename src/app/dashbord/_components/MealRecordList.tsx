@@ -3,6 +3,7 @@
 import { ActionMenu, List, Loading } from "@/components";
 import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
 import { format } from "date-fns";
+import { memo } from "react";
 
 type MealRecordListProps = {
   mealRecords: SelectMealRecord[] | null;
@@ -10,7 +11,7 @@ type MealRecordListProps = {
   editRecord: (InputData: InsertMealRecord) => void;
 };
 
-export const MealRecordList = ({
+const Component = ({
   mealRecords,
   deleteRecord,
   editRecord,
@@ -52,3 +53,6 @@ export const MealRecordList = ({
     </>
   );
 };
+
+const MealRecordList = memo(Component);
+export { MealRecordList };
