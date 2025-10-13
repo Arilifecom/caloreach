@@ -1,22 +1,16 @@
-"use clinent";
-
 import { MealRecordForm } from "@/app/dashbord/_components";
-import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
+import { SelectMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
+import { deleteMealRecord } from "@/utils/api/mealRecords";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
 
 type ActionMenuProps = {
   mealRecord: SelectMealRecord;
-  deleteRecord: (itemId: string) => void;
-  editRecord: (inputData: InsertMealRecord) => void;
 };
 
-const Component = ({
-  mealRecord,
-  deleteRecord,
-  editRecord,
-}: ActionMenuProps) => {
+const Component = ({ mealRecord }: ActionMenuProps) => {
   const {
     isOptionOpen,
     handleOptionWindow,
@@ -24,6 +18,23 @@ const Component = ({
     handleCloseAllWindows,
     isFormOpen,
   } = useWindowControl();
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteMealRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      handleOptionWindow();
+    },
+    onError: () => {
+      console.log("Error delete mealRecord");
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    if (deleteMutation.isPending) return;
+    deleteMutation.mutate(id);
+  };
 
   return (
     <>
@@ -49,12 +60,10 @@ const Component = ({
             userId={mealRecord.id}
             isFormOpen={isFormOpen}
             handleInputFormWindow={handleInputFormWindow}
-            handleOptionWindow={handleOptionWindow}
             handleCloseAllWindows={handleCloseAllWindows}
-            onSubmit={editRecord}
           />
           <button
-            onClick={() => deleteRecord(mealRecord.id)}
+            onClick={() => handleDelete(mealRecord.id)}
             className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
           >
             <Trash2 />
