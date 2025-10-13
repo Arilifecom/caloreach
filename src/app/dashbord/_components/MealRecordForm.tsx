@@ -14,13 +14,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
-import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
+import { SelectMealRecord } from "@/db/schema";
+import { addMealRecord, editMealRecord } from "@/utils/api/mealRecords";
 import {
   formatTime,
   formatYYMMDD,
   getCurrentDate,
   getCurrentTime,
 } from "@/utils/format";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
@@ -31,32 +33,26 @@ type MealRecordFormProps = {
   editItem?: SelectMealRecord;
   isFormOpen: boolean;
   handleInputFormWindow: () => void;
-  handleOptionWindow: () => void;
   handleCloseAllWindows: () => void;
-  onSubmit: (newRecord: InsertMealRecord) => void;
+};
+
+const defaultValues: mealRecordInputSchemaInput = {
+  date: "",
+  time: "",
+  foodName: "",
+  gram: "",
+  kcal: "",
 };
 
 export const MealRecordForm = ({
   userId,
   isFormOpen,
   handleInputFormWindow,
-  handleOptionWindow,
   handleCloseAllWindows,
-  onSubmit,
   mode,
   editItem,
 }: MealRecordFormProps) => {
-  //set defaultValues each mode "add" or "edit"
-  const defaultValues: mealRecordInputSchemaInput =
-    mode === "edit" && editItem
-      ? {
-          date: formatYYMMDD(editItem.eatenAt).toString(),
-          time: formatTime(editItem.eatenAt).toString(),
-          foodName: editItem.foodName,
-          gram: editItem.gram.toString(),
-          kcal: editItem.kcal.toString(),
-        }
-      : { date: "", time: "", foodName: "", gram: "", kcal: "" };
+  const queryClient = useQueryClient();
 
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -67,9 +63,19 @@ export const MealRecordForm = ({
     defaultValues,
   });
 
-  // set date automaticaly for mode "add"
+  //set value mode "add" or "edit"
   useEffect(() => {
-    if (mode === "add") {
+    if (!isFormOpen) return;
+
+    if (mode === "edit" && editItem) {
+      form.reset({
+        date: formatYYMMDD(editItem.eatenAt).toString(),
+        time: formatTime(editItem.eatenAt).toString(),
+        foodName: editItem.foodName,
+        gram: editItem.gram.toString(),
+        kcal: editItem.kcal.toString(),
+      });
+    } else
       form.reset({
         date: getCurrentDate(),
         time: getCurrentTime(),
@@ -77,8 +83,29 @@ export const MealRecordForm = ({
         gram: "",
         kcal: "",
       });
-    }
-  }, [mode, isFormOpen, form]);
+  }, [mode, isFormOpen, form, editItem]);
+
+  const addMutation = useMutation({
+    mutationFn: addMealRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      handleCloseAllWindows();
+    },
+    onError: () => {
+      console.error("Error creating mealRecord");
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: editMealRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      handleCloseAllWindows();
+    },
+    onError: () => {
+      console.error("Error Editing mealRecord");
+    },
+  });
 
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
     const sentDate =
@@ -86,13 +113,14 @@ export const MealRecordForm = ({
         ? { ...data, id: editItem.id, userId: editItem.userId }
         : { ...data, id: uuidv7(), userId: userId };
 
-    try {
-      await onSubmit(sentDate);
-      handleInputFormWindow();
-      handleOptionWindow();
-    } catch (error) {
-      console.error(error);
+    if (mode === "edit" && editItem) {
+      if (editMutation.isPending) return;
+      editMutation.mutate(sentDate);
+      return;
     }
+
+    if (addMutation.isPending) return;
+    addMutation.mutate(sentDate);
   };
 
   const title = useMemo(() => {
