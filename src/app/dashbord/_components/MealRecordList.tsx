@@ -1,50 +1,36 @@
 "use clinet";
 
-import { ActionMenu, List, Loading } from "@/components";
-import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
-import { format } from "date-fns";
+import { MealRecordItem } from "@/app/dashbord/_components";
+import { Loading } from "@/components";
+import { getMealRecordByUserId } from "@/utils/api/mealRecords";
+import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListProps = {
-  mealRecords: SelectMealRecord[] | null;
-  deleteRecord: (id: string) => void;
-  editRecord: (InputData: InsertMealRecord) => void;
+  userId: string;
 };
 
-const Component = ({
-  mealRecords,
-  deleteRecord,
-  editRecord,
-}: MealRecordListProps) => {
+const Component = ({ userId }: MealRecordListProps) => {
+  const fetchMealRecords = async () => {
+    const today = new Date();
+    const res = await getMealRecordByUserId(userId, today);
+    return res;
+  };
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["mealRecords"],
+    queryFn: fetchMealRecords,
+  });
+
+  if (isLoading) return <Loading />;
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
+
   return (
     <>
       <ul className="w-full">
-        {mealRecords === null ? (
-          <Loading />
-        ) : mealRecords.length > 0 ? (
-          mealRecords.map((mealRecord) => (
-            <li key={mealRecord.id} className="mb-2 text-sm">
-              <List>
-                <div className="flex w-full justify-between">
-                  <div className="flex items-center gap-3">
-                    <p>{format(mealRecord.eatenAt, "HH:mm")}</p>
-                    <div>
-                      <h3 className="font-bold text-sm">
-                        {mealRecord.foodName}
-                      </h3>
-                      <p className="text-xs">
-                        {mealRecord.gram}g / {mealRecord.kcal}kcal
-                      </p>
-                    </div>
-                  </div>
-                  <ActionMenu
-                    mealRecord={mealRecord}
-                    deleteRecord={deleteRecord}
-                    editRecord={editRecord}
-                  />
-                </div>
-              </List>
-            </li>
+        {data ? (
+          data.map((mealRecord) => (
+            <MealRecordItem key={mealRecord.id} mealRecord={mealRecord} />
           ))
         ) : (
           <p className="font-medium text-center">今日の食事記録はありません</p>
