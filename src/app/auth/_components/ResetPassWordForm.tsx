@@ -8,17 +8,15 @@ import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { resetPassWord } from "@/utils/api/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 const defaultValues: ResetPassWordInputSchema = {
   email: "",
@@ -65,26 +63,28 @@ export const ResetPassWordForm = () => {
             ご登録のメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。
           </p>
         </div>
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitEmailSent)}
             className="space-y-4 px-6"
           >
-            <FormField
+            <Controller
               control={form.control}
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="emal"
-                      placeholder="example@caloreach.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>メールアドレス</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="example@caloreach.com"
+                    type="emal"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
             <div className="flex justify-center gap-2 mt-8 h-10">
@@ -101,7 +101,7 @@ export const ResetPassWordForm = () => {
               </Button>
             </div>
           </form>
-        </Form>
+        </FieldGroup>
       </CardWithShadow>
     </>
   );

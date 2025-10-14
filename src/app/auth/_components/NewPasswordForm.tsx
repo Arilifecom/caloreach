@@ -8,17 +8,15 @@ import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 const defaultValues: NewPassWordInputSchema = {
   password: "",
@@ -60,26 +58,28 @@ export const NewPassWordForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(UpdateNewPassWord)}
             className="space-y-4 px-6"
           >
-            <FormField
+            <Controller
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>新しいパスワード</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="6字以上を入力してください"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>新しいパスワード</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="6字以上を入力してください"
+                    type="password"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
             <Button
@@ -89,7 +89,7 @@ export const NewPassWordForm = () => {
               パスワード再登録
             </Button>
           </form>
-        </Form>
+        </FieldGroup>
       </CardWithShadow>
     </>
   );
