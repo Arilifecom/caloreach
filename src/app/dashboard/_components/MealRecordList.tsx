@@ -1,6 +1,6 @@
 "use clinet";
 
-import { MealRecordItem } from "@/app/dashbord/_components";
+import { MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { mealRecordkeys } from "@/utils/tanstack";
@@ -24,7 +24,7 @@ const Component = ({ userId, date }: MealRecordListProps) => {
   return (
     <>
       <ul className="w-full">
-        {data ? (
+        {data && data.length > 0 ? (
           data.map((mealRecord) => (
             <MealRecordItem key={mealRecord.id} mealRecord={mealRecord} />
           ))

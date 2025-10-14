@@ -1,4 +1,4 @@
-import { MealRecordForm } from "@/app/dashbord/_components";
+import { MealRecordForm } from "@/app/dashboard/_components";
 import { SelectMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/api/mealRecords";

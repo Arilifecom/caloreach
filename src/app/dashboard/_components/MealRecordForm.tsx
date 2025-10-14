@@ -4,7 +4,7 @@ import {
   mealRecordInputSchemaInput,
   mealRecordInputSchemaOutput,
   mealRecordSchemaResolver,
-} from "@/app/dashbord/_components/_schema";
+} from "@/app/dashboard/_components/_schema";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Dialog,

@@ -1,4 +1,4 @@
-import { MealRecordSection } from "@/app/dashbord/_components";
+import { MealRecordSection } from "@/app/dashboard/_components";
 import { LogoutButton, PageHeader } from "@/components";
 import { checkAuth, getUser } from "@/utils/auth";
 import { formatDateWithDay } from "@/utils/format";
