@@ -2,6 +2,7 @@ import { MealRecordForm } from "@/app/dashbord/_components";
 import { SelectMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/api/mealRecords";
+import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
@@ -23,7 +24,9 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
   const deleteMutation = useMutation({
     mutationFn: deleteMealRecord,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      queryClient.invalidateQueries({
+        queryKey: mealRecordkeys.all(),
+      });
       handleOptionWindow();
     },
     onError: () => {

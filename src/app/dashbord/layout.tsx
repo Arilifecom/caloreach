@@ -1,13 +1,7 @@
-import TanstackQueryProvider from "@/utils/tanstack/provider";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import TanstackQueryProvider from "@/app/dashbord/provider";
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <TanstackQueryProvider>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </TanstackQueryProvider>
-  );
+  return <TanstackQueryProvider>{children}</TanstackQueryProvider>;
 }

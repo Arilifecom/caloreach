@@ -5,6 +5,10 @@ const now = () => {
   return new Date();
 };
 
+export const getToday = () => {
+  return format(now(), "yyyy-MM-dd");
+};
+
 export const formatDateWithDay = (date: Date) => {
   return format(date, "M月d日(E)", { locale: ja });
 };

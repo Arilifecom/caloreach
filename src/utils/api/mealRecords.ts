@@ -5,8 +5,11 @@ import { InsertMealRecord, mealRecords } from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
 import { and, asc, eq, gte, lte, sql } from "drizzle-orm";
 
-//Get user meal Record
-export const getMealRecordByUserId = async (userId: string, date: Date) => {
+//Get user diary　mealRecords
+export const fetchUserDailyMealRecords = async (
+  userId: string,
+  date: string
+) => {
   const res = await db.query.mealRecords.findMany({
     where: and(
       eq(mealRecords.userId, userId),
