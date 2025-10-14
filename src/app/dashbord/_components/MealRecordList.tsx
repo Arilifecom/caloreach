@@ -2,24 +2,20 @@
 
 import { MealRecordItem } from "@/app/dashbord/_components";
 import { Loading } from "@/components";
-import { getMealRecordByUserId } from "@/utils/api/mealRecords";
+import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
+import { mealRecordkeys } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListProps = {
   userId: string;
+  date: string;
 };
 
-const Component = ({ userId }: MealRecordListProps) => {
-  const fetchMealRecords = async () => {
-    const today = new Date();
-    const res = await getMealRecordByUserId(userId, today);
-    return res;
-  };
-
+const Component = ({ userId, date }: MealRecordListProps) => {
   const { data, error, isLoading } = useQuery({
-    queryKey: ["mealRecords"],
-    queryFn: fetchMealRecords,
+    queryKey: mealRecordkeys.all(),
+    queryFn: () => fetchUserDailyMealRecords(userId, date),
   });
 
   if (isLoading) return <Loading />;

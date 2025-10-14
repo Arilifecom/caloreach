@@ -2,16 +2,19 @@
 
 import { MealRecordAddOption } from "@/app/dashbord/_components/MealRecordAddOption";
 import { MealRecordList } from "@/app/dashbord/_components/MealRecordList";
+import { getToday } from "@/utils/format";
 import { memo } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
 };
 
+const today = getToday();
+
 const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
-      <MealRecordList userId={userId} />
+      <MealRecordList userId={userId} date={today} />
       <MealRecordAddOption userId={userId} />
     </>
   );

@@ -27,6 +27,7 @@ import {
   getCurrentDate,
   getCurrentTime,
 } from "@/utils/format";
+import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -93,7 +94,7 @@ export const MealRecordForm = ({
   const addMutation = useMutation({
     mutationFn: addMealRecord,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
       handleCloseAllWindows();
     },
     onError: () => {
@@ -104,7 +105,7 @@ export const MealRecordForm = ({
   const editMutation = useMutation({
     mutationFn: editMealRecord,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mealRecords"] });
+      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
       handleCloseAllWindows();
     },
     onError: () => {
