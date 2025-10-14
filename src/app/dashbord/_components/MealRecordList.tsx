@@ -24,7 +24,7 @@ const Component = ({ userId, date }: MealRecordListProps) => {
   return (
     <>
       <ul className="w-full">
-        {data ? (
+        {data && data.length > 0 ? (
           data.map((mealRecord) => (
             <MealRecordItem key={mealRecord.id} mealRecord={mealRecord} />
           ))
