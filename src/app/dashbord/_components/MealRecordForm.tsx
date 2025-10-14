@@ -164,7 +164,7 @@ export const MealRecordForm = ({
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
-                      )}{" "}
+                      )}
                     </Field>
                   )}
                 />
