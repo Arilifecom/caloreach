@@ -8,7 +8,12 @@ import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon"
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
-import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { loginGoogle, signup } from "@/utils/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -68,7 +73,7 @@ export const SignupForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitEmailSignup)}
             className="space-y-4 px-6"
@@ -83,63 +88,58 @@ export const SignupForm = () => {
               control={form.control}
               name="email"
               render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@caloreach.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  {fieldState.error && (
-                    <p className="text-red-500 mx-auto">
-                      {fieldState.error.message}
-                    </p>
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>メールアドレス</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="example@mail.com"
+                    type="email"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
                   )}
-                </FormItem>
+                </Field>
               )}
             />
             <Controller
               control={form.control}
               name="password"
               render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>パスワード</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="6字以上を入力してください"
-                      {...field}
-                    />
-                  </FormControl>
-                  {fieldState.error && (
-                    <p className="text-red-500 mx-auto">
-                      {fieldState.error.message}
-                    </p>
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>パスワード</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="パスワードを入力してください"
+                    type="password"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
                   )}
-                </FormItem>
+                </Field>
               )}
             />
+
             <Controller
               control={form.control}
               name="confirmPassword"
               render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>パスワード再入力</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="再度パスワードを入力してください"
-                      {...field}
-                    />
-                  </FormControl>
-                  {fieldState.error && (
-                    <p className="text-red-500 mx-auto">
-                      {fieldState.error.message}
-                    </p>
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>パスワード再入力</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="再度パスワードを入力してください"
+                    type="password"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
                   )}
-                </FormItem>
+                </Field>
               )}
             />
 
@@ -147,7 +147,7 @@ export const SignupForm = () => {
               アカウント登録
             </Button>
           </form>
-        </Form>
+        </FieldGroup>
 
         <div className="grid gap-6 justify-center">
           <p>

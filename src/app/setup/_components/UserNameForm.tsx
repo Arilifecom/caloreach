@@ -7,17 +7,15 @@ import {
 import { PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { createProfile } from "@/utils/api/setup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 interface UserNameFormProps {
   userId: string;
@@ -59,26 +57,30 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
       />
       <CardWithShadow className="py-8">
         <p className="absolute -top-7 right-2 font-bold">step 1/2</p>
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitUserProfileSent)}
             className="space-y-4 px-6 w-[80%] mx-auto"
           >
-            <FormField
+            <Controller
               control={form.control}
               name="userName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="mb-2 mx-auto">ユーザー名</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="名前を入力してください"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name} className="mb-2 mx-auto">
+                    ユーザー名
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="名前を入力してください"
+                    type="text"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
             <p className="text-red-500">{errorMessage}</p>
@@ -89,7 +91,7 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
               </Button>
             </div>
           </form>
-        </Form>
+        </FieldGroup>
       </CardWithShadow>
     </>
   );

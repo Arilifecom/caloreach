@@ -7,7 +7,12 @@ import {
 } from "@/app/setup/_components/_schema";
 import { PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
-import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { createTargetKcal } from "@/utils/api/setup";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -63,7 +68,7 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
       />
       <CardWithShadow className="py-8">
         <p className="absolute -top-7 right-2 font-bold">step 2/2</p>
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitTargetKcalSent)}
             className="space-y-4 px-6 w-full mx-auto"
@@ -73,27 +78,25 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
               control={form.control}
               name="targetKcal"
               render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel className="mb-2 mx-auto">
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name} className="mb-2 mx-auto">
                     目標摂取カロリー
-                  </FormLabel>
+                  </FieldLabel>
                   <div className="flex items-end justify-center gap-3 w-full">
-                    <FormControl>
-                      <Input
-                        className="w-60"
-                        placeholder="数字を入力してください"
-                        {...field}
-                        type="number"
-                      />
-                    </FormControl>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="数字を入力してください"
+                      type="number"
+                      className="w-60"
+                    />
                     <p className="font-bold">Kcal</p>
                   </div>
-                  {fieldState.error && (
-                    <p className="text-red-500 mx-auto">
-                      {fieldState.error.message}
-                    </p>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
                   )}
-                </FormItem>
+                </Field>
               )}
             />
 
@@ -103,7 +106,7 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
               </Button>
             </div>
           </form>
-        </Form>
+        </FieldGroup>
       </CardWithShadow>
     </>
   );

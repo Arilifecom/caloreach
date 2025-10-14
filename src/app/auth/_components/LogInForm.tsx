@@ -9,18 +9,16 @@ import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { login, loginGoogle } from "@/utils/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 const loginDefaultValues: LoginFormInputSchema = {
   email: "",
@@ -65,7 +63,7 @@ export const LogInForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <VerticalLine className="px-6" />
-        <Form {...form}>
+        <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitEmailLogin)}
             className="space-y-4 px-6"
@@ -75,39 +73,43 @@ export const LogInForm = () => {
               submitGoogle={submitGoogle}
             />
             <VerticalLine text="or" className="px-6" />
-
-            <FormField
+            <Controller
               control={form.control}
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@mail.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>メールアドレス</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="example@mail.com"
+                    type="email"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <FormField
+
+            <Controller
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>パスワード</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="パスワードを入力してください"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>パスワード</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="パスワードを入力してください"
+                    type="password"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
 
@@ -124,7 +126,7 @@ export const LogInForm = () => {
               ログイン
             </Button>
           </form>
-        </Form>
+        </FieldGroup>
 
         <div className="grid gap-6 justify-center py-4">
           <p>

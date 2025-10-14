@@ -13,7 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { SelectMealRecord } from "@/db/schema";
 import { addMealRecord, editMealRecord } from "@/utils/api/mealRecords";
 import {
@@ -139,7 +144,7 @@ export const MealRecordForm = ({
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
-          <Form {...form}>
+          <FieldGroup>
             <form
               onSubmit={form.handleSubmit(submitMealRecordSent)}
               className="space-y-4 px-6 w-full"
@@ -149,17 +154,18 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="date"
                   render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>日付</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      {fieldState.error && (
-                        <p className="text-red-500">
-                          {fieldState.error.message}
-                        </p>
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>日付</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        type="date"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
                       )}
-                    </FormItem>
+                    </Field>
                   )}
                 />
 
@@ -167,17 +173,18 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="time"
                   render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel>時間</FormLabel>
-                      <FormControl>
-                        <Input type="time" {...field} />
-                      </FormControl>
-                      {fieldState.error && (
-                        <p className="text-red-500">
-                          {fieldState.error.message}
-                        </p>
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>時間</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        type="time"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
                       )}
-                    </FormItem>
+                    </Field>
                   )}
                 />
               </div>
@@ -186,19 +193,19 @@ export const MealRecordForm = ({
                 control={form.control}
                 name="foodName"
                 render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel>たべたもの</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="食品、料理名を入れてください"
-                        {...field}
-                      />
-                    </FormControl>
-                    {fieldState.error && (
-                      <p className="text-red-500">{fieldState.error.message}</p>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>たべたもの</FieldLabel>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="食品、料理名を入れてください"
+                      type="text"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
                     )}
-                  </FormItem>
+                  </Field>
                 )}
               />
 
@@ -206,23 +213,23 @@ export const MealRecordForm = ({
                 control={form.control}
                 name="gram"
                 render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel>グラム</FormLabel>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor={field.name}>グラム</FieldLabel>
                     <div className="flex items-end gap-2 ">
-                      <FormControl>
-                        <Input
-                          placeholder="200"
-                          {...field}
-                          type="number"
-                          className="w-40"
-                        />
-                      </FormControl>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        placeholder="200"
+                        type="number"
+                        className="w-40"
+                      />
                       <p className="font-bold">gram</p>
                     </div>
-                    {fieldState.error && (
-                      <p className="text-red-500">{fieldState.error.message}</p>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
                     )}
-                  </FormItem>
+                  </Field>
                 )}
               />
 
@@ -230,23 +237,23 @@ export const MealRecordForm = ({
                 control={form.control}
                 name="kcal"
                 render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel>カロリー</FormLabel>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor={field.name}>カロリー</FieldLabel>
                     <div className="flex items-end gap-2 ">
-                      <FormControl>
-                        <Input
-                          placeholder="200"
-                          {...field}
-                          type="number"
-                          className="w-40"
-                        />
-                      </FormControl>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        aria-invalid={fieldState.invalid}
+                        placeholder="200"
+                        type="number"
+                        className="w-40"
+                      />
                       <p className="font-bold">kcal</p>
                     </div>
-                    {fieldState.error && (
-                      <p className="text-red-500">{fieldState.error.message}</p>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
                     )}
-                  </FormItem>
+                  </Field>
                 )}
               />
 
@@ -265,7 +272,7 @@ export const MealRecordForm = ({
                 </Button>
               </div>
             </form>
-          </Form>
+          </FieldGroup>
         </CardWithShadow>
       </DialogContent>
     </Dialog>

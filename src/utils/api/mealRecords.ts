@@ -13,7 +13,7 @@ export const getMealRecordByUserId = async (userId: string, date: Date) => {
       gte(mealRecords.eatenAt, startOfDay(date)),
       lte(mealRecords.eatenAt, endOfDay(date))
     ),
-    orderBy: asc(mealRecords.eatenAt),
+    orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
   });
   return res;
 };
