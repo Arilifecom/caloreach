@@ -1,7 +1,7 @@
 "use client";
 
-import { MealRecordAddOption } from "@/app/dashbord/_components/MealRecordAddOption";
-import { MealRecordList } from "@/app/dashbord/_components/MealRecordList";
+import { MealRecordAddOption } from "@/app/dashboard/_components/MealRecordAddOption";
+import { MealRecordList } from "@/app/dashboard/_components/MealRecordList";
 import { getToday } from "@/utils/format";
 import { memo } from "react";
 

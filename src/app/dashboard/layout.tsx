@@ -1,4 +1,4 @@
-import TanstackQueryProvider from "@/app/dashbord/provider";
+import TanstackQueryProvider from "@/app/dashboard/provider";
 
 export default function RootLayout({
   children,

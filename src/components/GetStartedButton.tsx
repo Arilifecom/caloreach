@@ -13,7 +13,7 @@ const Component = ({ isLoggedIn }: GetStartedButtonProps) => {
 
   const handleClick = async () => {
     if (isLoggedIn) {
-      router.push("/dashbord");
+      router.push("/dashboard");
     } else {
       router.push("/auth/signup");
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { MealRecordForm } from "@/app/dashbord/_components/MealRecordForm";
+import { MealRecordForm } from "@/app/dashboard/_components/MealRecordForm";
 import { ButtonWithIconLabel, FormHeader } from "@/components";
 import { OnigiriIcon, RegularIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
