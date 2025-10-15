@@ -3,19 +3,21 @@
 import { MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
+import { getToday } from "@/utils/format";
 import { mealRecordkeys } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListProps = {
   userId: string;
-  date: string;
 };
 
-const Component = ({ userId, date }: MealRecordListProps) => {
+const today = getToday();
+
+const Component = ({ userId }: MealRecordListProps) => {
   const { data, error, isLoading } = useQuery({
     queryKey: mealRecordkeys.all(),
-    queryFn: () => fetchUserDailyMealRecords(userId, date),
+    queryFn: () => fetchUserDailyMealRecords(userId, today),
   });
 
   if (isLoading) return <Loading />;
