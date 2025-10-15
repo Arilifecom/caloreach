@@ -1,5 +1,6 @@
 "use client";
 
+import { useDebounce } from "@/app/dashboard/_components/_hooks";
 import {
   mealRecordInputSchemaInput,
   mealRecordInputSchemaOutput,
@@ -20,16 +21,20 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectMealRecord } from "@/db/schema";
-import { addMealRecord, editMealRecord } from "@/utils/api/mealRecords";
+import {
+  addMealRecord,
+  editMealRecord,
+  fetchFoodsBySearch,
+} from "@/utils/api/mealRecords";
 import {
   formatTime,
   formatYYMMDD,
   getCurrentDate,
   getCurrentTime,
 } from "@/utils/format";
-import { mealRecordkeys } from "@/utils/tanstack";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { foodskeys, mealRecordkeys } from "@/utils/tanstack";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 
@@ -59,6 +64,8 @@ export const MealRecordForm = ({
   editItem,
 }: MealRecordFormProps) => {
   const queryClient = useQueryClient();
+  const [query, setQuery] = useState("");
+  const debouncedSearch = useDebounce(query, 500);
 
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -67,6 +74,13 @@ export const MealRecordForm = ({
   >({
     resolver: mealRecordSchemaResolver,
     defaultValues,
+  });
+
+  //incremental search
+  const searchResult = useQuery({
+    queryKey: foodskeys.list(debouncedSearch),
+    queryFn: () => fetchFoodsBySearch(debouncedSearch),
+    enabled: debouncedSearch.length > 0,
   });
 
   //set value mode "add" or "edit"
@@ -89,6 +103,7 @@ export const MealRecordForm = ({
         gram: "",
         kcal: "",
       });
+    setQuery("");
   }, [mode, isFormOpen, form, editItem]);
 
   const addMutation = useMutation({
@@ -189,26 +204,52 @@ export const MealRecordForm = ({
                   )}
                 />
               </div>
+              <div className="relative">
+                <Controller
+                  control={form.control}
+                  name="foodName"
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>たべたもの</FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          placeholder="食品、料理名を入れてください"
+                          type="text"
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setQuery(val);
+                            field.onChange(val);
+                          }}
+                          autoComplete="off"
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
 
-              <Controller
-                control={form.control}
-                name="foodName"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>たべたもの</FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="食品、料理名を入れてください"
-                      type="text"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+                      {searchResult.data ? (
+                        <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border-1 border-t-0 border-background rounded-b-lg">
+                          {searchResult.data.map((item) => (
+                            <li
+                              key={item.id}
+                              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                              onClick={() => {
+                                setQuery(item.foodName);
+                                field.onChange(item.foodName);
+                              }}
+                            >
+                              {item.foodName}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </>
+                  )}
+                />
+              </div>
 
               <Controller
                 control={form.control}
