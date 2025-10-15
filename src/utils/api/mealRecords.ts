@@ -1,9 +1,9 @@
 "use server";
 
 import { db } from "@/db";
-import { InsertMealRecord, mealRecords } from "@/db/schema";
+import { foods, InsertMealRecord, mealRecords } from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
-import { and, asc, eq, gte, lte, sql } from "drizzle-orm";
+import { and, asc, eq, gte, like, lte, sql } from "drizzle-orm";
 
 //Get user diary　mealRecords
 export const fetchUserDailyMealRecords = async (
@@ -45,4 +45,21 @@ export const editMealRecord = async (InputData: InsertMealRecord) => {
       updatedAt: sql`NOW()`,
     })
     .where(eq(mealRecords.id, InputData.id));
+};
+
+//Search food by keyword from foods table
+export const fetchFoodsBySearch = async (keyword: string) => {
+  if (!keyword) return [];
+
+  const res = await db.query.foods.findMany({
+    where: like(foods.reading, `%${keyword}%`),
+    limit: 50,
+    columns: {
+      id: true,
+      foodName: true,
+      kcalPer100g: true,
+    },
+  });
+
+  return res;
 };
