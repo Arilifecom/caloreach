@@ -1,23 +1,38 @@
 import { MealRecordSection } from "@/app/dashboard/_components";
 import { LogoutButton, PageHeader } from "@/components";
+import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { checkAuth, getUser } from "@/utils/auth";
-import { formatDateWithDay } from "@/utils/format";
+import { formatDateWithDay, getToday } from "@/utils/format";
+import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function Dashboard() {
   await checkAuth();
   const userId = await getUser();
+  const queryClient = getQueryClient();
 
-  const date = new Date();
+  await queryClient.prefetchQuery({
+    queryKey: mealRecordkeys.all(),
+    queryFn: () => fetchUserDailyMealRecords(userId, today),
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  const today = getToday();
+  const displayDate = new Date();
 
   return (
     <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20 sm:p-20">
       <main className="flex flex-col gap-[32px] w-full row-start-2 items-center">
         <LogoutButton />
         <PageHeader
-          title={formatDateWithDay(date)}
+          title={formatDateWithDay(displayDate)}
           description="目標達成までがんばろう！"
         />
-        <MealRecordSection userId={userId} />
+
+        <HydrationBoundary state={dehydratedState}>
+          <MealRecordSection userId={userId} />
+        </HydrationBoundary>
       </main>
     </div>
   );
