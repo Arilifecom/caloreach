@@ -53,7 +53,7 @@ export const fetchFoodsBySearch = async (keyword: string) => {
 
   const res = await db.query.foods.findMany({
     where: like(foods.reading, `%${keyword}%`),
-    limit: 50,
+    limit: 10,
     columns: {
       id: true,
       foodName: true,
