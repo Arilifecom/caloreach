@@ -2,6 +2,7 @@ import { MealRecordForm } from "@/app/dashboard/_components";
 import { SelectMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/api/mealRecords";
+import { formatYYMMDD } from "@/utils/format";
 import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
@@ -22,10 +23,16 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: deleteMealRecord,
-    onSuccess: () => {
+    mutationFn: async (mealRecord: SelectMealRecord) => {
+      deleteMealRecord(mealRecord.id);
+      return mealRecord;
+    },
+    onSuccess: (_, mealRecord) => {
       queryClient.invalidateQueries({
-        queryKey: mealRecordkeys.all(),
+        queryKey: mealRecordkeys.dailyList(
+          mealRecord.userId,
+          formatYYMMDD(mealRecord.eatenAt)
+        ),
       });
       handleOptionWindow();
     },
@@ -34,9 +41,9 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
     },
   });
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (mealRecord: SelectMealRecord) => {
     if (deleteMutation.isPending) return;
-    deleteMutation.mutate(id);
+    deleteMutation.mutate(mealRecord);
   };
 
   return (
@@ -64,7 +71,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
               handleCloseAllWindows={handleCloseAllWindows}
             />
             <button
-              onClick={() => handleDelete(mealRecord.id)}
+              onClick={() => handleDelete(mealRecord)}
               className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <Trash2 />

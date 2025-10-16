@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebounce } from "@/app/dashboard/_components/_hooks";
+import { useDebounce } from "@/app/dashboard/_hooks";
 import {
   mealRecordInputSchemaInput,
   mealRecordInputSchemaOutput,
@@ -80,7 +80,7 @@ export const MealRecordForm = ({
   const searchResult = useQuery({
     queryKey: foodskeys.list(debouncedSearch),
     queryFn: () => fetchFoodsBySearch(debouncedSearch),
-    enabled: debouncedSearch.length > 0,
+    enabled: debouncedSearch !== "",
   });
 
   //set value mode "add" or "edit"
@@ -108,8 +108,13 @@ export const MealRecordForm = ({
 
   const addMutation = useMutation({
     mutationFn: addMealRecord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
+    onSuccess: (_, sentDate) => {
+      queryClient.invalidateQueries({
+        queryKey: mealRecordkeys.dailyList(
+          userId,
+          formatYYMMDD(sentDate.eatenAt)
+        ),
+      });
       handleCloseAllWindows();
     },
     onError: () => {
@@ -119,8 +124,13 @@ export const MealRecordForm = ({
 
   const editMutation = useMutation({
     mutationFn: editMealRecord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
+    onSuccess: (_, sentDate) => {
+      queryClient.invalidateQueries({
+        queryKey: mealRecordkeys.dailyList(
+          userId,
+          formatYYMMDD(sentDate.eatenAt)
+        ),
+      });
       handleCloseAllWindows();
     },
     onError: () => {
@@ -230,7 +240,7 @@ export const MealRecordForm = ({
                         )}
                       </Field>
 
-                      {searchResult.data ? (
+                      {searchResult.data && searchResult.data.length > 0 && (
                         <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border-1 border-t-0 border-background rounded-b-lg">
                           {searchResult.data.map((item) => (
                             <li
@@ -245,7 +255,7 @@ export const MealRecordForm = ({
                             </li>
                           ))}
                         </ul>
-                      ) : null}
+                      )}
                     </>
                   )}
                 />

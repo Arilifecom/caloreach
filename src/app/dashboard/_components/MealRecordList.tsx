@@ -16,7 +16,7 @@ const today = getToday();
 
 const Component = ({ userId }: MealRecordListProps) => {
   const { data, error, isLoading } = useQuery({
-    queryKey: mealRecordkeys.all(),
+    queryKey: mealRecordkeys.dailyList(userId, today),
     queryFn: () => fetchUserDailyMealRecords(userId, today),
   });
 
