@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebounce } from "@/app/dashboard/_components/_hooks";
+import { useDebounce } from "@/app/dashboard/_hooks";
 import {
   mealRecordInputSchemaInput,
   mealRecordInputSchemaOutput,
@@ -108,8 +108,13 @@ export const MealRecordForm = ({
 
   const addMutation = useMutation({
     mutationFn: addMealRecord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
+    onSuccess: (_, sentDate) => {
+      queryClient.invalidateQueries({
+        queryKey: mealRecordkeys.dailyList(
+          userId,
+          formatYYMMDD(sentDate.eatenAt)
+        ),
+      });
       handleCloseAllWindows();
     },
     onError: () => {
@@ -119,8 +124,13 @@ export const MealRecordForm = ({
 
   const editMutation = useMutation({
     mutationFn: editMealRecord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: mealRecordkeys.all() });
+    onSuccess: (_, sentDate) => {
+      queryClient.invalidateQueries({
+        queryKey: mealRecordkeys.dailyList(
+          userId,
+          formatYYMMDD(sentDate.eatenAt)
+        ),
+      });
       handleCloseAllWindows();
     },
     onError: () => {

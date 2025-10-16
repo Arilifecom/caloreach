@@ -11,15 +11,15 @@ export default async function Dashboard() {
   const userId = await getUser();
   const queryClient = getQueryClient();
 
+  const today = getToday();
+  const displayDate = new Date();
+
   await queryClient.prefetchQuery({
-    queryKey: mealRecordkeys.all(),
+    queryKey: mealRecordkeys.dailyList(userId, today),
     queryFn: () => fetchUserDailyMealRecords(userId, today),
   });
 
   const dehydratedState = dehydrate(queryClient);
-
-  const today = getToday();
-  const displayDate = new Date();
 
   return (
     <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20 sm:p-20">
