@@ -23,6 +23,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
+    mutationKey: ["mealRecord", "delete"],
     mutationFn: async (mealRecord: SelectMealRecord) => {
       deleteMealRecord(mealRecord.id);
       return mealRecord;
