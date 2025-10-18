@@ -65,7 +65,7 @@ export const MealRecordForm = ({
 }: MealRecordFormProps) => {
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
-  const debouncedSearch = useDebounce(query, 500);
+  const debouncedSearch = useDebounce(query, 400);
 
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -107,11 +107,12 @@ export const MealRecordForm = ({
   }, [mode, isFormOpen, form, editItem]);
 
   const addMutation = useMutation({
+    mutationKey: ["mealRecord", "add"],
     mutationFn: addMealRecord,
     onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
-          userId,
+          sentDate.userId,
           formatYYMMDD(sentDate.eatenAt)
         ),
       });
@@ -123,13 +124,11 @@ export const MealRecordForm = ({
   });
 
   const editMutation = useMutation({
+    mutationKey: ["mealRecord", "edit"],
     mutationFn: editMealRecord,
-    onSuccess: (_, sentDate) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: mealRecordkeys.dailyList(
-          userId,
-          formatYYMMDD(sentDate.eatenAt)
-        ),
+        queryKey: mealRecordkeys.all(),
       });
       handleCloseAllWindows();
     },
