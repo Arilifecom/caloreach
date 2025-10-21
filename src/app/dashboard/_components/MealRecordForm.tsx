@@ -109,7 +109,6 @@ export const MealRecordForm = ({
 
   //Mutations
   const addMutation = useMutation({
-    mutationKey: ["mealRecord", "add"],
     mutationFn: addMealRecord,
     onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
@@ -127,7 +126,6 @@ export const MealRecordForm = ({
   });
 
   const editMutation = useMutation({
-    mutationKey: ["mealRecord", "edit"],
     mutationFn: editMealRecord,
     onSuccess: () => {
       queryClient.invalidateQueries({
