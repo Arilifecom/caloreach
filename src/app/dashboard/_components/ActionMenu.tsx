@@ -7,6 +7,7 @@ import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
+import { toast } from "sonner";
 
 type ActionMenuProps = {
   mealRecord: SelectMealRecord;
@@ -25,7 +26,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
   const deleteMutation = useMutation({
     mutationKey: ["mealRecord", "delete"],
     mutationFn: async (mealRecord: SelectMealRecord) => {
-      deleteMealRecord(mealRecord.id);
+      await deleteMealRecord(mealRecord.id);
       return mealRecord;
     },
     onSuccess: (_, mealRecord) => {
@@ -39,6 +40,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
     },
     onError: () => {
       console.log("Error delete mealRecord");
+      toast.error("削除に失敗しました");
     },
   });
 
