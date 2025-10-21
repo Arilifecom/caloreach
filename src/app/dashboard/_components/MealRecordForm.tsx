@@ -37,6 +37,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
+import { toast } from "sonner";
 
 type MealRecordFormProps = {
   userId: string;
@@ -106,6 +107,7 @@ export const MealRecordForm = ({
     setQuery("");
   }, [mode, isFormOpen, form, editItem]);
 
+  //Mutations
   const addMutation = useMutation({
     mutationKey: ["mealRecord", "add"],
     mutationFn: addMealRecord,
@@ -120,6 +122,7 @@ export const MealRecordForm = ({
     },
     onError: () => {
       console.error("Error creating mealRecord");
+      toast.error("追加に失敗しました");
     },
   });
 
@@ -134,6 +137,7 @@ export const MealRecordForm = ({
     },
     onError: () => {
       console.error("Error Editing mealRecord");
+      toast.error("編集に失敗しました");
     },
   });
 
@@ -238,6 +242,12 @@ export const MealRecordForm = ({
                           <FieldError errors={[fieldState.error]} />
                         )}
                       </Field>
+
+                      {searchResult.isError && (
+                        <p className="px-4 py-2 text-center text-red-400">
+                          検索に失敗しました。手入力してください。
+                        </p>
+                      )}
 
                       {searchResult.data && searchResult.data.length > 0 && (
                         <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border-1 border-t-0 border-background rounded-b-lg">

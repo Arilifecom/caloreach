@@ -6,4 +6,3 @@ export * from "./VerticalLine";
 export * from "./LogoutButton";
 export * from "./GetStartedButton";
 export * from "./Loading";
-export * from "./ActionMenu";

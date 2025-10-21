@@ -1,6 +1,7 @@
 "use client";
 
-import { ActionMenu, List } from "@/components";
+import { ActionMenu } from "@/app/dashboard/_components/";
+import { List } from "@/components";
 import { SelectMealRecord } from "@/db/schema";
 import { format } from "date-fns";
 import { memo } from "react";

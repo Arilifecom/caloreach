@@ -15,13 +15,13 @@ type MealRecordListProps = {
 const today = getToday();
 
 const Component = ({ userId }: MealRecordListProps) => {
-  const { data, error, isLoading } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: mealRecordkeys.dailyList(userId, today),
     queryFn: () => fetchUserDailyMealRecords(userId, today),
+    throwOnError: true,
   });
 
-  if (isLoading) return <Loading />;
-  if (error instanceof Error) return <div>Error: {error.message}</div>;
+  if (isFetching) return <Loading />;
 
   return (
     <>

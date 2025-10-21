@@ -1,7 +1,7 @@
 "use client";
 
-import { MealRecordAddOption } from "@/app/dashboard/_components/MealRecordAddOption";
-import { MealRecordList } from "@/app/dashboard/_components/MealRecordList";
+import { MealRecordAddOption } from "@/app/dashboard/_components/";
+import { MealRecordList } from "@/app/dashboard/_components/";
 import { memo } from "react";
 
 type MealRecordSectionProps = {
