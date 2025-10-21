@@ -1,10 +1,11 @@
-import { MealRecordSection } from "@/app/dashboard/_components";
+import { ErrorFallback, MealRecordSection } from "@/app/dashboard/_components";
 import { LogoutButton, PageHeader } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { checkAuth, getUser } from "@/utils/auth";
 import { formatDateWithDay, getToday } from "@/utils/format";
 import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default async function Dashboard() {
   await checkAuth();
@@ -31,7 +32,9 @@ export default async function Dashboard() {
         />
 
         <HydrationBoundary state={dehydratedState}>
-          <MealRecordSection userId={userId} />
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <MealRecordSection userId={userId} />
+          </ErrorBoundary>
         </HydrationBoundary>
       </main>
     </div>
