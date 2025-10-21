@@ -67,6 +67,8 @@ export const MealRecordForm = ({
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
   const debouncedSearch = useDebounce(query, 400);
+  const [selectedFoodKcal, setSelectedFoodKcal] = useState<number | null>(null);
+  const [eatenGrams, setEatenGrams] = useState("");
 
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -76,6 +78,25 @@ export const MealRecordForm = ({
     resolver: mealRecordSchemaResolver,
     defaultValues,
   });
+
+  //Auto calculate Kcal when user selected Food by incremental search
+  useEffect(() => {
+    if (selectedFoodKcal === null) return;
+    const eatenGramsToNum = Number(eatenGrams);
+    const result = Math.floor((selectedFoodKcal * eatenGramsToNum) / 100);
+    form.setValue("kcal", result.toString());
+  }, [selectedFoodKcal, form, eatenGrams]);
+
+  //Reset Auto calculate when user changed foodName
+  const foodName = form.watch("foodName");
+  useEffect(() => {
+    if (foodName === "") {
+      setSelectedFoodKcal(null);
+      setEatenGrams("");
+      form.setValue("gram", "");
+      form.setValue("kcal", "");
+    }
+  }, [foodName, form]);
 
   //incremental search
   const searchResult = useQuery({
@@ -109,7 +130,6 @@ export const MealRecordForm = ({
 
   //Mutations
   const addMutation = useMutation({
-    mutationKey: ["mealRecord", "add"],
     mutationFn: addMealRecord,
     onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
@@ -127,7 +147,6 @@ export const MealRecordForm = ({
   });
 
   const editMutation = useMutation({
-    mutationKey: ["mealRecord", "edit"],
     mutationFn: editMealRecord,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -258,6 +277,7 @@ export const MealRecordForm = ({
                               onClick={() => {
                                 setQuery(item.foodName);
                                 field.onChange(item.foodName);
+                                setSelectedFoodKcal(item.kcalPer100g);
                               }}
                             >
                               {item.foodName}
@@ -284,6 +304,11 @@ export const MealRecordForm = ({
                         placeholder="200"
                         type="number"
                         className="w-40"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          field.onChange(val);
+                          setEatenGrams(val);
+                        }}
                       />
                       <p className="font-bold">gram</p>
                     </div>
