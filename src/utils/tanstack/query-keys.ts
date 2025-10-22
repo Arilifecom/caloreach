@@ -10,3 +10,9 @@ export const foodskeys = {
 
   list: (query?: string) => [...foodskeys.all(), { query }] as const,
 };
+
+export const RegularFoodskeys = {
+  all: () => ["RegularFoods"] as const,
+
+  list: (userId: string) => [...RegularFoodskeys.all(), userId] as const,
+};
