@@ -1,6 +1,7 @@
 "use client";
 
 import { MealRecordForm } from "@/app/dashboard/_components/MealRecordForm";
+import { RegularFoodSelector } from "@/app/dashboard/_components/RegularFoodSelector";
 import { ButtonWithIconLabel, FormHeader } from "@/components";
 import { OnigiriIcon, RegularIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
@@ -20,6 +21,7 @@ export const Component = ({ userId }: MealRecordOptionProps) => {
     handleInputFormWindow,
     isFormOpen,
     handleCloseAllWindows,
+    isRegularOpen,
   } = useWindowControl();
 
   return (
@@ -65,6 +67,12 @@ export const Component = ({ userId }: MealRecordOptionProps) => {
         </div>
       </div>
 
+      <RegularFoodSelector
+        userId={userId}
+        isRegularOpen={isRegularOpen}
+        handleRegularMealsWindow={handleRegularMealsWindow}
+        handleCloseAllWindows={handleCloseAllWindows}
+      />
       <MealRecordForm
         userId={userId}
         isFormOpen={isFormOpen}

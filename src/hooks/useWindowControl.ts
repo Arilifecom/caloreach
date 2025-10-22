@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 export const useWindowControl = () => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isRegularOpen, setisRegularOpen] = useState(false);
 
   //Handle Option Window
   const handleOptionWindow = useCallback(() => {
@@ -18,13 +19,14 @@ export const useWindowControl = () => {
 
   //Handle Regular Meals Window
   const handleRegularMealsWindow = useCallback(() => {
-    console.log("Open Regular Meals Window");
+    setisRegularOpen((prev) => !prev);
   }, []);
 
   //Close all window
   const handleCloseAllWindows = () => {
     setIsOptionOpen(false);
     setIsFormOpen(false);
+    setisRegularOpen(false);
   };
 
   return {
@@ -34,5 +36,6 @@ export const useWindowControl = () => {
     isOptionOpen,
     handleRegularMealsWindow,
     handleCloseAllWindows,
+    isRegularOpen,
   };
 };
