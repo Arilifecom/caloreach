@@ -5,23 +5,22 @@ import { Loading } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { getToday } from "@/utils/format";
 import { mealRecordkeys } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
-type MealRecordListProps = {
+type MealRecordListsProps = {
   userId: string;
 };
 
 const today = getToday();
 
-const Component = ({ userId }: MealRecordListProps) => {
-  const { data, isFetching } = useQuery({
+const Component = ({ userId }: MealRecordListsProps) => {
+  const { data, isLoading } = useSuspenseQuery({
     queryKey: mealRecordkeys.dailyList(userId, today),
     queryFn: () => fetchUserDailyMealRecords(userId, today),
-    throwOnError: true,
   });
 
-  if (isFetching) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -38,5 +37,5 @@ const Component = ({ userId }: MealRecordListProps) => {
   );
 };
 
-const MealRecordList = memo(Component);
-export { MealRecordList };
+const MealRecordLists = memo(Component);
+export { MealRecordLists };

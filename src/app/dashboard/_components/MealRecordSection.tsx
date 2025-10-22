@@ -1,7 +1,9 @@
 "use client";
 
-import { MealRecordAddOption } from "@/app/dashboard/_components/";
-import { MealRecordList } from "@/app/dashboard/_components/";
+import {
+  MealRecordAddOption,
+  MealRecordListBoundary,
+} from "@/app/dashboard/_components/";
 import { memo } from "react";
 
 type MealRecordSectionProps = {
@@ -11,7 +13,7 @@ type MealRecordSectionProps = {
 const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
-      <MealRecordList userId={userId} />
+      <MealRecordListBoundary userId={userId} />
       <MealRecordAddOption userId={userId} />
     </>
   );
