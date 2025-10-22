@@ -100,3 +100,6 @@ export type InsertTargetKcalHistoryRecord =
   typeof targetKcalHistory.$inferInsert;
 export type SelectTargetKcalHistoryRecord =
   typeof targetKcalHistory.$inferSelect;
+
+export type InsertregularFoods = typeof regularFoods.$inferInsert;
+export type SelectregularFoods = typeof regularFoods.$inferSelect;
