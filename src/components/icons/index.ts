@@ -5,3 +5,7 @@ export * from "./regularIcon";
 export * from "./scaleIcon";
 export * from "./searchIcon";
 export * from "./siteLogo";
+export * from "./navHomeIcon";
+export * from "./navHistoryIcon";
+export * from "./navRegularFoodIcon";
+export * from "./navLogoutIcon";

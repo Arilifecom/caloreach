@@ -28,7 +28,7 @@ export const Component = ({ userId }: MealRecordOptionProps) => {
     <>
       <Button
         onClick={handleOptionWindow}
-        className="w-14 h-14 absolute bottom-8 right-4"
+        className="w-14 h-14 fixed bottom-24 right-4 md:right-[calc(50%-200px)]"
       >
         <PlusIcon />
       </Button>
