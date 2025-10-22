@@ -1,9 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui";
+import { NavLogoutIcon } from "@/components/icons";
 import { createClient } from "@/utils/supabase/client";
 import { getQueryClient } from "@/utils/tanstack";
-import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { memo } from "react";
 
@@ -26,11 +25,9 @@ const Component = () => {
   };
 
   return (
-    <div>
-      <Button onClick={handleLogOut}>
-        <LogOut />
-      </Button>
-    </div>
+    <button onClick={handleLogOut} className="cursor-pointer">
+      <NavLogoutIcon className="w-6" />
+    </button>
   );
 };
 
