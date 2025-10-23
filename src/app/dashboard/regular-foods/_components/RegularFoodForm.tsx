@@ -31,12 +31,12 @@ import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
 
 type RegularFoodFormProps = {
-  editItem: SelectregularFood;
+  editItem?: SelectregularFood;
   userId: string;
   mode: "add" | "edit";
   isFormOpen: boolean;
   handleInputFormWindow: () => void;
-  handleCloseAllWindows: () => void;
+  handleCloseAllWindows?: () => void;
 };
 
 const defaultValues: RegularFoodFormInputSchemaInput = {
@@ -119,7 +119,7 @@ export const RegularFoodForm = ({
       queryClient.invalidateQueries({
         queryKey: RegularFoodskeys.list(sentDate.userId),
       });
-      handleCloseAllWindows();
+      handleInputFormWindow();
     },
     onError: () => {
       console.error("Error creating regularFood");
@@ -133,7 +133,7 @@ export const RegularFoodForm = ({
       queryClient.invalidateQueries({
         queryKey: RegularFoodskeys.all(),
       });
-      handleCloseAllWindows();
+      handleCloseAllWindows?.();
     },
     onError: () => {
       console.error("Error Editing regularFood");
@@ -294,7 +294,11 @@ export const RegularFoodForm = ({
                 <Button
                   type="button"
                   variant={"outline"}
-                  onClick={handleCloseAllWindows}
+                  onClick={
+                    mode === "edit"
+                      ? () => handleCloseAllWindows?.()
+                      : handleInputFormWindow
+                  }
                   className="rounded-lg w-28"
                 >
                   キャンセル
