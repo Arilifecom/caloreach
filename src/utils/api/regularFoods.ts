@@ -12,3 +12,8 @@ export const fetchUserRegularFoods = async (userId: string) => {
   // throw new Error("test");
   return res;
 };
+
+//Delete user regular Foods
+export const deleteregularFood = async (itemId: string) => {
+  await db.delete(regularFoods).where(eq(regularFoods.id, itemId));
+};

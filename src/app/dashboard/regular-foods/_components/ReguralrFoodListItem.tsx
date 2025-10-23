@@ -1,9 +1,10 @@
+import { RegularFoodActionMenu } from "@/app/dashboard/regular-foods/_components/RegularFoodActionMenu";
 import { List } from "@/components";
-import { SelectregularFoods } from "@/db/schema";
+import { SelectregularFood } from "@/db/schema";
 import { memo } from "react";
 
 type ReguralrFoodItemProps = {
-  regularFood: SelectregularFoods;
+  regularFood: SelectregularFood;
 };
 
 const Component = ({ regularFood }: ReguralrFoodItemProps) => {
@@ -20,6 +21,7 @@ const Component = ({ regularFood }: ReguralrFoodItemProps) => {
                 </p>
               </div>
             </div>
+            <RegularFoodActionMenu regularFood={regularFood} />
           </div>
         </List>
       </li>
