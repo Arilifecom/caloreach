@@ -110,6 +110,7 @@ export const RegularFoodForm = ({
         gram: "",
         kcal: "",
       });
+    setQuery("");
   }, [mode, isFormOpen, form, editItem]);
 
   //Mutations

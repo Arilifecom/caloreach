@@ -1,7 +1,7 @@
-import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/RegularFoodForm";
+import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/";
 import { SelectregularFood } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
-import { deleteregularFood } from "@/utils/api/regularFoods";
+import { deleteRegularFood } from "@/utils/api/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
@@ -24,7 +24,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
 
   const deleteMutation = useMutation({
     mutationFn: async (regularFood: SelectregularFood) => {
-      await deleteregularFood(regularFood.id);
+      await deleteRegularFood(regularFood.id);
       return regularFood;
     },
     onSuccess: (_, regularFood) => {
@@ -60,6 +60,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
               <Pencil className="text-popover" />
             </button>
             <RegularFoodForm
+              mode="edit"
               editItem={regularFood}
               userId={regularFood.id}
               isFormOpen={isFormOpen}
