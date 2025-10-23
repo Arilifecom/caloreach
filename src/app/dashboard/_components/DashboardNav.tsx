@@ -5,9 +5,8 @@ import {
   NavRegularFoodIcon,
 } from "@/components/icons";
 import Link from "next/link";
-import { memo } from "react";
 
-const Component = () => {
+export const DashboardNav = () => {
   return (
     <>
       <header className="flex justify-center">
@@ -51,6 +50,3 @@ const Component = () => {
     </>
   );
 };
-
-const DashboardNav = memo(Component);
-export { DashboardNav };

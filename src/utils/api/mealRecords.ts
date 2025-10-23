@@ -1,12 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import {
-  foods,
-  InsertMealRecord,
-  mealRecords,
-  regularFoods,
-} from "@/db/schema";
+import { foods, InsertMealRecord, mealRecords } from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
 import { and, asc, eq, gte, like, lte, sql } from "drizzle-orm";
 
@@ -66,13 +61,5 @@ export const fetchFoodsBySearch = async (keyword: string) => {
     },
   });
 
-  return res;
-};
-
-//Get user regular Foods
-export const fetchUserRegularFoods = async (userId: string) => {
-  const res = await db.query.regularFoods.findMany({
-    where: eq(regularFoods.userId, userId),
-  });
   return res;
 };

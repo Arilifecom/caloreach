@@ -1,40 +1,29 @@
 "use client";
 
-import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodListItem";
-import { Loading } from "@/components";
+import { ReguralrFoodListItem } from "@/app/dashboard/regular-foods/_components/";
 import { fetchUserRegularFoods } from "@/utils/api/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { memo } from "react";
 
-type RegularFoodSelectorProps = {
+type RegularFoodLsitsProps = {
   userId: string;
-  isRegularOpen: boolean;
-  handleCloseAllWindows: () => void;
 };
 
-export const RegularFoodLsits = ({
-  userId,
-  handleCloseAllWindows,
-  isRegularOpen,
-}: RegularFoodSelectorProps) => {
-  const { data, isLoading } = useQuery({
+const Component = ({ userId }: RegularFoodLsitsProps) => {
+  const { data } = useSuspenseQuery({
     queryKey: RegularFoodskeys.list(userId),
     queryFn: () => fetchUserRegularFoods(userId),
-    enabled: isRegularOpen,
-    throwOnError: true,
   });
-
-  if (isLoading) return <Loading />;
 
   return (
     <>
-      <ul className="px-2 flex flex-wrap gap-2">
+      <ul className="w-full">
         {data && data.length > 0 ? (
           data.map((regularFood) => (
             <ReguralrFoodListItem
               key={regularFood.id}
               regularFood={regularFood}
-              handleCloseAllWindows={handleCloseAllWindows}
             />
           ))
         ) : (
@@ -46,3 +35,6 @@ export const RegularFoodLsits = ({
     </>
   );
 };
+
+const RegularFoodLists = memo(Component);
+export { RegularFoodLists };
