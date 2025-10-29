@@ -2,7 +2,7 @@
 
 import {
   MealRecordAddOption,
-  MealRecordListBoundary,
+  MealRecordLists,
 } from "@/app/dashboard/_components/";
 import { memo } from "react";
 
@@ -13,7 +13,7 @@ type MealRecordSectionProps = {
 const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
-      <MealRecordListBoundary userId={userId} />
+      <MealRecordLists userId={userId} />
       <MealRecordAddOption userId={userId} />
     </>
   );

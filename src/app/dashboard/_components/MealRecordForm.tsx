@@ -32,7 +32,7 @@ import {
   getCurrentDate,
   getCurrentTime,
 } from "@/utils/format";
-import { foodskeys, mealRecordkeys } from "@/utils/tanstack";
+import { foodskeys, mealRecordkeys, TErrCodes } from "@/utils/tanstack";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -103,6 +103,7 @@ export const MealRecordForm = ({
     queryKey: foodskeys.list(debouncedSearch),
     queryFn: () => fetchFoodsBySearch(debouncedSearch),
     enabled: debouncedSearch !== "",
+    meta: { errCode: TErrCodes.FOOD_SEARCH_FAILED },
   });
 
   //set value mode "add" or "edit"
