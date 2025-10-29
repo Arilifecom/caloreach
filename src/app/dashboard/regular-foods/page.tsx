@@ -1,4 +1,4 @@
-import { RegularFoodListBoundary } from "@/app/dashboard/regular-foods/_components";
+import { RegularFoodSection } from "@/app/dashboard/regular-foods/_components";
 import { PageHeader } from "@/components";
 import { fetchUserRegularFoods } from "@/utils/api/regularFoods";
 import { checkAuth, getUser } from "@/utils/auth";
@@ -24,7 +24,7 @@ export default async function RegularFoodsPage() {
         description="頻繁に摂取する食事を登録してください"
       />
       <HydrationBoundary state={dehydratedState}>
-        <RegularFoodListBoundary userId={userId} />
+        <RegularFoodSection userId={userId} />
       </HydrationBoundary>
     </>
   );

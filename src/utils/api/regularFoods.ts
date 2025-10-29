@@ -11,7 +11,6 @@ export const fetchUserRegularFoods = async (userId: string) => {
     orderBy: [asc(regularFoods.createdAt), asc(regularFoods.id)],
   });
 
-  // throw new Error("test");
   return res;
 };
 
