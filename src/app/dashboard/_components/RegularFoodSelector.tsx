@@ -1,10 +1,8 @@
 "use client";
 
-import { ErrorFallback, RegularFoodLsits } from "@/app/dashboard/_components/";
+import { RegularFoodLsits } from "@/app/dashboard/_components/";
 import { FormHeader } from "@/components";
-import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { memo } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 
 type RegularFoodSelectorProps = {
   userId: string;
@@ -41,17 +39,11 @@ const Component = ({
           description="食事を追加してください"
           handleClose={handleCloseAllWindows}
         />
-        <QueryErrorResetBoundary>
-          {({ reset }) => (
-            <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
-              <RegularFoodLsits
-                userId={userId}
-                isRegularOpen={isRegularOpen}
-                handleCloseAllWindows={handleCloseAllWindows}
-              />
-            </ErrorBoundary>
-          )}
-        </QueryErrorResetBoundary>
+        <RegularFoodLsits
+          userId={userId}
+          isRegularOpen={isRegularOpen}
+          handleCloseAllWindows={handleCloseAllWindows}
+        />
       </div>
     </>
   );

@@ -1,11 +1,11 @@
 "use clinet";
 
-import { MealRecordItem } from "@/app/dashboard/_components";
+import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { getToday } from "@/utils/format";
-import { mealRecordkeys } from "@/utils/tanstack";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
+import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListsProps = {
@@ -15,12 +15,14 @@ type MealRecordListsProps = {
 const today = getToday();
 
 const Component = ({ userId }: MealRecordListsProps) => {
-  const { data, isLoading } = useSuspenseQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: mealRecordkeys.dailyList(userId, today),
     queryFn: () => fetchUserDailyMealRecords(userId, today),
+    meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 
   if (isLoading) return <Loading />;
+  if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
   return (
     <>
