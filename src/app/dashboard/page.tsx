@@ -1,4 +1,7 @@
-import { MealRecordSection } from "@/app/dashboard/_components";
+import {
+  MealRecordSection,
+  ProgressSection,
+} from "@/app/dashboard/_components";
 import { PageHeader } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { checkAuth, getUser } from "@/utils/auth";
@@ -28,6 +31,7 @@ export default async function Dashboard() {
         description="目標達成までがんばろう！"
       />
       <HydrationBoundary state={dehydratedState}>
+        <ProgressSection userId={userId} date={today} />
         <MealRecordSection userId={userId} />
       </HydrationBoundary>
     </>
