@@ -1,0 +1,88 @@
+"use client";
+
+import {
+  ProgressCircle,
+  ProgressRatio,
+  RemainingKcal,
+} from "@/app/dashboard/_components/";
+import { getTodayTotalKcal } from "@/utils/api/progress";
+import { getEfeectiveTargetKcal } from "@/utils/api/targetKcal";
+import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
+import { useQuery } from "@tanstack/react-query";
+import { memo } from "react";
+
+type ProgressSectionProps = {
+  userId: string;
+  date: string;
+};
+
+const Component = ({ userId, date }: ProgressSectionProps) => {
+  //Get user's diary amount Kcal form mealRecords
+  const {
+    data: totalKcal,
+    isLoading: totalKcalIsLoading,
+    isError: totalKcalIsError,
+  } = useQuery({
+    queryKey: mealRecordkeys.todayTotal(userId, date),
+    queryFn: () => getTodayTotalKcal(userId, date),
+    meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
+  });
+
+  //Get user's targetKcal
+  const {
+    data: targetKcal,
+    isLoading: targetKcalIsLoading,
+    isError: targetKcalIsError,
+  } = useQuery({
+    queryKey: TargetKcalkeys.list(userId),
+    queryFn: () => getEfeectiveTargetKcal(userId, date),
+    meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
+  });
+
+  const isLoading = totalKcalIsLoading || targetKcalIsLoading;
+
+  //Error for UI
+  const progressError = totalKcalIsError || targetKcalIsError;
+  const targetKcalError = targetKcalIsError;
+
+  //For progressCircle UI
+  const progressValue =
+    totalKcal && targetKcal ? Math.floor((totalKcal / targetKcal) * 100) : 0;
+  const totalKcalDisplay = totalKcal ? totalKcal : null;
+  const targetKcalDisplay = targetKcal ? targetKcal : null;
+
+  //For prgoress remainingKcal UI
+  const remainingKcalValue =
+    totalKcal && targetKcal ? Math.floor(targetKcal! - totalKcal!) : null;
+
+  return (
+    <>
+      <div className="w-full grid grid-cols-2 grid-rows-2 gap-3 min-h-[150px]">
+        <ProgressCircle
+          progressValue={progressValue}
+          currentKcalDisplay={totalKcalDisplay}
+          currentTargetKcalDisplay={targetKcalDisplay}
+          isLoading={isLoading}
+          progressError={progressError}
+          targetKcalError={targetKcalError}
+          className="col-span-1 row-span-2"
+        />
+        <ProgressRatio
+          progressValue={progressValue}
+          isLoading={isLoading}
+          isError={progressError}
+          className="col-start-2 col-span-2"
+        />
+        <RemainingKcal
+          remainingKcalValue={remainingKcalValue}
+          isLoading={isLoading}
+          isError={progressError}
+          className="col-start-2 col-span-2"
+        />
+      </div>
+    </>
+  );
+};
+
+const ProgressSection = memo(Component);
+export { ProgressSection };
