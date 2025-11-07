@@ -5,6 +5,7 @@ export const enum TErrCodes {
   MEAL_FETCH_FAILED,
   FOOD_SEARCH_FAILED,
   REGULAR_FOOD_SEARCH_FAILED,
+  PROGRESS_FETCH_FAILED,
 }
 
 export function handleQueryError(
@@ -20,6 +21,8 @@ export function handleQueryError(
       return toast.error("食事検索の取得に失敗しました");
     case TErrCodes.REGULAR_FOOD_SEARCH_FAILED:
       return toast.error("レギュラーフードの取得に失敗しました");
+    case TErrCodes.PROGRESS_FETCH_FAILED:
+      return toast.error("進捗データの取得に失敗しました");
     default:
       toast.error("データ取得に失敗しました");
   }
