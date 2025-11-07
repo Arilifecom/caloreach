@@ -9,3 +9,7 @@ export * from "./RegularFoodSelector";
 export * from "./RegularFoodLsits";
 export * from "./ReguralrFoodListItem";
 export * from "./DashboardNav";
+export * from "./ProgressSection";
+export * from "./ProgressCircle";
+export * from "./ProgressRatio";
+export * from "./RemainingKcal";

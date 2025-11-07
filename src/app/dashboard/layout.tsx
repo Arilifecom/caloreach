@@ -6,7 +6,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20 sm:p-20">
+    <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20">
       <main className="flex flex-col gap-[32px] w-full row-start-2 items-center">
         <Toaster />
         <TanstackQueryProvider>{children}</TanstackQueryProvider>

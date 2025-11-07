@@ -3,6 +3,9 @@ export const mealRecordkeys = {
 
   dailyList: (userId: string, date: string) =>
     [...mealRecordkeys.all(), userId, date] as const,
+
+  todayTotal: (userId: string, date: string) =>
+    [...mealRecordkeys.dailyList(userId, date), "todayTotal"] as const,
 };
 
 export const foodskeys = {
@@ -15,4 +18,10 @@ export const RegularFoodskeys = {
   all: () => ["RegularFoods"] as const,
 
   list: (userId: string) => [...RegularFoodskeys.all(), userId] as const,
+};
+
+export const TargetKcalkeys = {
+  all: () => ["targetKcal"] as const,
+
+  list: (userId: string) => [...TargetKcalkeys.all(), userId] as const,
 };
