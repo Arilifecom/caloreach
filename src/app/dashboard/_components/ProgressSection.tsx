@@ -48,12 +48,14 @@ const Component = ({ userId, date }: ProgressSectionProps) => {
   //For progressCircle UI
   const progressValue =
     totalKcal && targetKcal ? Math.floor((totalKcal / targetKcal) * 100) : 0;
-  const totalKcalDisplay = totalKcal ? totalKcal : null;
-  const targetKcalDisplay = targetKcal ? targetKcal : null;
+  const totalKcalDisplay = totalKcal === undefined ? null : totalKcal;
+  const targetKcalDisplay = targetKcal === undefined ? null : targetKcal;
 
   //For prgoress remainingKcal UI
   const remainingKcalValue =
-    totalKcal && targetKcal ? Math.floor(targetKcal! - totalKcal!) : null;
+    targetKcal != null && totalKcal != null
+      ? Math.floor(targetKcal - totalKcal)
+      : null;
 
   return (
     <>
