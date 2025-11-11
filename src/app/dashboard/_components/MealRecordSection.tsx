@@ -8,13 +8,14 @@ import { memo } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
+  date: string;
 };
 
-const Component = ({ userId }: MealRecordSectionProps) => {
+const Component = ({ userId, date }: MealRecordSectionProps) => {
   return (
     <>
-      <MealRecordLists userId={userId} />
-      <MealRecordAddOption userId={userId} />
+      <MealRecordLists userId={userId} date={date} />
+      <MealRecordAddOption userId={userId} date={date} />
     </>
   );
 };

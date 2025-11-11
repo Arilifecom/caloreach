@@ -11,12 +11,14 @@ type RegularFoodSelectorProps = {
   userId: string;
   isRegularOpen: boolean;
   handleCloseAllWindows: () => void;
+  date: string;
 };
 
 export const RegularFoodLsits = ({
   userId,
   handleCloseAllWindows,
   isRegularOpen,
+  date,
 }: RegularFoodSelectorProps) => {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: RegularFoodskeys.list(userId),
@@ -38,6 +40,7 @@ export const RegularFoodLsits = ({
               key={regularFood.id}
               regularFood={regularFood}
               handleCloseAllWindows={handleCloseAllWindows}
+              date={date}
             />
           ))
         ) : (

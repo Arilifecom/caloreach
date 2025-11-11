@@ -9,6 +9,7 @@ type RegularFoodSelectorProps = {
   isRegularOpen: boolean;
   handleRegularMealsWindow: () => void;
   handleCloseAllWindows: () => void;
+  date: string;
 };
 
 const Component = ({
@@ -16,6 +17,7 @@ const Component = ({
   isRegularOpen,
   handleCloseAllWindows,
   handleRegularMealsWindow,
+  date,
 }: RegularFoodSelectorProps) => {
   return (
     <>
@@ -43,6 +45,7 @@ const Component = ({
           userId={userId}
           isRegularOpen={isRegularOpen}
           handleCloseAllWindows={handleCloseAllWindows}
+          date={date}
         />
       </div>
     </>

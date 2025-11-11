@@ -32,7 +32,7 @@ export default async function Dashboard() {
       />
       <HydrationBoundary state={dehydratedState}>
         <ProgressSection userId={userId} date={today} />
-        <MealRecordSection userId={userId} />
+        <MealRecordSection userId={userId} date={today} />
       </HydrationBoundary>
     </>
   );

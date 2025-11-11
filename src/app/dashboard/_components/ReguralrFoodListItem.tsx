@@ -1,7 +1,7 @@
 import { List } from "@/components";
-import { SelectregularFoods } from "@/db/schema";
+import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/api/mealRecords";
-import { formatYYMMDD } from "@/utils/format";
+import { formatYYMMDD, getCurrentTime } from "@/utils/format";
 import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
@@ -9,13 +9,15 @@ import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
 
 type ReguralrFoodItemProps = {
-  regularFood: SelectregularFoods;
+  regularFood: SelectregularFood;
   handleCloseAllWindows: () => void;
+  date: string;
 };
 
 const Component = ({
   regularFood,
   handleCloseAllWindows,
+  date,
 }: ReguralrFoodItemProps) => {
   const queryClient = useQueryClient();
   //Mutations
@@ -36,12 +38,15 @@ const Component = ({
     },
   });
 
-  const handleAddMealRecords = (data: SelectregularFoods) => {
+  const handleAddMealRecords = (data: SelectregularFood) => {
     //Create data for meralRecord
+    const time = getCurrentTime();
+    const eatenAt = new Date(`${date}T${time}:00+09:00`);
+
     const sentDate = {
       ...data,
       id: uuidv7(),
-      eatenAt: new Date(),
+      eatenAt: eatenAt,
     };
 
     if (addMutation.isPending) return;
