@@ -1,7 +1,10 @@
+"use client";
+
 import { DailyKcalSummary } from "@/app/dashboard/histories/_components/HistoryList";
 import { List } from "@/components";
 import { formatDateWithDay } from "@/utils/format";
 import { BookOpen } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { memo } from "react";
 
 type HistoryListItemProps = {
@@ -9,6 +12,11 @@ type HistoryListItemProps = {
 };
 
 const Component = ({ data }: HistoryListItemProps) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/dashboard/histories/${data.date}`);
+  };
   return (
     <>
       <li key={data.date} className="mb-2">
@@ -20,7 +28,7 @@ const Component = ({ data }: HistoryListItemProps) => {
               <span className="text-sm">/ {data.targetKcal} kcal</span>
             </div>
             <button
-              // onClick={ Go to detail Page }
+              onClick={handleClick}
               className="flex items-center bg-background w-[44px] h-[44px] p-3 rounded-lg"
             >
               <BookOpen className="text-foreground" />
