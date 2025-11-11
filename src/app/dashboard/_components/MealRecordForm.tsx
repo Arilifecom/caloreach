@@ -26,12 +26,7 @@ import {
   editMealRecord,
   fetchFoodsBySearch,
 } from "@/utils/api/mealRecords";
-import {
-  formatTime,
-  formatYYMMDD,
-  getCurrentDate,
-  getCurrentTime,
-} from "@/utils/format";
+import { formatTime, formatYYMMDD, getCurrentTime } from "@/utils/format";
 import { foodskeys, mealRecordkeys, TErrCodes } from "@/utils/tanstack";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
@@ -46,6 +41,7 @@ type MealRecordFormProps = {
   isFormOpen: boolean;
   handleInputFormWindow: () => void;
   handleCloseAllWindows: () => void;
+  date: string;
 };
 
 const defaultValues: mealRecordInputSchemaInput = {
@@ -63,6 +59,7 @@ export const MealRecordForm = ({
   handleCloseAllWindows,
   mode,
   editItem,
+  date,
 }: MealRecordFormProps) => {
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
@@ -120,14 +117,14 @@ export const MealRecordForm = ({
       });
     } else
       form.reset({
-        date: getCurrentDate(),
+        date: date,
         time: getCurrentTime(),
         foodName: "",
         gram: "",
         kcal: "",
       });
     setQuery("");
-  }, [mode, isFormOpen, form, editItem]);
+  }, [mode, isFormOpen, form, editItem, date]);
 
   //Mutations
   const addMutation = useMutation({

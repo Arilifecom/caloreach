@@ -3,21 +3,19 @@
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
-import { getToday } from "@/utils/format";
 import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListsProps = {
   userId: string;
+  date: string;
 };
 
-const today = getToday();
-
-const Component = ({ userId }: MealRecordListsProps) => {
+const Component = ({ userId, date }: MealRecordListsProps) => {
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: mealRecordkeys.dailyList(userId, today),
-    queryFn: () => fetchUserDailyMealRecords(userId, today),
+    queryKey: mealRecordkeys.dailyList(userId, date),
+    queryFn: () => fetchUserDailyMealRecords(userId, date),
     meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 

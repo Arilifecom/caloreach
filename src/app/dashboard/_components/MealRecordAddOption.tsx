@@ -11,9 +11,10 @@ import { memo } from "react";
 
 type MealRecordOptionProps = {
   userId: string;
+  date: string;
 };
 
-export const Component = ({ userId }: MealRecordOptionProps) => {
+export const Component = ({ userId, date }: MealRecordOptionProps) => {
   const {
     handleOptionWindow,
     isOptionOpen,
@@ -72,6 +73,7 @@ export const Component = ({ userId }: MealRecordOptionProps) => {
         isRegularOpen={isRegularOpen}
         handleRegularMealsWindow={handleRegularMealsWindow}
         handleCloseAllWindows={handleCloseAllWindows}
+        date={date}
       />
       <MealRecordForm
         userId={userId}
@@ -79,6 +81,7 @@ export const Component = ({ userId }: MealRecordOptionProps) => {
         handleInputFormWindow={handleInputFormWindow}
         handleCloseAllWindows={handleCloseAllWindows}
         mode="add"
+        date={date}
       />
     </>
   );

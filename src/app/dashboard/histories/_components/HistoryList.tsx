@@ -1,4 +1,3 @@
-// app/dashboard/history/_components/HistoryList.tsx (Client Component)
 "use client";
 
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
