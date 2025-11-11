@@ -21,7 +21,7 @@ export const DashboardNav = () => {
               </Link>
             </li>
             <li>
-              <Link href="/dashboard/Histories">
+              <Link href="/dashboard/histories">
                 <div className="flex flex-col items-center gap-1">
                   <NavHistoryIcon className="w-6" />
                   <p className="text-xs">履歴</p>
