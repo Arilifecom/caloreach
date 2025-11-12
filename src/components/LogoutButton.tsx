@@ -1,6 +1,7 @@
 "use client";
 
 import { NavLogoutIcon } from "@/components/icons";
+import { Button } from "@/components/ui";
 import { createClient } from "@/utils/supabase/client";
 import { getQueryClient } from "@/utils/tanstack";
 import { useRouter } from "next/navigation";
@@ -25,9 +26,14 @@ const Component = () => {
   };
 
   return (
-    <button onClick={handleLogOut} className="cursor-pointer">
+    <Button
+      variant={"outline"}
+      onClick={handleLogOut}
+      className="cursor-pointer gap-0"
+    >
+      ログアウト
       <NavLogoutIcon className="w-6" />
-    </button>
+    </Button>
   );
 };
 
