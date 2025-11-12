@@ -13,3 +13,4 @@ export * from "./ProgressSection";
 export * from "./ProgressCircle";
 export * from "./ProgressRatio";
 export * from "./RemainingKcal";
+export * from "./DashboardHeader";
