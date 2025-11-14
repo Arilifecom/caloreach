@@ -58,7 +58,7 @@ export const regularFoods = pgTable("regular_foods", {
 });
 
 // target_kcal_history Table
-export const targetKcalHistory = pgTable("target_kcal_history", {
+export const targetKcalPlans = pgTable("target_kcal_plans", {
   id: uuid().primaryKey(),
   userId: uuid()
     .notNull()
@@ -85,7 +85,7 @@ export const schema = {
   profiles,
   foods,
   regularFoods,
-  targetKcalHistory,
+  targetKcalPlans,
   userFoodSelections,
 };
 
@@ -96,10 +96,8 @@ export type SelectMealRecord = typeof mealRecords.$inferSelect;
 export type InsertProfileRecord = typeof profiles.$inferInsert;
 export type SelectProfileRecord = typeof profiles.$inferSelect;
 
-export type InsertTargetKcalHistoryRecord =
-  typeof targetKcalHistory.$inferInsert;
-export type SelectTargetKcalHistoryRecord =
-  typeof targetKcalHistory.$inferSelect;
+export type InsertTargetKcalPlansRecord = typeof targetKcalPlans.$inferInsert;
+export type SelectTargetKcalPlansRecord = typeof targetKcalPlans.$inferSelect;
 
 export type InsertregularFood = typeof regularFoods.$inferInsert;
 export type SelectregularFood = typeof regularFoods.$inferSelect;
