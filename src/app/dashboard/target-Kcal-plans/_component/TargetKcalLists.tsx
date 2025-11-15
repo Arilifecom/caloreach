@@ -1,32 +1,15 @@
 "use client";
 
-import { FetchErrorMessage } from "@/app/dashboard/_components";
 import { TargetKcalListItem } from "@/app/dashboard/target-Kcal-plans/_component/";
-import { Loading } from "@/components";
-import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
-import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { memo } from "react";
 
 type TargetKcalListsProps = {
-  userId: string;
+  data?: SelectTargetKcalPlansRecord[];
+  firstEffectiveDate?: string;
 };
 
-const Component = ({ userId }: TargetKcalListsProps) => {
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: TargetKcalkeys.list(userId),
-    queryFn: () => fetchUserTargetKcal(userId),
-    meta: { errCode: TErrCodes.TARGETKCALL_FETCH_FAILED },
-  });
-
-  if (isLoading) return <Loading />;
-  if (isError) return <FetchErrorMessage onRetry={refetch} />;
-
-  //get first createdAt date for unebled delete
-  const firstEffectiveDate = data?.reduce((oldest, item) =>
-    item.createdAt < oldest.createdAt ? item : oldest
-  )?.effectiveDate;
-
+const Component = ({ data, firstEffectiveDate }: TargetKcalListsProps) => {
   return (
     <>
       <ul className="w-full">

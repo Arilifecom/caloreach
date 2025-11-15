@@ -1,11 +1,16 @@
 "use client";
 
+import { FetchErrorMessage } from "@/app/dashboard/_components";
 import {
   TargetKcalLists,
   TargetKcalPlanForm,
 } from "@/app/dashboard/target-Kcal-plans/_component/";
+import { Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { useWindowControl } from "@/hooks";
+import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
+import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
+import { useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -16,9 +21,23 @@ type TargetKcalSectionProps = {
 const Component = ({ userId }: TargetKcalSectionProps) => {
   const { isFormOpen, handleInputFormWindow } = useWindowControl();
 
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: TargetKcalkeys.list(userId),
+    queryFn: () => fetchUserTargetKcal(userId),
+    meta: { errCode: TErrCodes.TARGETKCALL_FETCH_FAILED },
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <FetchErrorMessage onRetry={refetch} />;
+
+  //get first createdAt date for unebled delete
+  const firstEffectiveDate = data?.reduce((oldest, item) =>
+    item.createdAt < oldest.createdAt ? item : oldest
+  )?.effectiveDate;
+
   return (
     <>
-      <TargetKcalLists userId={userId} />
+      <TargetKcalLists data={data} firstEffectiveDate={firstEffectiveDate} />
 
       <Button
         onClick={handleInputFormWindow}
@@ -32,6 +51,7 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
         isFormOpen={isFormOpen}
         handleInputFormWindow={handleInputFormWindow}
         mode="add"
+        firstEffectiveDate={firstEffectiveDate}
       />
     </>
   );
