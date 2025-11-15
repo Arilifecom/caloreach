@@ -144,8 +144,8 @@ export const TargetKcalPlanForm = ({
 
   const dsc =
     mode === "add"
-      ? "目標カロリーの登録を登録してください"
-      : "目標カロリーの登録を編集してください";
+      ? "目標カロリーを登録してください"
+      : "目標カロリーを編集してください";
 
   useEffect(() => {
     if (!editItem) {
