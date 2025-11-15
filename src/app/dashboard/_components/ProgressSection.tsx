@@ -34,7 +34,7 @@ const Component = ({ userId, date }: ProgressSectionProps) => {
     isLoading: targetKcalIsLoading,
     isError: targetKcalIsError,
   } = useQuery({
-    queryKey: TargetKcalkeys.list(userId),
+    queryKey: TargetKcalkeys.effective(userId),
     queryFn: () => getEfeectiveTargetKcal(userId, date),
     meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
   });
