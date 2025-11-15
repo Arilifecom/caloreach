@@ -23,5 +23,8 @@ export const RegularFoodskeys = {
 export const TargetKcalkeys = {
   all: () => ["targetKcal"] as const,
 
-  list: (userId: string) => [...TargetKcalkeys.all(), userId] as const,
+  list: (userId: string) => [...TargetKcalkeys.all(), "list", userId] as const,
+
+  effective: (userId: string) =>
+    [...TargetKcalkeys.all(), "effective", userId] as const,
 };
