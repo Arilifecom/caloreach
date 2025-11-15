@@ -3,9 +3,9 @@
 import { db } from "@/db";
 import {
   InsertProfileRecord,
-  InsertTargetKcalHistoryRecord,
+  InsertTargetKcalPlansRecord,
   profiles,
-  targetKcalHistory,
+  targetKcalPlans,
 } from "@/db/schema";
 
 //Setup user Name
@@ -22,8 +22,8 @@ export async function createTargetKcal({
   userId,
   targetKcal,
   effectiveDate,
-}: InsertTargetKcalHistoryRecord) {
-  return await db.insert(targetKcalHistory).values({
+}: InsertTargetKcalPlansRecord) {
+  return await db.insert(targetKcalPlans).values({
     id: id,
     userId: userId,
     targetKcal: targetKcal,

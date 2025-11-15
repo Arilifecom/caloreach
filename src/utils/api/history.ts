@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { mealRecords, targetKcalHistory } from "@/db/schema";
+import { mealRecords, targetKcalPlans } from "@/db/schema";
 import { sql, desc, and, eq, lte } from "drizzle-orm";
 
 type getDailyKcalSummaryProps = {
@@ -34,17 +34,17 @@ export async function getDailyKcalSummary({
 
   const targetKcalData = await db
     .select({
-      date: targetKcalHistory.effectiveDate,
-      targetKcal: targetKcalHistory.targetKcal,
+      date: targetKcalPlans.effectiveDate,
+      targetKcal: targetKcalPlans.targetKcal,
     })
-    .from(targetKcalHistory)
+    .from(targetKcalPlans)
     .where(
       and(
-        eq(targetKcalHistory.userId, userId),
-        lte(targetKcalHistory.effectiveDate, dates[0])
+        eq(targetKcalPlans.userId, userId),
+        lte(targetKcalPlans.effectiveDate, dates[0])
       )
     )
-    .orderBy(desc(targetKcalHistory.effectiveDate));
+    .orderBy(desc(targetKcalPlans.effectiveDate));
 
   //各日付の合計データに対応する有効な目標カロリーを紐づけて返す
   const result = totalKcalData.map((dailyRecord) => {
