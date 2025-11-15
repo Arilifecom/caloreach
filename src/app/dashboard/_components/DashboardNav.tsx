@@ -37,7 +37,7 @@ export const DashboardNav = () => {
             </Link>
           </li>
           <li>
-            <Link href="/dashboard/regular-foods">
+            <Link href="/dashboard/target-kcal-plans">
               <div className="flex flex-col items-center">
                 <NavKcalIcon className="w-9" />
                 <p className="text-xs">目標</p>

@@ -4,7 +4,7 @@ import {
   TargetKcalPlanInputResolver,
   TargetKcalPlanInputSchemaInput,
   TargetKcalPlanInputSchemaOutput,
-} from "@/app/dashboard/target-Kcal-plans/_component/schema";
+} from "@/app/dashboard/target-kcal-plans/_component/schema";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Dialog,

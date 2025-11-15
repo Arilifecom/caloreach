@@ -1,6 +1,6 @@
 "use client";
 
-import { TargetKcalListItem } from "@/app/dashboard/target-Kcal-plans/_component/";
+import { TargetKcalListItem } from "@/app/dashboard/target-kcal-plans/_component";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { memo } from "react";
 

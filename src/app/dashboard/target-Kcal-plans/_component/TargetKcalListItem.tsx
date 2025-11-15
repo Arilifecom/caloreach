@@ -1,6 +1,6 @@
 "use client";
 
-import { TargetKcalActionMenu } from "@/app/dashboard/target-Kcal-plans/_component/TargetKcalActionMenu";
+import { TargetKcalActionMenu } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalActionMenu";
 import { List } from "@/components";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { formatDateWithDay } from "@/utils/format";

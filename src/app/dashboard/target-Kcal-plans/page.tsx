@@ -1,4 +1,4 @@
-import { TargetKcalSection } from "@/app/dashboard/target-Kcal-plans/_component";
+import { TargetKcalSection } from "@/app/dashboard/target-kcal-plans/_component";
 import { PageHeader } from "@/components";
 import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
 import { checkAuth, getUser } from "@/utils/auth";
