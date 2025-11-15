@@ -1,4 +1,4 @@
-import { TargetKcalPlanForm } from "@/app/dashboard/target-Kcal-plans/_component/TargetKcalPlanForm";
+import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalPlanForm";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { deleteTargetKcal } from "@/utils/api/targetKcal";

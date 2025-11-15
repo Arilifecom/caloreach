@@ -191,7 +191,7 @@ export const RegularFoodForm = ({
                   render={({ field, fieldState }) => (
                     <>
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>食品名</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>食品名</FieldLabel>
                         <Input
                           {...field}
                           id={field.name}
@@ -273,7 +273,7 @@ export const RegularFoodForm = ({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>カロリー</FieldLabel>
-                    <div className="flex items-end gap-2 ">
+                    <div className="flex items-end gap-2">
                       <Input
                         {...field}
                         id={field.name}
