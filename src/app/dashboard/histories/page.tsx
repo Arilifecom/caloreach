@@ -3,7 +3,7 @@ import { PageHeader } from "@/components";
 import { getDailyKcalSummary } from "@/utils/api/history";
 import { checkAuth, getUser } from "@/utils/auth";
 
-export default async function RegularFoodsPage() {
+export default async function HistoryPage() {
   await checkAuth();
   const userId = await getUser();
 
