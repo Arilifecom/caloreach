@@ -1,4 +1,4 @@
-import { toHalfWidth } from "@/utils/format";
+import { createJstDate, toHalfWidth } from "@/utils/format";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ export const TargetKcalPlanFormSchema = z
   })
   .transform((data) => ({
     targetKcal: data.targetKcal,
-    effectiveDate: new Date(`${data.effectiveDate}T00:00+09:00`),
+    effectiveDate: createJstDate(data.effectiveDate, ""),
   }));
 
 export const TargetKcalPlanInputResolver = zodResolver(

@@ -1,4 +1,4 @@
-import { toHalfWidth } from "@/utils/format";
+import { createJstDate, toHalfWidth } from "@/utils/format";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -26,7 +26,7 @@ const mealRecordInputSchema = z
     foodName: data.foodName,
     gram: data.gram,
     kcal: data.kcal,
-    eatenAt: new Date(`${data.date}T${data.time}:00+09:00`),
+    eatenAt: createJstDate(data.date, data.time),
   }));
 
 export const mealRecordSchemaResolver = zodResolver(mealRecordInputSchema);

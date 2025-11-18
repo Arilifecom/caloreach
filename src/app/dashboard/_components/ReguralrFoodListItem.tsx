@@ -1,7 +1,7 @@
 import { List } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/api/mealRecords";
-import { formatYYMMDD, getCurrentTime } from "@/utils/format";
+import { createJstDate, formatYYMMDD, getCurrentTime } from "@/utils/format";
 import { mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
@@ -41,7 +41,7 @@ const Component = ({
   const handleAddMealRecords = (data: SelectregularFood) => {
     //Create data for meralRecord
     const time = getCurrentTime();
-    const eatenAt = new Date(`${date}T${time}:00+09:00`);
+    const eatenAt = createJstDate(date, time);
 
     const sentDate = {
       ...data,
