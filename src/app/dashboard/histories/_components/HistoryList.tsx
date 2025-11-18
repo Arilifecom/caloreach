@@ -1,74 +1,90 @@
 "use client";
 
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
-import { Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { getDailyKcalSummary } from "@/utils/api/history";
-import { memo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { memo } from "react";
 
 export type DailyKcalSummary = {
+  userId: string;
   date: string;
   totalKcal: number;
   targetKcal: number;
 };
 
 type HistoryListProps = {
-  userId: string;
-  initialData: DailyKcalSummary[];
+  DailyKcalSummaryList: DailyKcalSummary[];
+  nextCursor: string | null;
+  hasNext?: boolean;
+  hasPrev?: boolean;
 };
 
-const Component = ({ initialData, userId }: HistoryListProps) => {
-  const [data, setData] = useState(initialData);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initialData.length > 0);
+const Component = ({
+  DailyKcalSummaryList,
+  nextCursor,
+  hasNext,
+  hasPrev,
+}: HistoryListProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const loadmore = async () => {
-    setLoading(true);
-    const nextOffset = offset + 1;
+  const handleNextPage = () => {
+    if (!nextCursor) return;
 
-    const nextData = await getDailyKcalSummary({
-      userId: userId,
-      offset: nextOffset,
-      limit: 7,
-    });
-
-    setData((prev) => [...prev, ...nextData]);
-    setOffset(nextOffset);
-    setLoading(false);
-
-    if (nextData.length < 7) {
-      setHasMore(false);
-    }
+    const currentParams = new URLSearchParams(searchParams);
+    currentParams.set("currentCursor", nextCursor);
+    router.push(`/dashboard/histories?${currentParams.toString()}`);
   };
 
   return (
     <>
-      {initialData.length === 0 && !loading && (
+      {DailyKcalSummaryList.length === 0 && (
         <p className="font-medium text-center mb-4">履歴はありません</p>
       )}
 
-      {data.length > 0 && (
+      {DailyKcalSummaryList.length > 0 && (
         <ul className="w-full">
-          {data.map((item) => (
-            <HistoryListItem key={item.date} data={item} />
+          {DailyKcalSummaryList.map((dailyMealRecord) => (
+            <HistoryListItem
+              key={dailyMealRecord.date}
+              data={dailyMealRecord}
+            />
           ))}
         </ul>
       )}
 
-      {loading ? (
-        <Loading />
-      ) : hasMore && data.length > 0 ? (
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2">
-          <div className="col-1 border-t"></div>
-          <Button variant="outline" onClick={loadmore}>
-            Lead more
-          </Button>
-          <div className="col-3 border-t"></div>
+      {!hasNext && <p>すべての履歴を表示しました</p>}
+
+      <div className="absolute bottom-24 grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2 px-2">
+        <div className="col-1 border-t"></div>
+        <div className="flex justify-center gap-6">
+          {hasPrev && (
+            <Button
+              variant="outline"
+              onClick={() => router.back()}
+              disabled={!hasPrev}
+              className="flex items-center gap-0 h-11"
+            >
+              <ChevronLeft />
+              Prev
+            </Button>
+          )}
+
+          {hasNext && (
+            <Button
+              variant="outline"
+              onClick={handleNextPage}
+              disabled={!hasNext}
+              className="flex items-center gap-0 h-11"
+            >
+              Next
+              <ChevronRight />
+            </Button>
+          )}
         </div>
-      ) : (
-        <p className="font-medium text-center mb-4">全ての履歴を表示しました</p>
-      )}
+        <div className="col-3 border-t"></div>
+      </div>
     </>
   );
 };
