@@ -41,7 +41,7 @@ type MealRecordFormProps = {
   isFormOpen: boolean;
   handleInputFormWindow: () => void;
   handleCloseAllWindows: () => void;
-  date: string;
+  date?: string;
 };
 
 const defaultValues: mealRecordInputSchemaInput = {
