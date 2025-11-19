@@ -4,13 +4,13 @@ import { fetchDailyKcalSummary } from "@/utils/api/history";
 import { checkAuth, getUser } from "@/utils/auth";
 import { Suspense } from "react";
 
-type HistoryPageProps = {
+export default async function HistoryPage({
+  searchParams,
+}: {
   searchParams: Promise<{
     currentCursor?: string;
   }>;
-};
-
-export default async function HistoryPage({ searchParams }: HistoryPageProps) {
+}) {
   await checkAuth();
   const userId = await getUser();
   const limit = 7;

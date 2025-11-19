@@ -12,7 +12,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 export default async function MealDetailPage({
   params,
 }: {
-  params: { date: string };
+  params: Promise<{ date: string }>;
 }) {
   const userId = await getUser();
   const queryClient = getQueryClient();
