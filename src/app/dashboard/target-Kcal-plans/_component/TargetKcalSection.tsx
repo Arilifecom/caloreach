@@ -4,7 +4,7 @@ import { FetchErrorMessage } from "@/app/dashboard/_components";
 import {
   TargetKcalLists,
   TargetKcalPlanForm,
-} from "@/app/dashboard/target-kcal-plans/_component";
+} from "@/app/dashboard/target-kcal-plans/_component/";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { useWindowControl } from "@/hooks";
