@@ -2,6 +2,7 @@
 
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
+import { encodeCursor } from "@/lib";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { memo } from "react";
@@ -32,8 +33,9 @@ const Component = ({
   const handleNextPage = () => {
     if (!nextCursor) return;
 
+    const encodedCusor = encodeCursor(nextCursor);
     const currentParams = new URLSearchParams(searchParams);
-    currentParams.set("currentCursor", nextCursor);
+    currentParams.set("currentCursor", encodedCusor);
     router.push(`/dashboard/histories?${currentParams.toString()}`);
   };
 
