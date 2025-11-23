@@ -1,5 +1,6 @@
 import { HistoryList } from "@/app/dashboard/histories/_components";
 import { Loading, PageHeader } from "@/components";
+import { decodeCursor } from "@/lib";
 import { fetchDailyKcalSummary } from "@/utils/api/history";
 import { checkAuth, getUser } from "@/utils/auth";
 import { Suspense } from "react";
@@ -8,18 +9,19 @@ export default async function HistoryPage({
   searchParams,
 }: {
   searchParams: Promise<{
-    currentCursor?: string;
+    currentCursor: string;
   }>;
 }) {
   await checkAuth();
   const userId = await getUser();
   const limit = 7;
   const { currentCursor } = await searchParams;
+  const decodedCursor = decodeCursor(currentCursor);
 
   const { items, nextCursor, hasNext, hasPrev } = await fetchDailyKcalSummary({
     userId: userId,
     limit: limit,
-    currentCursor,
+    currentCursor: decodedCursor,
   });
 
   return (
