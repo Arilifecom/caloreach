@@ -4,18 +4,30 @@ import { db } from "@/db";
 import { mealRecords, targetKcalPlans } from "@/db/schema";
 import { sql, desc, and, eq, lte } from "drizzle-orm";
 
+export type DailyKcalSummary = {
+  date: string;
+  totalKcal: number;
+  targetKcal: number;
+};
+
+export type DailyKcalSummaryResponse = {
+  items: DailyKcalSummary[];
+  nextCursor: string | null;
+  hasNext: string | null;
+};
+
 type fetchDailyKcalSummaryProps = {
   userId: string;
   limit: number;
-  currentCursor?: string;
+  currentCursor: string | null;
 };
 
 export async function fetchDailyKcalSummary({
   userId,
-  limit,
   currentCursor,
+  limit,
 }: fetchDailyKcalSummaryProps) {
-  //Get the total daily Kcal intake for each day (limit：7)
+  //Sum the calories for each day over the 7-day period
   const totalKcalData = await db
     .select({
       date: sql<string>`DATE(${mealRecords.eatenAt})`.as("date"),
@@ -38,8 +50,9 @@ export async function fetchDailyKcalSummary({
 
   if (totalKcalData.length === 0) return { items: [], nextCursor: null };
 
-  //Get targetKcal data for the specified period
-  const latestDate = totalKcalData.map((item) => item.date);
+  //Get the effective target kcal for that day
+  const latestDate = totalKcalData[0].date;
+
   const targetKcalData = await db
     .select({
       date: targetKcalPlans.effectiveDate,
@@ -49,36 +62,29 @@ export async function fetchDailyKcalSummary({
     .where(
       and(
         eq(targetKcalPlans.userId, userId),
-        lte(targetKcalPlans.effectiveDate, latestDate[0])
+        lte(targetKcalPlans.effectiveDate, latestDate)
       )
     )
     .orderBy(desc(targetKcalPlans.effectiveDate));
 
-  const result = totalKcalData.map((dailyRecord) => {
-    //Get the most recent targetKcal on or before the dailyRecord date
+  // Get the targetKcal that applies on each date
+  const items = totalKcalData.map((dailyRecord) => {
     const dailyTarget = targetKcalData.find(
       (targetRecord) => targetRecord.date <= dailyRecord.date
     );
-
-    const dailySummary = {
-      userId,
+    return {
       date: dailyRecord.date,
       totalKcal: dailyRecord.totalKcal,
       targetKcal: dailyTarget?.targetKcal ?? 0,
     };
-
-    return dailySummary;
   });
 
-  //Next Cursor
+  //next cursor
   const nextCursor =
-    result.length === limit ? result[result.length - 1].date : null;
+    items.length === limit ? items[items.length - 1].date : null;
 
-  //hasNext
-  const hasNext = result.length === limit;
+  //has next
+  const hasNext = items.length === limit;
 
-  // hasPrev
-  const hasPrev = !!currentCursor;
-
-  return { items: result, nextCursor, hasNext, hasPrev };
+  return { items, nextCursor, hasNext };
 }
