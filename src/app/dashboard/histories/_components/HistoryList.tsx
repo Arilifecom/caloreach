@@ -1,92 +1,88 @@
 "use client";
 
+import { memo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
-import { encodeCursor } from "@/lib";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { memo } from "react";
-
-export type DailyKcalSummary = {
-  userId: string;
-  date: string;
-  totalKcal: number;
-  targetKcal: number;
-};
+import {
+  DailyKcalSummaryResponse,
+  fetchDailyKcalSummary,
+} from "@/utils/api/history";
+import { historieskeys, TErrCodes } from "@/utils/tanstack";
+import { Loading } from "@/components";
+import { FetchErrorMessage } from "@/app/dashboard/_components";
+import { toast } from "sonner";
 
 type HistoryListProps = {
-  DailyKcalSummaryList: DailyKcalSummary[];
-  nextCursor: string | null;
-  hasNext?: boolean;
-  hasPrev?: boolean;
+  userId: string;
+  limit: number;
 };
 
-const Component = ({
-  DailyKcalSummaryList,
-  nextCursor,
-  hasNext,
-  hasPrev,
-}: HistoryListProps) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const Component = ({ userId, limit }: HistoryListProps) => {
+  const queryClient = useQueryClient();
 
-  const handleNextPage = () => {
-    if (!nextCursor) return;
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: historieskeys.list(userId),
+    queryFn: () =>
+      fetchDailyKcalSummary({
+        userId,
+        limit,
+        currentCursor: null,
+      }),
+    meta: { errCode: TErrCodes.HISTORY_FETCH_FAILED },
+  });
 
-    const encodedCusor = encodeCursor(nextCursor);
-    const currentParams = new URLSearchParams(searchParams);
-    currentParams.set("currentCursor", encodedCusor);
-    router.push(`/dashboard/histories?${currentParams.toString()}`);
+  const { items = [], nextCursor = null, hasNext = false } = data ?? {};
+
+  if (isLoading) return <Loading />;
+  if (isError) return <FetchErrorMessage onRetry={refetch} />;
+
+  const fetchMore = async () => {
+    try {
+      const res = await fetchDailyKcalSummary({
+        userId,
+        limit,
+        currentCursor: nextCursor,
+      });
+
+      queryClient.setQueryData(
+        historieskeys.list(userId),
+        (prevData: DailyKcalSummaryResponse) => ({
+          items: [...(prevData?.items || []), ...res.items],
+          nextCursor: res.nextCursor,
+          hasNext: res.hasNext,
+        })
+      );
+    } catch {
+      console.error("Error fetch regularFood");
+      toast.error("履歴データの取得に失敗しました");
+    }
   };
 
   return (
     <>
-      {DailyKcalSummaryList.length === 0 && (
+      {items && items.length === 0 ? (
         <p className="font-medium text-center mb-4">履歴はありません</p>
-      )}
-
-      {DailyKcalSummaryList.length > 0 && (
-        <ul className="w-full">
-          {DailyKcalSummaryList.map((dailyMealRecord) => (
-            <HistoryListItem
-              key={dailyMealRecord.date}
-              data={dailyMealRecord}
-            />
-          ))}
-        </ul>
-      )}
-
-      {!hasNext && <p>すべての履歴を表示しました</p>}
-
-      <div className="absolute bottom-24 grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2 px-2">
-        <div className="col-1 border-t"></div>
-        <div className="flex justify-center gap-6">
-          {hasPrev && (
-            <Button
-              variant="outline"
-              onClick={() => router.back()}
-              disabled={!hasPrev}
-              className="flex items-center gap-0 h-11"
-            >
-              <ChevronLeft />
-              Prev
-            </Button>
+      ) : (
+        <>
+          <ul className="w-full">
+            {items.map((item) => (
+              <HistoryListItem key={item.date} data={item} />
+            ))}
+          </ul>
+          {hasNext ? (
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2">
+              <div className="col-1 border-t" />
+              <Button variant="outline" onClick={() => fetchMore()}>
+                Load more
+              </Button>
+              <div className="col-3 border-t" />
+            </div>
+          ) : (
+            <p className="font-medium text-center">全ての履歴を表示しました</p>
           )}
-
-          {hasNext && (
-            <Button
-              variant="outline"
-              onClick={handleNextPage}
-              disabled={!hasNext}
-              className="flex items-center gap-0 h-11"
-            >
-              Next
-              <ChevronRight />
-            </Button>
-          )}
-        </div>
-        <div className="col-3 border-t"></div>
-      </div>
+        </>
+      )}
     </>
   );
 };
