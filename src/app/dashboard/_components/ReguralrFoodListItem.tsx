@@ -2,7 +2,7 @@ import { List } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/api/mealRecords";
 import { createJstDate, formatYYMMDD, getCurrentTime } from "@/utils/format";
-import { mealRecordkeys } from "@/utils/tanstack";
+import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
 import { toast } from "sonner";
@@ -30,6 +30,11 @@ const Component = ({
           formatYYMMDD(sentDate.eatenAt)
         ),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(sentDate.userId),
+      });
+
       handleCloseAllWindows();
     },
     onError: () => {

@@ -27,7 +27,12 @@ import {
   fetchFoodsBySearch,
 } from "@/utils/api/mealRecords";
 import { formatTime, formatYYMMDD, getCurrentTime } from "@/utils/format";
-import { foodskeys, mealRecordkeys, TErrCodes } from "@/utils/tanstack";
+import {
+  foodskeys,
+  historieskeys,
+  mealRecordkeys,
+  TErrCodes,
+} from "@/utils/tanstack";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -136,6 +141,11 @@ export const MealRecordForm = ({
           formatYYMMDD(sentDate.eatenAt)
         ),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(sentDate.userId),
+      });
+
       handleCloseAllWindows();
     },
     onError: () => {
@@ -146,9 +156,13 @@ export const MealRecordForm = ({
 
   const editMutation = useMutation({
     mutationFn: editMealRecord,
-    onSuccess: () => {
+    onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.all(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(sentDate.userId),
       });
       handleCloseAllWindows();
     },

@@ -1,28 +1,22 @@
 import { HistoryList } from "@/app/dashboard/histories/_components";
-import { Loading, PageHeader } from "@/components";
-import { decodeCursor } from "@/lib";
+import { PageHeader } from "@/components";
 import { fetchDailyKcalSummary } from "@/utils/api/history";
-import { checkAuth, getUser } from "@/utils/auth";
-import { Suspense } from "react";
+import { getUserIdBycheckAuth } from "@/utils/auth";
+import { getQueryClient, historieskeys } from "@/utils/tanstack";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default async function HistoryPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    currentCursor: string;
-  }>;
-}) {
-  await checkAuth();
-  const userId = await getUser();
+export default async function HistoryPage() {
+  const userId = await getUserIdBycheckAuth();
+  const queryClient = getQueryClient();
   const limit = 7;
-  const { currentCursor } = await searchParams;
-  const decodedCursor = decodeCursor(currentCursor);
 
-  const { items, nextCursor, hasNext, hasPrev } = await fetchDailyKcalSummary({
-    userId: userId,
-    limit: limit,
-    currentCursor: decodedCursor,
+  await queryClient.prefetchQuery({
+    queryKey: historieskeys.list(userId),
+    queryFn: () =>
+      fetchDailyKcalSummary({ userId, limit, currentCursor: null }),
   });
+
+  const dehydratedState = dehydrate(queryClient);
 
   return (
     <>
@@ -30,14 +24,9 @@ export default async function HistoryPage({
         title="過去の食事履歴"
         description="日付ごとに摂取したカロリー合計です。"
       />
-      <Suspense fallback={<Loading />}>
-        <HistoryList
-          DailyKcalSummaryList={items}
-          nextCursor={nextCursor}
-          hasNext={hasNext}
-          hasPrev={hasPrev}
-        />
-      </Suspense>
+      <HydrationBoundary state={dehydratedState}>
+        <HistoryList userId={userId} limit={limit} />
+      </HydrationBoundary>
     </>
   );
 }

@@ -20,6 +20,12 @@ export const RegularFoodskeys = {
   list: (userId: string) => [...RegularFoodskeys.all(), userId] as const,
 };
 
+export const historieskeys = {
+  all: () => ["histories"] as const,
+
+  list: (userId: string) => [...historieskeys.all(), userId] as const,
+};
+
 export const TargetKcalkeys = {
   all: () => ["targetKcal"] as const,
 
