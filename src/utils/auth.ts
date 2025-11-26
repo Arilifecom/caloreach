@@ -1,17 +1,25 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export const checkAuth = async () => {
+//Check JWT auth and get userId
+export const getUserIdBycheckAuth = async () => {
   const supabase = await createClient();
+
   const { data, error } = await supabase.auth.getClaims();
 
-  if (error || !data) {
-    console.error("Error fetching Claims:", error || "no data");
-
+  if (error || !data?.claims) {
+    console.error(
+      "Authentication failed via getClaims:",
+      error?.message || "No claims data"
+    );
     redirect("/auth/login");
   }
+
+  const userId = data.claims.sub;
+  return userId;
 };
 
+//check auth “カロリーチをはじめる” button on the Home landing page.
 export const checkAuthClient = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
@@ -21,16 +29,4 @@ export const checkAuthClient = async () => {
   }
 
   return true;
-};
-
-export const getUser = async () => {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data) {
-    console.error("Error fetching Claims:", error || "no data");
-    redirect("/auth/login");
-  }
-
-  return data.user.id;
 };
