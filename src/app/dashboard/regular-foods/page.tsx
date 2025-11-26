@@ -1,13 +1,12 @@
 import { RegularFoodSection } from "@/app/dashboard/regular-foods/_components";
 import { PageHeader } from "@/components";
 import { fetchUserRegularFoods } from "@/utils/api/regularFoods";
-import { checkAuth, getUser } from "@/utils/auth";
+import { getUserIdBycheckAuth } from "@/utils/auth";
 import { getQueryClient, RegularFoodskeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function RegularFoodsPage() {
-  await checkAuth();
-  const userId = await getUser();
+  const userId = await getUserIdBycheckAuth();
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
