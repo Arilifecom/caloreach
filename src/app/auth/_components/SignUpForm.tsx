@@ -149,11 +149,16 @@ export const SignupForm = () => {
           </form>
         </FieldGroup>
 
-        <div className="grid gap-6 justify-center">
+        <div className="grid gap-4 justify-center">
           <p>
             アカウントをお持ちの方は
             <Link href="/auth/login" className="font-bold">
               Login
+            </Link>
+          </p>
+          <p className="mx-auto underline">
+            <Link href="/" className="font-bold">
+              ホームへもどる
             </Link>
           </p>
         </div>

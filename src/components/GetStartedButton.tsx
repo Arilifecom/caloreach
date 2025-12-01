@@ -19,7 +19,11 @@ const Component = ({ isLoggedIn }: GetStartedButtonProps) => {
     }
   };
 
-  return <Button onClick={handleClick}>カロリーチを始める</Button>;
+  return (
+    <Button onClick={handleClick} className="font-bold">
+      ログインして始める
+    </Button>
+  );
 };
 
 const GetStartedButton = memo(Component);

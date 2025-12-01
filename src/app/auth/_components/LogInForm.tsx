@@ -128,11 +128,16 @@ export const LogInForm = () => {
           </form>
         </FieldGroup>
 
-        <div className="grid gap-6 justify-center py-4">
+        <div className="grid gap-4 justify-center py-4">
           <p>
             アカウントをお持ちでない方は
             <Link href="/auth/signup" className="font-bold">
               signup
+            </Link>
+          </p>
+          <p className="mx-auto underline">
+            <Link href="/" className="font-bold">
+              ホームへもどる
             </Link>
           </p>
         </div>
