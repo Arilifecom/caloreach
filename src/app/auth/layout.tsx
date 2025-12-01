@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid min-h-screen p-8 pb-20 sm:p-20 bg-cover bg-center">
+    <div className="relative grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 bg-cover bg-center">
       <Image
         src="/images/bg.webp"
         alt="background-image"
