@@ -30,7 +30,9 @@ export async function fetchDailyKcalSummary({
   //Sum the calories for each day over the 7-day period
   const totalKcalData = await db
     .select({
-      date: sql<string>`DATE(${mealRecords.eatenAt})`.as("date"),
+      date: sql<string>`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`.as(
+        "date"
+      ),
       totalKcal: sql<number>`SUM(${mealRecords.kcal})`.as("total_kcal"),
     })
     .from(mealRecords)
@@ -39,13 +41,13 @@ export async function fetchDailyKcalSummary({
         ${mealRecords.userId} = ${userId}
         ${
           currentCursor
-            ? sql`AND DATE(${mealRecords.eatenAt}) < ${currentCursor}`
+            ? sql`AND DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') < ${currentCursor}`
             : sql``
         }
       `
     )
-    .groupBy(sql`DATE(${mealRecords.eatenAt})`)
-    .orderBy(desc(sql`DATE(${mealRecords.eatenAt})`))
+    .groupBy(sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`)
+    .orderBy(desc(sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`))
     .limit(limit);
 
   if (totalKcalData.length === 0) return { items: [], nextCursor: null };
