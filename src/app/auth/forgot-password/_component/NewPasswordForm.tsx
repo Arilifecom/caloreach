@@ -3,8 +3,8 @@
 import {
   newPassWordInputResolver,
   NewPassWordInputSchema,
-} from "@/app/auth/_components/_schema";
-import { PageHeader, VerticalLine } from "@/components";
+} from "@/app/auth/forgot-password/_schema";
+import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
@@ -13,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { createClient } from "@/utils/supabase/client";
+import { updateNewPassWord } from "@/utils/api/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -24,8 +24,8 @@ const defaultValues: NewPassWordInputSchema = {
 
 export const NewPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const form = useForm<NewPassWordInputSchema>({
     resolver: newPassWordInputResolver,
@@ -33,21 +33,27 @@ export const NewPassWordForm = () => {
   });
 
   //Update password
-  const UpdateNewPassWord = async (data: NewPassWordInputSchema) => {
-    const { error } = await supabase.auth.updateUser({
-      password: data.password,
-    });
-
-    if (error) {
+  const submitPasswordSent = async (formData: NewPassWordInputSchema) => {
+    try {
+      setIsLoading(true);
+      await updateNewPassWord(formData);
+      //go to mailnotice UI page
+      router.push("/auth/mailnotice?type=reset-success");
+    } catch (error) {
       console.error(error);
       setErrorMessage("送信に失敗しました");
+    } finally {
+      setIsLoading(false);
     }
-    //go to mailnotice UI page
-    router.push("/auth/mailnotice?type=reset-success");
   };
 
   return (
     <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
+          <Loading />
+        </div>
+      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -60,7 +66,7 @@ export const NewPassWordForm = () => {
         <VerticalLine className="px-6" />
         <FieldGroup>
           <form
-            onSubmit={form.handleSubmit(UpdateNewPassWord)}
+            onSubmit={form.handleSubmit(submitPasswordSent)}
             className="space-y-4 px-6"
           >
             <Controller
@@ -85,8 +91,9 @@ export const NewPassWordForm = () => {
             <Button
               type="submit"
               className="rounded-lg block mx-auto mt-4 h-10"
+              disabled={isLoading}
             >
-              パスワード再登録
+              {isLoading ? <Loading /> : "パスワード再登録"}
             </Button>
           </form>
         </FieldGroup>

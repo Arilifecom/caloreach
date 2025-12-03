@@ -2,9 +2,12 @@
 
 import {
   LoginFormInputSchema,
-  ResetPassWordInputSchema,
   signupInputSchemaOutput,
 } from "@/app/auth/_components/_schema";
+import {
+  NewPassWordInputSchema,
+  ResetPassWordInputSchema,
+} from "@/app/auth/forgot-password/_schema";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -81,7 +84,7 @@ export async function resetPassWord(formData: ResetPassWordInputSchema) {
   if (!email) return;
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/auth/reset-password/`,
+    redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/auth/forgot-password/update-password`,
   });
 
   if (error) {
@@ -91,3 +94,18 @@ export async function resetPassWord(formData: ResetPassWordInputSchema) {
 
   return;
 }
+
+//Upadate NewPassWord
+export const updateNewPassWord = async (formData: NewPassWordInputSchema) => {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.updateUser({
+    password: formData.password,
+  });
+
+  if (error) {
+    console.error(error);
+  }
+
+  return;
+};

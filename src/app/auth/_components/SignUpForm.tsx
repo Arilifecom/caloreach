@@ -5,7 +5,7 @@ import {
   signupSchemaResolver,
 } from "@/app/auth/_components/_schema";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
-import { PageHeader, VerticalLine } from "@/components";
+import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
@@ -28,6 +28,7 @@ const defaultValues: signupInputSchemaInput = {
 
 export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<
@@ -42,13 +43,15 @@ export const SignupForm = () => {
   //Signin with email and password
   const submitEmailSignup = async (values: signupInputSchemaOutput) => {
     try {
+      setIsLoading(true);
       await signup(values);
-
       //go to mailnotice UI page
       router.push("/auth/mailnotice?type=verify");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +66,11 @@ export const SignupForm = () => {
 
   return (
     <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
+          <Loading />
+        </div>
+      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -143,7 +151,11 @@ export const SignupForm = () => {
               )}
             />
 
-            <Button type="submit" className="w-full rounded-lg mt-4 h-10">
+            <Button
+              type="submit"
+              className="w-full rounded-lg mt-4 h-10"
+              disabled={isLoading}
+            >
               アカウント登録
             </Button>
           </form>
