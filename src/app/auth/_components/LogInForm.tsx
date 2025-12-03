@@ -5,7 +5,7 @@ import {
   LoginFormInputSchema,
 } from "@/app/auth/_components/_schema";
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
-import { PageHeader, VerticalLine } from "@/components";
+import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
@@ -27,6 +27,7 @@ const loginDefaultValues: LoginFormInputSchema = {
 
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<LoginFormInputSchema>({
@@ -37,25 +38,36 @@ export const LogInForm = () => {
   //Login with email and password
   const submitEmailLogin = async (values: LoginFormInputSchema) => {
     try {
+      setIsLoading(true);
       await login(values);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
       setErrorMessage("ログインに失敗しました");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   //Signin with Google
   const submitGoogle = async () => {
     try {
+      setIsLoading(true);
       await loginGoogle();
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
+          <Loading />
+        </div>
+      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -122,7 +134,11 @@ export const LogInForm = () => {
               </Link>
             </p>
 
-            <Button type="submit" className="w-full rounded-lg mt-4">
+            <Button
+              type="submit"
+              className="w-full rounded-lg mt-4"
+              disabled={isLoading}
+            >
               ログイン
             </Button>
           </form>
