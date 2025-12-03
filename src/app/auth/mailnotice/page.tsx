@@ -1,4 +1,4 @@
-import { EmailSentNotice } from "@/app/auth/_components";
+import { EmailSentNotice } from "@/app/auth/mailnotice/_component";
 
 export default async function MailNoticePage({
   searchParams,
