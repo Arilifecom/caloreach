@@ -76,8 +76,20 @@ export async function signup(formData: signupInputSchemaOutput) {
   return;
 }
 
+//Sign out
+export const signOut = async () => {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("サインアウトに失敗しました", error);
+    return;
+  }
+};
+
 //Reset PassWord
-export async function resetPassWord(formData: ResetPassWordInputSchema) {
+export const resetPassWord = async (formData: ResetPassWordInputSchema) => {
   const supabase = await createClient();
   const email = formData.email;
 
@@ -93,7 +105,7 @@ export async function resetPassWord(formData: ResetPassWordInputSchema) {
   }
 
   return;
-}
+};
 
 //Upadate NewPassWord
 export const updateNewPassWord = async (formData: NewPassWordInputSchema) => {

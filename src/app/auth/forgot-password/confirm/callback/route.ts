@@ -10,7 +10,9 @@ export async function GET(request: NextRequest) {
     searchParams.get("next") ?? "/auth/forgot-password/update-password";
 
   if (!token_hash || !type) {
-    return NextResponse.redirect("/auth/auth-code-error");
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_ORIGIN}/auth/auth-code-error`
+    );
   }
 
   const supabase = await createClient();
@@ -21,7 +23,9 @@ export async function GET(request: NextRequest) {
   });
 
   if (error) {
-    return NextResponse.redirect("/auth/auth-code-error");
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_ORIGIN}/auth/auth-code-error`
+    );
   }
 
   return NextResponse.redirect(next);
