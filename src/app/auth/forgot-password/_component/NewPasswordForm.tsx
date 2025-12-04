@@ -13,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { updateNewPassWord } from "@/utils/api/auth";
+import { signOut, updateNewPassWord } from "@/utils/api/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -37,6 +37,7 @@ export const NewPassWordForm = () => {
     try {
       setIsLoading(true);
       await updateNewPassWord(formData);
+      await signOut();
       //go to mailnotice UI page
       router.push("/auth/mailnotice?type=reset-success");
     } catch (error) {
