@@ -1,12 +1,12 @@
 import { TargetKcalSection } from "@/app/dashboard/target-kcal-plans/_component";
 import { PageHeader } from "@/components";
 import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
-import { getUserIdBycheckAuth } from "@/utils/auth";
+import { getUserId } from "@/utils/auth";
 import { getQueryClient, TargetKcalkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function TargetKcalPage() {
-  const userId = await getUserIdBycheckAuth();
+  const userId = await getUserId();
 
   const queryClient = getQueryClient();
 

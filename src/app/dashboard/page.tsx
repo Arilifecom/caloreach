@@ -4,13 +4,13 @@ import {
 } from "@/app/dashboard/_components";
 import { PageHeader } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
-import { getUserIdBycheckAuth } from "@/utils/auth";
+import { getUserId } from "@/utils/auth";
 import { formatDateWithDay, getToday } from "@/utils/format";
 import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function Dashboard() {
-  const userId = await getUserIdBycheckAuth();
+  const userId = await getUserId();
   const queryClient = getQueryClient();
 
   const today = getToday();
