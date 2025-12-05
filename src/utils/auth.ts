@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 //Check JWT auth and get userId
-export const getUserIdBycheckAuth = async () => {
+export const getUserId = async () => {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getClaims();

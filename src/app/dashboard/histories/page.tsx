@@ -1,12 +1,12 @@
 import { HistoryList } from "@/app/dashboard/histories/_components";
 import { PageHeader } from "@/components";
 import { fetchDailyKcalSummary } from "@/utils/api/history";
-import { getUserIdBycheckAuth } from "@/utils/auth";
+import { getUserId } from "@/utils/auth";
 import { getQueryClient, historieskeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function HistoryPage() {
-  const userId = await getUserIdBycheckAuth();
+  const userId = await getUserId();
   const queryClient = getQueryClient();
   const limit = 7;
 
