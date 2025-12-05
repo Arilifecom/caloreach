@@ -52,9 +52,10 @@ const Component = ({ userId, date }: ProgressSectionProps) => {
   const targetKcalDisplay = targetKcal === undefined ? null : targetKcal;
 
   //For prgoress remainingKcal UI
+  const isOver = totalKcal && targetKcal ? totalKcal > targetKcal : null;
   const remainingKcalValue =
     targetKcal != null && totalKcal != null
-      ? Math.floor(targetKcal - totalKcal)
+      ? Math.abs(targetKcal - totalKcal)
       : null;
 
   return (
@@ -79,6 +80,7 @@ const Component = ({ userId, date }: ProgressSectionProps) => {
           remainingKcalValue={remainingKcalValue}
           isLoading={isLoading}
           isError={progressError}
+          isOver={isOver}
           className="col-start-2 col-span-2"
         />
       </div>
