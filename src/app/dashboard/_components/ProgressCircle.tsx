@@ -28,12 +28,16 @@ const Component = ({
 }: CircularProgressProps) => {
   const size = 200;
   const radius = size / 2 - 10;
-  const circumference = Math.ceil(3.14 * radius * 2);
-  const percentage = Math.ceil(circumference * ((100 - progressValue) / 100));
-
   const viewBox = `-${size * 0.125} -${size * 0.125} ${size * 1.25} ${
     size * 1.25
   }`;
+
+  const circumference = Math.ceil(3.14 * radius * 2);
+  const percentage = Math.ceil(circumference * ((100 - progressValue) / 100));
+  const overProgress = Math.max(progressValue - 100, 0);
+
+  const overPercentage =
+    circumference * (1 - Math.min(overProgress, 100) / 100);
 
   return (
     <CardWithShadow className={(cn("p-0"), className)}>
@@ -71,6 +75,21 @@ const Component = ({
             strokeDasharray={circumference}
             className={cn("stroke-primary", progressClassName)}
           />
+
+          {/* over 100% */}
+          {overPercentage > 0 && (
+            <circle
+              r={radius}
+              cx={size / 2}
+              cy={size / 2}
+              strokeWidth="14"
+              strokeLinecap="round"
+              fill="transparent"
+              strokeDasharray={circumference}
+              strokeDashoffset={overPercentage}
+              className={cn("stroke-amber-400", progressClassName)}
+            />
+          )}
         </svg>
       </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
