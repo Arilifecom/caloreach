@@ -1,13 +1,12 @@
 import { GetStartedButton } from "@/components";
 import { Button } from "@/components/ui";
+import { checkAuthClient } from "@/utils/auth";
 import Image from "next/image";
 import Link from "next/link";
 
-type HiroSectionProps = {
-  isLoggedIn: boolean;
-};
+export const HiroSection = async () => {
+  const isLoggedIn = await checkAuthClient();
 
-export const HiroSection = ({ isLoggedIn }: HiroSectionProps) => {
   return (
     <section>
       <div className="w-full h-full p-[5%] min-h-[100vh] gap-12 flex flex-col place-items-center md:flex-row md:place-items-start md:gap-6">

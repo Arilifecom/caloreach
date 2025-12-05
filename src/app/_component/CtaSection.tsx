@@ -1,12 +1,11 @@
 import { GetStartedButton } from "@/components";
 import { CardHeader, CardWithShadow } from "@/components/ui";
+import { checkAuthClient } from "@/utils/auth";
 import Image from "next/image";
 
-type CtaSectionProps = {
-  isLoggedIn: boolean;
-};
+export const CtaSection = async () => {
+  const isLoggedIn = await checkAuthClient();
 
-export const CtaSection = ({ isLoggedIn }: CtaSectionProps) => {
   return (
     <section className="min-h-[70vh] grid place-items-center p-[5%] md:min-h-screen">
       <CardWithShadow className="max-w-2xl">
