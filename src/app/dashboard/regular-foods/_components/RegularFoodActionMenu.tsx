@@ -52,7 +52,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
       {isOptionOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={handleOptionWindow} />
-          <div className="absolute border-1 rounded-lg  right-0 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
+          <div className="absolute border-1 rounded-lg  right-0 -top-4 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
             <button
               onClick={handleInputFormWindow}
               className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg"
