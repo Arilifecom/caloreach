@@ -14,6 +14,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { signOut, updateNewPassWord } from "@/utils/api/auth";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -25,6 +26,7 @@ const defaultValues: NewPassWordInputSchema = {
 export const NewPassWordForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const form = useForm<NewPassWordInputSchema>({
@@ -76,13 +78,25 @@ export const NewPassWordForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor={field.name}>新しいパスワード</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="6字以上を入力してください"
-                    type="password"
-                  />
+
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      id={field.name}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="6字以上を入力してください"
+                      type={showPassword ? "text" : "password"}
+                      className="pr-8"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      style={{ top: "50%", transform: "translateY(-50%)" }}
+                      className="absolute right-2 text-gray-800 z-10"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

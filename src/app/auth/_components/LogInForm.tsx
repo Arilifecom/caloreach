@@ -15,6 +15,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { login, loginGoogle } from "@/utils/api/auth";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,6 +29,7 @@ const loginDefaultValues: LoginFormInputSchema = {
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const form = useForm<LoginFormInputSchema>({
@@ -111,13 +113,26 @@ export const LogInForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor={field.name}>パスワード</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="パスワードを入力してください"
-                    type="password"
-                  />
+
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      id={field.name}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="パスワードを入力してください"
+                      type={showPassword ? "text" : "password"}
+                      className="pr-8"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      style={{ top: "50%", transform: "translateY(-50%)" }}
+                      className="absolute right-2 text-gray-800 z-10"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
