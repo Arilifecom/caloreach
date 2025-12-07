@@ -49,6 +49,12 @@ type MealRecordFormProps = {
   date?: string;
 };
 
+type selectedFood = {
+  id: string;
+  foodName: string;
+  kcalPer100g: number;
+} | null;
+
 const defaultValues: mealRecordInputSchemaInput = {
   date: "",
   time: "",
@@ -69,7 +75,7 @@ export const MealRecordForm = ({
   const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
   const debouncedSearch = useDebounce(query, 400);
-  const [selectedFoodKcal, setSelectedFoodKcal] = useState<number | null>(null);
+  const [selectedFood, setSelectedFood] = useState<selectedFood>(null);
   const [eatenGrams, setEatenGrams] = useState("");
 
   const form = useForm<
@@ -83,17 +89,19 @@ export const MealRecordForm = ({
 
   //Auto calculate Kcal when user selected Food by incremental search
   useEffect(() => {
-    if (selectedFoodKcal === null) return;
+    if (!selectedFood?.kcalPer100g) return;
     const eatenGramsToNum = Number(eatenGrams);
-    const result = Math.floor((selectedFoodKcal * eatenGramsToNum) / 100);
+    const result = Math.floor(
+      (selectedFood.kcalPer100g * eatenGramsToNum) / 100
+    );
     form.setValue("kcal", result.toString());
-  }, [selectedFoodKcal, form, eatenGrams]);
+  }, [selectedFood, form, eatenGrams]);
 
   //Reset Auto calculate when user changed foodName
   const foodName = form.watch("foodName");
   useEffect(() => {
     if (foodName === "") {
-      setSelectedFoodKcal(null);
+      setSelectedFood(null);
       setEatenGrams("");
       form.setValue("gram", "");
       form.setValue("kcal", "");
@@ -175,8 +183,13 @@ export const MealRecordForm = ({
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
     const sentDate =
       mode === "edit" && editItem
-        ? { ...data, id: editItem.id, userId: editItem.userId }
-        : { ...data, id: uuidv7(), userId: userId };
+        ? {
+            ...data,
+            id: editItem.id,
+            userId: editItem.userId,
+            foodId: selectedFood?.id,
+          }
+        : { ...data, id: uuidv7(), userId: userId, foodId: selectedFood?.id };
 
     if (mode === "edit" && editItem) {
       if (editMutation.isPending) return;
@@ -289,7 +302,11 @@ export const MealRecordForm = ({
                               onClick={() => {
                                 setQuery(item.foodName);
                                 field.onChange(item.foodName);
-                                setSelectedFoodKcal(item.kcalPer100g);
+                                setSelectedFood({
+                                  id: item.id,
+                                  foodName: item.foodName,
+                                  kcalPer100g: item.kcalPer100g,
+                                });
                               }}
                             >
                               {item.foodName}

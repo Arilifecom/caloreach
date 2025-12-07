@@ -27,6 +27,7 @@ export const mealRecords = pgTable("meal_records", {
   gram: integer().notNull(),
   kcal: integer().notNull(),
   eatenAt: timestamp({ withTimezone: true }).notNull(),
+  foodId: uuid().references(() => foods.id),
   ...timestamps,
 });
 
