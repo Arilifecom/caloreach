@@ -2,7 +2,7 @@
 
 import { NavLogoutIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
-import { signOut } from "@/utils/api/auth";
+import { createClient } from "@/utils/supabase/client";
 import { getQueryClient } from "@/utils/tanstack";
 import { useRouter } from "next/navigation";
 import React, { memo } from "react";
@@ -11,9 +11,16 @@ const Component = () => {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    await signOut();
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signOut();
     const queryClient = getQueryClient();
     queryClient.clear();
+
+    if (error) {
+      console.error("サインアウトに失敗しました", error);
+      return;
+    }
 
     return router.push("/auth/login");
   };
