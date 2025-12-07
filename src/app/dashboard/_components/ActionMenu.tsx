@@ -25,7 +25,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
 
   const deleteMutation = useMutation({
     mutationFn: async (mealRecord: SelectMealRecord) => {
-      await deleteMealRecord(mealRecord.id);
+      await deleteMealRecord(mealRecord);
       return mealRecord;
     },
     onSuccess: (_, mealRecord) => {

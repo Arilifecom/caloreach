@@ -5,6 +5,7 @@ import {
   foods,
   InsertMealRecord,
   mealRecords,
+  SelectMealRecord,
   userFoodSelections,
 } from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
@@ -29,20 +30,30 @@ export const fetchUserDailyMealRecords = async (
 
 //Insert user meal Record
 export const addMealRecord = async (InputData: InsertMealRecord) => {
-  await db.insert(mealRecords).values(InputData);
+  return db.transaction(async (tx) => {
+    await tx.insert(mealRecords).values(InputData);
 
-  if (InputData.foodId) {
-    await db.insert(userFoodSelections).values({
-      id: uuidv7(),
-      userId: InputData.userId,
-      foodId: InputData.foodId,
-    });
-  }
+    if (InputData.foodId) {
+      await tx.insert(userFoodSelections).values({
+        id: uuidv7(),
+        userId: InputData.userId,
+        foodId: InputData.foodId,
+      });
+    }
+  });
 };
 
 //Delete user meal Record
-export const deleteMealRecord = async (itemId: string) => {
-  await db.delete(mealRecords).where(eq(mealRecords.id, itemId));
+export const deleteMealRecord = async (InputData: SelectMealRecord) => {
+  return db.transaction(async (tx) => {
+    await tx.delete(mealRecords).where(eq(mealRecords.id, InputData.id));
+
+    if (InputData.foodId) {
+      await tx
+        .delete(userFoodSelections)
+        .where(eq(userFoodSelections.foodId, InputData.foodId));
+    }
+  });
 };
 
 //Edit user meal Record
