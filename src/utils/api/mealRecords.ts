@@ -1,9 +1,15 @@
 "use server";
 
 import { db } from "@/db";
-import { foods, InsertMealRecord, mealRecords } from "@/db/schema";
+import {
+  foods,
+  InsertMealRecord,
+  mealRecords,
+  userFoodSelections,
+} from "@/db/schema";
 import { endOfDay, startOfDay } from "date-fns";
 import { and, asc, eq, gte, like, lte, sql } from "drizzle-orm";
+import { v7 as uuidv7 } from "uuid";
 
 //Get user diary　mealRecords
 export const fetchUserDailyMealRecords = async (
@@ -24,6 +30,14 @@ export const fetchUserDailyMealRecords = async (
 //Insert user meal Record
 export const addMealRecord = async (InputData: InsertMealRecord) => {
   await db.insert(mealRecords).values(InputData);
+
+  if (InputData.foodId) {
+    await db.insert(userFoodSelections).values({
+      id: uuidv7(),
+      userId: InputData.userId,
+      foodId: InputData.foodId,
+    });
+  }
 };
 
 //Delete user meal Record
