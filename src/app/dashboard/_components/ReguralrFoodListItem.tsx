@@ -20,7 +20,7 @@ const Component = ({
   date,
 }: ReguralrFoodItemProps) => {
   const queryClient = useQueryClient();
-  //Mutations
+  //AddMutations
   const addMutation = useMutation({
     mutationFn: addMealRecord,
     onSuccess: (_, sentDate) => {
@@ -43,8 +43,8 @@ const Component = ({
     },
   });
 
+  //Insert data to meralRecord
   const handleAddMealRecords = (data: SelectregularFood) => {
-    //Create data for meralRecord
     const time = getCurrentTime();
     const eatenAt = createJstDate(date, time);
 
