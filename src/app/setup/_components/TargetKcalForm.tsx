@@ -14,7 +14,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { createTargetKcal } from "@/utils/api/setup";
-import { format } from "date-fns";
+import { getToday } from "@/utils/format/date";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -42,7 +42,7 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
   });
 
   const submitTargetKcalSent = async (value: TargetKcalInputSchemaOutput) => {
-    const effectiveDate = format(new Date(), "yyyy-MM-dd");
+    const effectiveDate = getToday();
 
     const targetkcalData = {
       id: uuidv7(),

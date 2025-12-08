@@ -26,7 +26,7 @@ import {
   editMealRecord,
   fetchFoodsBySearch,
 } from "@/utils/api/mealRecords";
-import { formatTime, formatYYMMDD, getCurrentTime } from "@/utils/format";
+import { formatTime, formatYYMMDD, getCurrentTime } from "@/utils/format/date";
 import {
   foodskeys,
   historieskeys,
@@ -206,7 +206,9 @@ export const MealRecordForm = ({
   }, [mode]);
 
   const dsc = useMemo(() => {
-    return mode === "add" ? "食事を追加してください" : "食事を編集してください";
+    return mode === "add"
+      ? "食事を追加してください"
+      : "カロリー自動計算は食品の再検索・再選択時にのみ適用されます";
   }, [mode]);
 
   return (

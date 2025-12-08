@@ -5,7 +5,7 @@ import {
 import { PageHeader } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { getUserId } from "@/utils/auth";
-import { formatDateWithDay, getToday } from "@/utils/format";
+import { formatDateWithDay, getToday } from "@/utils/format/date";
 import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
@@ -15,6 +15,7 @@ export default async function Dashboard() {
 
   const today = getToday();
   const displayDate = new Date();
+  const formatedDisplayDate = formatDateWithDay(displayDate);
 
   await queryClient.prefetchQuery({
     queryKey: mealRecordkeys.dailyList(userId, today),
@@ -26,8 +27,8 @@ export default async function Dashboard() {
   return (
     <>
       <PageHeader
-        title={formatDateWithDay(displayDate)}
-        description="目標達成までがんばろう！"
+        title={`今日の食事記録｜ ${formatedDisplayDate} `}
+        description={`目標達成までのカロリー進捗を確認しましょう。今日の一歩が習慣になります。`}
       />
       <HydrationBoundary state={dehydratedState}>
         <ProgressSection userId={userId} date={today} />

@@ -1,7 +1,11 @@
 import { List } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/api/mealRecords";
-import { createJstDate, formatYYMMDD, getCurrentTime } from "@/utils/format";
+import {
+  createJstDate,
+  formatYYMMDD,
+  getCurrentTime,
+} from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";

@@ -19,8 +19,8 @@ export default async function RegularFoodsPage() {
   return (
     <>
       <PageHeader
-        title={"レギュラーフード一覧"}
-        description="頻繁に摂取する食事を登録してください"
+        title="レギュラーフード"
+        description="よく食べるメニューを登録して、記録をもっと素早く。既定の量・カロリーを保存できます。"
       />
       <HydrationBoundary state={dehydratedState}>
         <RegularFoodSection userId={userId} />

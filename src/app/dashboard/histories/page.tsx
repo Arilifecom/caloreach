@@ -21,8 +21,8 @@ export default async function HistoryPage() {
   return (
     <>
       <PageHeader
-        title="過去の食事履歴"
-        description="日付ごとに摂取したカロリー合計です。"
+        title="過去の食事記録"
+        description="日ごとの合計カロリーを一覧で確認できます。入力漏れの追加・修正は、各日の詳細ページで行えます。"
       />
       <HydrationBoundary state={dehydratedState}>
         <HistoryList userId={userId} limit={limit} />

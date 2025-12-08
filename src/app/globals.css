@@ -107,7 +107,7 @@
 
 @layer components {
   .article {
-    @apply space-y-8 leading-relaxed;
+    @apply leading-relaxed;
   }
 
   .article h2 {
@@ -120,7 +120,7 @@
     @apply text-base mb-4 last:mb-0;
   }
   .article ul {
-    @apply space-y-1;
+    @apply space-y-1 mt-4 mb-8;
   }
   .article li {
     @apply flex items-start gap-2;

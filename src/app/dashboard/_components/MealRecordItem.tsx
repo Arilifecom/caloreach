@@ -3,7 +3,7 @@
 import { ActionMenu } from "@/app/dashboard/_components/";
 import { List } from "@/components";
 import { SelectMealRecord } from "@/db/schema";
-import { format } from "date-fns";
+import { formatTime } from "@/utils/format/date";
 import { memo } from "react";
 
 type MealRecordItemProps = {
@@ -17,7 +17,7 @@ const Component = ({ mealRecord }: MealRecordItemProps) => {
         <List>
           <div className="flex w-full justify-between">
             <div className="flex items-center gap-3">
-              <p>{format(mealRecord.eatenAt, "HH:mm")}</p>
+              <p>{formatTime(mealRecord.eatenAt)}</p>
               <div>
                 <h3 className="font-bold text-sm">{mealRecord.foodName}</h3>
                 <p className="text-xs">

@@ -2,7 +2,7 @@
 
 import { List } from "@/components";
 import { DailyKcalSummary } from "@/utils/api/history";
-import { formatDateWithDay } from "@/utils/format";
+import { formatDateWithDay } from "@/utils/format/date";
 import { BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { memo } from "react";

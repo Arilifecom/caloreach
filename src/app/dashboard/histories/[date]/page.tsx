@@ -5,7 +5,7 @@ import {
 import { PageHeader } from "@/components";
 import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
 import { getUserId } from "@/utils/auth";
-import { formatDateWithDay } from "@/utils/format";
+import { formatDateWithDay } from "@/utils/format/date";
 import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
@@ -29,7 +29,7 @@ export default async function MealDetailPage({
     <>
       <PageHeader
         title={formatDateWithDay(new Date(date))}
-        description="過去の食事履歴詳細です"
+        description="過去の食事履歴の詳細です。"
       />
       <HydrationBoundary state={dehydratedState}>
         <ProgressSection userId={userId} date={date} />
