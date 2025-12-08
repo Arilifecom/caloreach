@@ -8,12 +8,24 @@ interface PageHeaderProps {
   className?: string;
 }
 
+// Format Paragraph
+const formatParagraph = (text: string | undefined) => {
+  if (!text) return null;
+
+  const lines = text
+    .split(/(?<=。)/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  return lines.map((line, index) => <p key={index}>{line}</p>);
+};
+
 function Component({ title, description, className }: PageHeaderProps) {
   return (
     <CardHeader className={cn("w-full px-0", className)}>
       <div>
-        <CardTitle className="text-2xl">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className="text-2xl mb-2">{title}</CardTitle>
+        <CardDescription>{formatParagraph(description)}</CardDescription>
       </div>
     </CardHeader>
   );
