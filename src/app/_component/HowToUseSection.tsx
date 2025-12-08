@@ -1,7 +1,10 @@
-const contents = [
+import { PageHeader } from "@/components";
+
+const steps = [
   {
     title: "食事を記録（検索 or 手入力）",
-    description: "食品検索で自動カロリー計算。毎日の食事を素早く記録します。",
+    description:
+      "食品検索で量を入力するだけでカロリーを自動計算。その日の食事をすぐに記録できます。",
     step: 1,
     video: (
       <video
@@ -19,7 +22,7 @@ const contents = [
   {
     title: "レギュラーフードを登録",
     description:
-      "定期的に摂取するフードを事前に登録。食事記録をワンタップで楽にします。",
+      "よく食べるメニューを事前に保存。次回からはワンタップで素早く記録できます。",
     step: 2,
     video: (
       <video
@@ -35,9 +38,9 @@ const contents = [
     ),
   },
   {
-    title: "履歴をチェック",
+    title: "履歴で振り返る",
     description:
-      "過去の記録を一覧表示し、過去の記入漏れや食事内容を振り返ります。",
+      "日ごとの合計カロリーを一覧で確認。記録漏れがあっても、詳細ページで食事を追加・編集できます。",
     step: 3,
     video: (
       <video
@@ -56,31 +59,28 @@ const contents = [
 
 export const HowToUseSection = () => {
   return (
-    <section id="fllows" className="max-w-6xl mx-auto px-4 pt-16">
-      <div className="text-center text-4xl font-black uppercase leading-snug mb-8 md:text-left md:text-6xl md:flex md:items-baseline md:leading-[80px]">
+    <section id="fllows" className="max-w-6xl px-4 pt-16 mx-auto">
+      <div className="text-center text-4xl font-black uppercase leading-snug mb-20 md:text-6xl md:flex md:items-baseline md:leading-[80px]">
         <h2 className="leading-tight">How to use</h2>
         <span className="text-2xl ml-2">-カロリーチの使い方-</span>
       </div>
 
-      <ul className="flex flex-col gap-12 px-4 pt-10">
-        {contents.map((item, index) => (
+      <ul className="flex flex-col my-8 gap-8 md:gap-20">
+        {steps.map((item, index) => (
           <li key={index}>
-            <div className="grid grid-cols-[40px_1fr] gap-x-4 my-6 items-top max-w-md">
-              <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center text-center gap-4 py-4">
+              <div className="flex flex-col items-center">
+                <p className="text-yellow-400 text-lg font-black">STEP</p>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                  <span className="text-white">{item.step}</span>
+                  <span className="text-white text-lg font-black">
+                    {item.step}
+                  </span>
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <p className="text-lg font-bold text-slate-900 dark:text-slate-50">
-                  {item.title}
-                </p>
-                <p className="text-base text-slate-600 dark:text-slate-400">
-                  {item.description}
-                </p>
-              </div>
+              <PageHeader title={item.title} description={item.description} />
             </div>
+
             <div className="flex justify-center">{item.video}</div>
           </li>
         ))}

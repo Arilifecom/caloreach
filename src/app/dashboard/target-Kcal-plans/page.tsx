@@ -20,8 +20,8 @@ export default async function TargetKcalPage() {
   return (
     <>
       <PageHeader
-        title="目標カロリーのプラン設定"
-        description="あらかじめ日付を指定して、目標カロリーの増減プランを作成できます"
+        title="目標カロリープラン"
+        description="開始日を指定して、増量・減量を設定。無理のない計画で継続を目指しましょう。"
       />
       <HydrationBoundary state={dehydratedState}>
         <TargetKcalSection userId={userId} />
