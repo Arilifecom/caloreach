@@ -94,7 +94,7 @@ export const NewPassWordForm = () => {
                       style={{ top: "50%", transform: "translateY(-50%)" }}
                       className="absolute right-2 text-gray-800 z-10"
                     >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                     </button>
                   </div>
                   {fieldState.invalid && (

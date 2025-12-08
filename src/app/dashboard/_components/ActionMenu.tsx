@@ -2,7 +2,7 @@ import { MealRecordForm } from "@/app/dashboard/_components";
 import { SelectMealRecord } from "@/db/schema";
 import { useWindowControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/api/mealRecords";
-import { formatYYMMDD } from "@/utils/format";
+import { formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
