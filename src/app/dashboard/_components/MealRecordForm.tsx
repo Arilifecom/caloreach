@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebounce } from "@/app/dashboard/_hooks";
+import { useFoodSearch } from "@/app/dashboard/_hooks";
 import {
   mealRecordInputSchemaInput,
   mealRecordInputSchemaOutput,
@@ -21,19 +21,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectMealRecord } from "@/db/schema";
-import {
-  addMealRecord,
-  editMealRecord,
-  fetchFoodsBySearch,
-} from "@/utils/api/mealRecords";
-import { formatTime, formatYYMMDD, getCurrentTime } from "@/utils/format/date";
-import {
-  foodskeys,
-  historieskeys,
-  mealRecordkeys,
-  TErrCodes,
-} from "@/utils/tanstack";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addMealRecord, editMealRecord } from "@/utils/api/mealRecords";
+import { formatTime, formatYYMMDD } from "@/utils/format/date";
+import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
@@ -44,9 +35,9 @@ type MealRecordFormProps = {
   mode: "add" | "edit";
   editItem?: SelectMealRecord;
   isFormOpen: boolean;
-  handleInputFormWindow: () => void;
+  handleFormWindow: () => void;
   handleCloseAllWindows: () => void;
-  date?: string;
+  date: string;
 };
 
 type selectedFood = {
@@ -55,28 +46,42 @@ type selectedFood = {
   kcalPer100g: number;
 } | null;
 
-const defaultValues: mealRecordInputSchemaInput = {
-  date: "",
-  time: "",
-  foodName: "",
-  gram: "",
-  kcal: "",
-};
-
 export const MealRecordForm = ({
   userId,
   isFormOpen,
-  handleInputFormWindow,
+  handleFormWindow,
   handleCloseAllWindows,
   mode,
   editItem,
   date,
 }: MealRecordFormProps) => {
   const queryClient = useQueryClient();
-  const [query, setQuery] = useState("");
-  const debouncedSearch = useDebounce(query, 400);
+
+  //Incremental Search
+  const { setQuery, searchResult } = useFoodSearch();
   const [selectedFood, setSelectedFood] = useState<selectedFood>(null);
   const [eatenGrams, setEatenGrams] = useState("");
+
+  //InitialValues "Add or Edit mode"
+  const defaultValues: mealRecordInputSchemaInput = useMemo(() => {
+    if (mode === "edit" && editItem) {
+      return {
+        date: date,
+        time: formatTime(editItem.eatenAt),
+        foodName: editItem.foodName,
+        gram: editItem.gram.toString(),
+        kcal: editItem.kcal.toString(),
+      };
+    } else {
+      return {
+        date: date,
+        time: formatTime(new Date()),
+        foodName: "",
+        gram: "",
+        kcal: "",
+      };
+    }
+  }, [mode, editItem, date]);
 
   const form = useForm<
     mealRecordInputSchemaInput,
@@ -87,9 +92,10 @@ export const MealRecordForm = ({
     defaultValues,
   });
 
-  //Auto calculate Kcal when user selected Food by incremental search
+  // Auto-Calculation
   useEffect(() => {
     if (!selectedFood?.kcalPer100g) return;
+
     const eatenGramsToNum = Number(eatenGrams);
     const result = Math.floor(
       (selectedFood.kcalPer100g * eatenGramsToNum) / 100
@@ -97,7 +103,7 @@ export const MealRecordForm = ({
     form.setValue("kcal", result.toString());
   }, [selectedFood, form, eatenGrams]);
 
-  //Reset Auto calculate when user changed foodName
+  //　Reset Auto-Calculation
   const foodName = form.watch("foodName");
   useEffect(() => {
     if (foodName === "") {
@@ -105,39 +111,9 @@ export const MealRecordForm = ({
       setEatenGrams("");
       form.setValue("gram", "");
       form.setValue("kcal", "");
+      setQuery("");
     }
-  }, [foodName, form]);
-
-  //incremental search
-  const searchResult = useQuery({
-    queryKey: foodskeys.list(debouncedSearch),
-    queryFn: () => fetchFoodsBySearch(debouncedSearch),
-    enabled: debouncedSearch !== "",
-    meta: { errCode: TErrCodes.FOOD_SEARCH_FAILED },
-  });
-
-  //set value mode "add" or "edit"
-  useEffect(() => {
-    if (!isFormOpen) return;
-
-    if (mode === "edit" && editItem) {
-      form.reset({
-        date: formatYYMMDD(editItem.eatenAt).toString(),
-        time: formatTime(editItem.eatenAt).toString(),
-        foodName: editItem.foodName,
-        gram: editItem.gram.toString(),
-        kcal: editItem.kcal.toString(),
-      });
-    } else
-      form.reset({
-        date: date,
-        time: getCurrentTime(),
-        foodName: "",
-        gram: "",
-        kcal: "",
-      });
-    setQuery("");
-  }, [mode, isFormOpen, form, editItem, date]);
+  }, [foodName, form, setQuery]);
 
   //Mutations
   const addMutation = useMutation({
@@ -180,6 +156,7 @@ export const MealRecordForm = ({
     },
   });
 
+  //Submit form
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
     const sentDate =
       mode === "edit" && editItem
@@ -201,18 +178,16 @@ export const MealRecordForm = ({
     addMutation.mutate(sentDate);
   };
 
-  const title = useMemo(() => {
-    return mode === "add" ? "食事を記録" : "食事記録を編集";
-  }, [mode]);
+  //Form title and Discription
+  const title = mode === "add" ? "食事を記録" : "食事記録を編集";
 
-  const dsc = useMemo(() => {
-    return mode === "add"
+  const dsc =
+    mode === "add"
       ? "食事を追加してください"
       : "カロリー自動計算は食品の再検索・再選択時にのみ適用されます";
-  }, [mode]);
 
   return (
-    <Dialog open={isFormOpen} onOpenChange={handleInputFormWindow}>
+    <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
       <DialogContent className="p-0 bg-transparent border-0">
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
@@ -278,9 +253,8 @@ export const MealRecordForm = ({
                           placeholder="食品、料理名を入れてください"
                           type="text"
                           onChange={(e) => {
-                            const val = e.target.value;
-                            setQuery(val);
-                            field.onChange(val);
+                            field.onChange(e);
+                            setQuery(e.target.value);
                           }}
                           autoComplete="off"
                         />

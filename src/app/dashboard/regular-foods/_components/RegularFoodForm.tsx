@@ -1,6 +1,6 @@
 "use client";
 
-import { useDebounce } from "@/app/dashboard/_hooks";
+import { useFoodSearch } from "@/app/dashboard/_hooks";
 import {
   RegularFoodFormInputSchemaInput,
   RegularFoodFormInputSchemaOutput,
@@ -21,28 +21,21 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectregularFood } from "@/db/schema";
-import { fetchFoodsBySearch } from "@/utils/api/mealRecords";
 import { addRegularFood, editRegularFood } from "@/utils/api/regularFoods";
-import { foodskeys, RegularFoodskeys } from "@/utils/tanstack";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { RegularFoodskeys } from "@/utils/tanstack";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
 
 type RegularFoodFormProps = {
-  editItem?: SelectregularFood;
   userId: string;
   mode: "add" | "edit";
+  editItem?: SelectregularFood;
   isFormOpen: boolean;
-  handleInputFormWindow: () => void;
+  handleFormWindow: () => void;
   handleCloseAllWindows?: () => void;
-};
-
-const defaultValues: RegularFoodFormInputSchemaInput = {
-  foodName: "",
-  gram: "",
-  kcal: "",
 };
 
 export const RegularFoodForm = ({
@@ -50,14 +43,32 @@ export const RegularFoodForm = ({
   editItem,
   userId,
   isFormOpen,
-  handleInputFormWindow,
+  handleFormWindow,
   handleCloseAllWindows,
 }: RegularFoodFormProps) => {
   const queryClient = useQueryClient();
-  const [query, setQuery] = useState("");
-  const debouncedSearch = useDebounce(query, 400);
+
+  //Incremental Search
+  const { setQuery, searchResult } = useFoodSearch();
   const [selectedFoodKcal, setSelectedFoodKcal] = useState<number | null>(null);
   const [eatenGrams, setEatenGrams] = useState("");
+
+  //InitialValues "Add or Edit mode"
+  const defaultValues: RegularFoodFormInputSchemaInput = useMemo(() => {
+    if (mode === "edit" && editItem) {
+      return {
+        foodName: editItem.foodName,
+        gram: editItem.gram.toString(),
+        kcal: editItem.kcal.toString(),
+      };
+    } else {
+      return {
+        foodName: "",
+        gram: "",
+        kcal: "",
+      };
+    }
+  }, [mode, editItem]);
 
   const form = useForm<
     RegularFoodFormInputSchemaInput,
@@ -68,7 +79,7 @@ export const RegularFoodForm = ({
     defaultValues,
   });
 
-  //Auto calculate Kcal when user selected Food by incremental search
+  // Auto-Calculation
   useEffect(() => {
     if (selectedFoodKcal === null) return;
     const eatenGramsToNum = Number(eatenGrams);
@@ -76,7 +87,7 @@ export const RegularFoodForm = ({
     form.setValue("kcal", result.toString());
   }, [selectedFoodKcal, form, eatenGrams]);
 
-  //Reset Auto calculate when user changed foodName
+  //　Reset Auto-Calculation
   const foodName = form.watch("foodName");
   useEffect(() => {
     if (foodName === "") {
@@ -87,32 +98,6 @@ export const RegularFoodForm = ({
     }
   }, [foodName, form]);
 
-  //incremental search
-  const searchResult = useQuery({
-    queryKey: foodskeys.list(debouncedSearch),
-    queryFn: () => fetchFoodsBySearch(debouncedSearch),
-    enabled: debouncedSearch !== "",
-  });
-
-  //set value mode "add" or "edit"
-  useEffect(() => {
-    if (!isFormOpen) return;
-
-    if (mode === "edit" && editItem) {
-      form.reset({
-        foodName: editItem.foodName,
-        gram: editItem.gram.toString(),
-        kcal: editItem.kcal.toString(),
-      });
-    } else
-      form.reset({
-        foodName: "",
-        gram: "",
-        kcal: "",
-      });
-    setQuery("");
-  }, [mode, isFormOpen, form, editItem]);
-
   //Mutations
   const addMutation = useMutation({
     mutationFn: addRegularFood,
@@ -120,7 +105,7 @@ export const RegularFoodForm = ({
       queryClient.invalidateQueries({
         queryKey: RegularFoodskeys.list(sentDate.userId),
       });
-      handleInputFormWindow();
+      handleFormWindow();
     },
     onError: () => {
       console.error("Error creating regularFood");
@@ -142,7 +127,7 @@ export const RegularFoodForm = ({
     },
   });
 
-  //Form submit function
+  //Submit form
   const submitRegularFoodSent = async (
     data: RegularFoodFormInputSchemaOutput
   ) => {
@@ -161,18 +146,17 @@ export const RegularFoodForm = ({
     addMutation.mutate(sentDate);
   };
 
-  const title = useMemo(() => {
-    return mode === "add" ? "レギュラーフードを登録" : "レギュラーフードを編集";
-  }, [mode]);
+  //Form title and Discription
+  const title =
+    mode === "add" ? "レギュラーフードを登録" : "レギュラーフードを編集";
 
-  const dsc = useMemo(() => {
-    return mode === "add"
+  const dsc =
+    mode === "add"
       ? "レギュラーフードを登録してください"
-      : "レギュラーフードを編集してください";
-  }, [mode]);
+      : "カロリー自動計算は食品の再検索・再選択時にのみ適用されます";
 
   return (
-    <Dialog open={isFormOpen} onOpenChange={handleInputFormWindow}>
+    <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
       <DialogContent className="p-0 bg-transparent border-0">
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
@@ -199,9 +183,8 @@ export const RegularFoodForm = ({
                           placeholder="食品、料理名を入れてください"
                           type="text"
                           onChange={(e) => {
-                            const val = e.target.value;
-                            setQuery(val);
-                            field.onChange(val);
+                            field.onChange(e);
+                            setQuery(e.target.value);
                           }}
                           autoComplete="off"
                         />
@@ -298,7 +281,7 @@ export const RegularFoodForm = ({
                   onClick={
                     mode === "edit"
                       ? () => handleCloseAllWindows?.()
-                      : handleInputFormWindow
+                      : handleFormWindow
                   }
                   className="rounded-lg w-28"
                 >
