@@ -7,7 +7,7 @@ import {
 } from "@/app/dashboard/target-kcal-plans/_component/";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { useWindowControl } from "@/hooks";
+import { useModalControl } from "@/hooks";
 import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
 import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ type TargetKcalSectionProps = {
 };
 
 const Component = ({ userId }: TargetKcalSectionProps) => {
-  const { isFormOpen, handleInputFormWindow } = useWindowControl();
+  const { isFormOpen, handleFormOpenChange } = useModalControl();
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: TargetKcalkeys.list(userId),
@@ -40,7 +40,7 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
       <TargetKcalLists data={data} firstEffectiveDate={firstEffectiveDate} />
 
       <Button
-        onClick={handleInputFormWindow}
+        onClick={handleFormOpenChange}
         className="w-14 h-14 fixed bottom-24 right-4 md:right-[calc(50%-200px)]"
       >
         <PlusIcon />
@@ -49,7 +49,7 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
       <TargetKcalPlanForm
         userId={userId}
         isFormOpen={isFormOpen}
-        handleInputFormWindow={handleInputFormWindow}
+        handleFormWindow={handleFormOpenChange}
         mode="add"
         firstEffectiveDate={firstEffectiveDate}
       />

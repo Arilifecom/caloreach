@@ -5,7 +5,7 @@ import {
   RegularFoodLists,
 } from "@/app/dashboard/regular-foods/_components/";
 import { Button } from "@/components/ui";
-import { useWindowControl } from "@/hooks";
+import { useModalControl } from "@/hooks";
 import { PlusIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -14,12 +14,12 @@ type RegularFoodSectionProps = {
 };
 
 const Component = ({ userId }: RegularFoodSectionProps) => {
-  const { isFormOpen, handleInputFormWindow } = useWindowControl();
+  const { isFormOpen, handleFormOpenChange } = useModalControl();
   return (
     <>
       <RegularFoodLists userId={userId} />
       <Button
-        onClick={handleInputFormWindow}
+        onClick={handleFormOpenChange}
         className="w-14 h-14 fixed bottom-24 right-4 md:right-[calc(50%-200px)]"
       >
         <PlusIcon />
@@ -27,7 +27,7 @@ const Component = ({ userId }: RegularFoodSectionProps) => {
       <RegularFoodForm
         userId={userId}
         isFormOpen={isFormOpen}
-        handleInputFormWindow={handleInputFormWindow}
+        handleFormWindow={handleFormOpenChange}
         mode="add"
       />
     </>

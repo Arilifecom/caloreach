@@ -34,7 +34,7 @@ type TargetKcalFormProps = {
   userId: string;
   mode: "add" | "edit";
   isFormOpen: boolean;
-  handleInputFormWindow: () => void;
+  handleFormWindow: () => void;
   handleCloseAllWindows?: () => void;
   firstEffectiveDate?: string;
 };
@@ -49,7 +49,7 @@ export const TargetKcalPlanForm = ({
   mode,
   userId,
   isFormOpen,
-  handleInputFormWindow,
+  handleFormWindow,
   handleCloseAllWindows,
   firstEffectiveDate,
 }: TargetKcalFormProps) => {
@@ -88,7 +88,7 @@ export const TargetKcalPlanForm = ({
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.list(sentDate.userId),
       });
-      handleInputFormWindow();
+      handleFormWindow();
     },
     onError: () => {
       console.error("Error creating regularFood");
@@ -160,7 +160,7 @@ export const TargetKcalPlanForm = ({
   }, [editItem, firstEffectiveDate]);
 
   return (
-    <Dialog open={isFormOpen} onOpenChange={handleInputFormWindow}>
+    <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
       <DialogContent className="p-0 bg-transparent border-0">
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
@@ -233,7 +233,7 @@ export const TargetKcalPlanForm = ({
                   onClick={
                     mode === "edit"
                       ? () => handleCloseAllWindows?.()
-                      : handleInputFormWindow
+                      : handleFormWindow
                   }
                   className="rounded-lg w-28"
                 >

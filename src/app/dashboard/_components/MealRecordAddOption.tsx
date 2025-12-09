@@ -5,7 +5,7 @@ import { RegularFoodSelector } from "@/app/dashboard/_components/RegularFoodSele
 import { ButtonWithIconLabel, FormHeader } from "@/components";
 import { OnigiriIcon, RegularIcon } from "@/components/icons";
 import { Button } from "@/components/ui";
-import { useWindowControl } from "@/hooks";
+import { useModalControl } from "@/hooks";
 import { PlusIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -16,54 +16,50 @@ type MealRecordOptionProps = {
 
 export const Component = ({ userId, date }: MealRecordOptionProps) => {
   const {
-    handleOptionWindow,
-    isOptionOpen,
-    handleRegularMealsWindow,
-    handleInputFormWindow,
+    handleOpenChange,
+    isOpen,
+    handleFormOpenChange,
     isFormOpen,
-    handleCloseAllWindows,
+    closeAllWindows,
     isRegularOpen,
-  } = useWindowControl();
+    handleRegularOpenChange,
+  } = useModalControl();
 
   return (
     <>
       <Button
-        onClick={handleOptionWindow}
+        onClick={handleOpenChange}
         className="w-14 h-14 fixed bottom-24 right-4 md:right-[calc(50%-200px)]"
       >
         <PlusIcon />
       </Button>
 
-      {isOptionOpen && (
+      {isOpen && (
         <div
           className="fixed inset-0 bg-foreground/20 z-10"
-          onClick={handleOptionWindow}
+          onClick={handleOpenChange}
         />
       )}
 
       <div
         className={`fixed bottom-0 bg-background w-full rounded-tr-lg rounded-tl-lg max-w-lg z-20 overflow-hidden transition-all duration-300 ease-in-out
-      ${
-        isOptionOpen
-          ? "h-72 pt-8 border-2 border-foreground"
-          : "h-0 pt-0 border-0"
-      }`}
+      ${isOpen ? "h-72 pt-8 border-2 border-foreground" : "h-0 pt-0 border-0"}`}
       >
         <FormHeader
           title="食事を記録"
           description="食事の追加方法を選択してください"
-          handleClose={handleOptionWindow}
+          handleClose={handleOpenChange}
         />
         <div className="flex gap-4 justify-center">
           <ButtonWithIconLabel
             icon={<RegularIcon className="w-12" />}
             label="レギュラーフード"
-            onClick={handleRegularMealsWindow}
+            onClick={handleRegularOpenChange}
           />
           <ButtonWithIconLabel
             icon={<OnigiriIcon className="w-12" />}
             label="検索 or 手入力"
-            onClick={handleInputFormWindow}
+            onClick={handleFormOpenChange}
           />
         </div>
       </div>
@@ -71,15 +67,15 @@ export const Component = ({ userId, date }: MealRecordOptionProps) => {
       <RegularFoodSelector
         userId={userId}
         isRegularOpen={isRegularOpen}
-        handleRegularMealsWindow={handleRegularMealsWindow}
-        handleCloseAllWindows={handleCloseAllWindows}
+        handleRegularMealsWindow={handleRegularOpenChange}
+        handleCloseAllWindows={closeAllWindows}
         date={date}
       />
       <MealRecordForm
         userId={userId}
         isFormOpen={isFormOpen}
-        handleInputFormWindow={handleInputFormWindow}
-        handleCloseAllWindows={handleCloseAllWindows}
+        handleFormWindow={handleFormOpenChange}
+        handleCloseAllWindows={closeAllWindows}
         mode="add"
         date={date}
       />
