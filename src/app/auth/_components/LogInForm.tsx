@@ -44,10 +44,9 @@ export const LogInForm = () => {
       await login(values);
       router.push("/dashboard");
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
       setErrorMessage("ログインに失敗しました");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -65,11 +64,6 @@ export const LogInForm = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
-          <Loading />
-        </div>
-      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -154,7 +148,7 @@ export const LogInForm = () => {
               className="w-full rounded-lg mt-4"
               disabled={isLoading}
             >
-              ログイン
+              {isLoading ? <Loading /> : "ログイン"}
             </Button>
           </form>
         </FieldGroup>

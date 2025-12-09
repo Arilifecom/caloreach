@@ -41,7 +41,6 @@ export const ResetPassWordForm = () => {
     } catch (error) {
       console.error(error);
       setErrorMessage("送信に失敗しました");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -54,11 +53,6 @@ export const ResetPassWordForm = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
-          <Loading />
-        </div>
-      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -108,8 +102,12 @@ export const ResetPassWordForm = () => {
               >
                 ログインに戻る
               </Button>
-              <Button type="submit" className="rounded-lg" disabled={isLoading}>
-                リセットメール送信
+              <Button
+                type="submit"
+                className="rounded-lg min-w-36"
+                disabled={isLoading}
+              >
+                {isLoading ? <Loading /> : "リセットメール送信"}
               </Button>
             </div>
           </form>

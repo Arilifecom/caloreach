@@ -45,18 +45,12 @@ export const NewPassWordForm = () => {
     } catch (error) {
       console.error(error);
       setErrorMessage("送信に失敗しました");
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <>
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
-          <Loading />
-        </div>
-      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">

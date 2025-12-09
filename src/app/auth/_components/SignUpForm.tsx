@@ -42,17 +42,16 @@ export const SignupForm = () => {
     defaultValues: defaultValues,
   });
 
-  //Signin with email and password
+  //Signup with email and password
   const submitEmailSignup = async (values: signupInputSchemaOutput) => {
     try {
       setIsLoading(true);
       await signup(values);
-      //go to mailnotice UI page
+      //Mailnotice page
       router.push("/auth/mailnotice?type=verify");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -60,19 +59,17 @@ export const SignupForm = () => {
   //Signin with Google
   const submitGoogle = async () => {
     try {
+      setIsLoading(true);
       await loginGoogle();
     } catch (error) {
       console.error(error);
+      setErrorMessage("登録に失敗しました");
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-50">
-          <Loading />
-        </div>
-      )}
       <SiteLogo className="w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
@@ -183,7 +180,7 @@ export const SignupForm = () => {
               className="w-full rounded-lg mt-4 h-10"
               disabled={isLoading}
             >
-              アカウント登録
+              {isLoading ? <Loading /> : "アカウント登録"}
             </Button>
           </form>
         </FieldGroup>
