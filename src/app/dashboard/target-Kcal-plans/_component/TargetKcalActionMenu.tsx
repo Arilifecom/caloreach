@@ -1,6 +1,6 @@
 import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalPlanForm";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
-import { useWindowControl } from "@/hooks";
+import { useModalControl } from "@/hooks";
 import { deleteTargetKcal } from "@/utils/api/targetKcal";
 import { TargetKcalkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,12 +18,12 @@ const Component = ({
   firstEffectiveDate,
 }: TargetKcalActionMenuProps) => {
   const {
-    isOptionOpen,
-    handleOptionWindow,
-    handleInputFormWindow,
-    handleCloseAllWindows,
+    isOpen,
+    handleOpenChange,
+    handleFormOpenChange,
+    closeAllWindows,
     isFormOpen,
-  } = useWindowControl();
+  } = useModalControl();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -49,16 +49,16 @@ const Component = ({
 
   return (
     <>
-      <button onClick={handleOptionWindow}>
+      <button onClick={handleOpenChange}>
         <EllipsisVertical />
       </button>
 
-      {isOptionOpen && (
+      {isOpen && (
         <>
-          <div className="fixed inset-0 z-10" onClick={handleOptionWindow} />
+          <div className="fixed inset-0 z-10" onClick={handleOpenChange} />
           <div className="absolute border-1 rounded-lg  right-0 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
             <button
-              onClick={handleInputFormWindow}
+              onClick={handleFormOpenChange}
               className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg"
             >
               <Pencil className="text-popover" />
@@ -68,8 +68,8 @@ const Component = ({
               editItem={targetKcal}
               userId={targetKcal.userId}
               isFormOpen={isFormOpen}
-              handleInputFormWindow={handleInputFormWindow}
-              handleCloseAllWindows={handleCloseAllWindows}
+              handleFormWindow={handleFormOpenChange}
+              handleCloseAllWindows={closeAllWindows}
               firstEffectiveDate={firstEffectiveDate}
             />
 
@@ -87,7 +87,7 @@ const Component = ({
             )}
 
             <button
-              onClick={handleOptionWindow}
+              onClick={handleOpenChange}
               className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <X />

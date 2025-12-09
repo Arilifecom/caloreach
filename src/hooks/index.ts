@@ -1,1 +1,1 @@
-export * from "./useWindowControl";
+export * from "./useModalControl";

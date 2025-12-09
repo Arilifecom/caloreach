@@ -1,6 +1,6 @@
 import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/";
 import { SelectregularFood } from "@/db/schema";
-import { useWindowControl } from "@/hooks";
+import { useModalControl } from "@/hooks";
 import { deleteRegularFood } from "@/utils/api/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,12 +14,12 @@ type ActionMenuProps = {
 
 const Component = ({ regularFood }: ActionMenuProps) => {
   const {
-    isOptionOpen,
-    handleOptionWindow,
-    handleInputFormWindow,
-    handleCloseAllWindows,
+    isOpen,
+    handleOpenChange,
+    handleFormOpenChange,
+    closeAllWindows,
     isFormOpen,
-  } = useWindowControl();
+  } = useModalControl();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -45,16 +45,16 @@ const Component = ({ regularFood }: ActionMenuProps) => {
 
   return (
     <>
-      <button onClick={handleOptionWindow}>
+      <button onClick={handleOpenChange}>
         <EllipsisVertical />
       </button>
 
-      {isOptionOpen && (
+      {isOpen && (
         <>
-          <div className="fixed inset-0 z-10" onClick={handleOptionWindow} />
+          <div className="fixed inset-0 z-10" onClick={handleOpenChange} />
           <div className="absolute border-1 rounded-lg  right-0 -top-4 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
             <button
-              onClick={handleInputFormWindow}
+              onClick={handleFormOpenChange}
               className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg"
             >
               <Pencil className="text-popover" />
@@ -64,8 +64,8 @@ const Component = ({ regularFood }: ActionMenuProps) => {
               editItem={regularFood}
               userId={regularFood.id}
               isFormOpen={isFormOpen}
-              handleInputFormWindow={handleInputFormWindow}
-              handleCloseAllWindows={handleCloseAllWindows}
+              handleFormWindow={handleFormOpenChange}
+              handleCloseAllWindows={closeAllWindows}
             />
             <button
               onClick={() => handleDelete(regularFood)}
@@ -74,7 +74,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
               <Trash2 />
             </button>
             <button
-              onClick={handleOptionWindow}
+              onClick={handleOpenChange}
               className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <X />
