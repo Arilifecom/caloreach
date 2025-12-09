@@ -11,9 +11,10 @@ export const config = {
      * 以下を除くすべてのパスにマッチ:
      * - _next/static (静的ファイル)
      * - _next/image (画像最適化ファイル)
+     * - /auth (認証前ページ)
      * - favicon.ico (ファビコン)
      * - 画像ファイル (.svg, .png, .jpg, .jpeg, .gif, .webp)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)|auth/.*$).*)",
   ],
 };
