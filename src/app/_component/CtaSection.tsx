@@ -1,10 +1,11 @@
-import { GetStartedButton } from "@/components";
-import { CardHeader, CardWithShadow } from "@/components/ui";
-import { checkAuthClient } from "@/utils/auth";
-import Image from "next/image";
+"use client";
 
-export const CtaSection = async () => {
-  const isLoggedIn = await checkAuthClient();
+import { Button, CardHeader, CardWithShadow } from "@/components/ui";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+export const CtaSection = () => {
+  const router = useRouter();
 
   return (
     <section className="min-h-[70vh] grid place-items-center p-[5%] md:min-h-screen">
@@ -30,7 +31,9 @@ export const CtaSection = async () => {
           </div>
 
           <div className="mt-6">
-            <GetStartedButton isLoggedIn={isLoggedIn} />
+            <Button onClick={() => router.push("/auth/signup")}>
+              新しく始める
+            </Button>
           </div>
         </div>
       </CardWithShadow>

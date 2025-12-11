@@ -18,7 +18,7 @@ interface FormHeaderProps {
 function Component({ title, description, handleClose }: FormHeaderProps) {
   return (
     <CardHeader className="flex justify-between mb-8">
-      <div>
+      <div className="flex flex-col gap-2">
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </div>

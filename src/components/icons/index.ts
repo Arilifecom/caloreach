@@ -10,3 +10,4 @@ export * from "./navHistoryIcon";
 export * from "./navRegularFoodIcon";
 export * from "./navLogoutIcon";
 export * from "./navKcalIcon";
+export * from "./logo";

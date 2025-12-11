@@ -18,7 +18,7 @@ const Component = ({
 }: ProgressRatioProps) => {
   return (
     <CardWithShadow className={cn("py-4", className)}>
-      <CardContent className="px-4">
+      <CardContent className="pl-2">
         <div className="flex justify-left gap-2">
           <FlagIcon className="w-8" />
           <div className="flex flex-col">
@@ -26,9 +26,9 @@ const Component = ({
             {isLoading ? (
               <span className="text-xs text-gray-500 pt-2">取得中...</span>
             ) : isError ? (
-              <p className="text-xl font-black">--</p>
+              <p className="text-2xl font-black">--</p>
             ) : (
-              <p className="text-xl font-black">
+              <p className="text-2xl font-black">
                 {progressValue}
                 <span className="text-sm ml-1">%</span>
               </p>

@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Caloreach",
-  description: "Let's reach your daily Kcal target!",
+  description:
+    "カロリーチは、1日の目標カロリーを設定して食事を簡単に記録できるウェブアプリです。毎日の摂取カロリーを見える化し、記録を継続する習慣作りをサポートします。",
 };
 
 export default function RootLayout({
@@ -25,6 +26,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="android-chrome"
+          type="image/png"
+          sizes="192x192"
+          href="/favicon/android-chrome-192x192.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/favicon/apple-touch-icon.png"
+        />
+        <link
+          rel="android-chrome"
+          sizes="512x512"
+          href="/favicon/android-chrome-512x512.png"
+        />
+        <link rel="manifest" href="/favicon/site.webmanifest.json" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -20,8 +20,8 @@ const Component = ({ isLoggedIn }: GetStartedButtonProps) => {
   };
 
   return (
-    <Button onClick={handleClick} className="font-bold">
-      ログインして始める
+    <Button variant={"outline"} onClick={handleClick} className="font-bold">
+      ログイン
     </Button>
   );
 };
