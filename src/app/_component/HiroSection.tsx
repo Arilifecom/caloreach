@@ -1,16 +1,16 @@
-import { GetStartedButton } from "@/components";
+"use client";
+
 import { Button } from "@/components/ui";
-import { checkAuthClient } from "@/utils/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export const HiroSection = async () => {
-  const isLoggedIn = await checkAuthClient();
-
+export const HiroSection = () => {
+  const router = useRouter();
   return (
     <section>
-      <div className="w-full h-full p-[5%] min-h-[100vh] gap-12 flex flex-col place-items-center md:flex-row md:place-items-start md:gap-6">
-        <div className="flex h-full w-full flex-col place-content-center gap-0 pt-16 md:max-w-[50%] md:pt-40 md:gap-6">
+      <div className="w-full h-full p-[5%] min-h-[100vh] gap-12 flex flex-col place-items-center md:flex-row md:place-items-start md:gap-6 md:p-[10%]">
+        <div className="flex h-full w-full flex-col place-content-center gap-0 pt-16 md:max-w-[50%] md:gap-6">
           <div className="text-center text-4xl font-black uppercase leading-snug md:text-6xl md:leading-[80px]">
             <h1 className="max-w-96 mx-auto leading-tight">
               Record Your calorie simply
@@ -24,7 +24,12 @@ export const HiroSection = async () => {
             </div>
 
             <div className="mt-4 flex place-items-center gap-4 md:mt-10">
-              <GetStartedButton isLoggedIn={isLoggedIn} />
+              <Button
+                onClick={() => router.push("/auth/signup")}
+                className="font-bold"
+              >
+                アカウントを作成する
+              </Button>
 
               <Link href="#fllows">
                 <Button
