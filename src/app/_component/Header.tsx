@@ -1,13 +1,21 @@
-"use client";
-
+import { GetStartedButton } from "@/components";
 import { SiteLogo } from "@/components/icons";
+import { checkAuthClient } from "@/utils/auth";
 
-export const Header = () => {
+export const Header = async () => {
+  const isLoggedIn = await checkAuthClient();
+
   return (
-    <header className="fixed z-10 w-full h-[60px]">
-      <div className="flex justify-between px-6 mx-auto py-4 xl:justify-center">
-        <SiteLogo color="#000" className="w-36" />
-      </div>
+    <header className="fixed w-screen bg-card shadow-border z-30">
+      <nav className="w-[90vw] py-2 mx-auto">
+        <div className="flex justify-between">
+          <SiteLogo color="#000" className="w-24" />
+
+          <div>
+            <GetStartedButton isLoggedIn={isLoggedIn} />
+          </div>
+        </div>
+      </nav>
     </header>
   );
 };
