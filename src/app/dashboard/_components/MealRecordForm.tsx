@@ -212,7 +212,7 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="date"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="w-1/2">
                       <FieldLabel htmlFor={field.name}>日付</FieldLabel>
                       <Input
                         {...field}
@@ -231,7 +231,7 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="time"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="w-1/2">
                       <FieldLabel htmlFor={field.name}>時間</FieldLabel>
                       <Input
                         {...field}
@@ -246,6 +246,7 @@ export const MealRecordForm = ({
                   )}
                 />
               </div>
+
               <div className="relative">
                 <Controller
                   control={form.control}
