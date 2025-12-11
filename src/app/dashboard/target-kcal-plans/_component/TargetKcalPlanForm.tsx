@@ -24,7 +24,7 @@ import { createTargetKcal, editTargetKcal } from "@/utils/api/targetKcal";
 import { formatYYMMDD } from "@/utils/format/date";
 import { TargetKcalkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
@@ -55,6 +55,7 @@ export const TargetKcalPlanForm = ({
 }: TargetKcalFormProps) => {
   const queryClient = useQueryClient();
   const [isDateEditable, setIsDateEditable] = useState(true);
+  const targetKcalRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<
     TargetKcalPlanInputSchemaInput,
@@ -161,7 +162,15 @@ export const TargetKcalPlanForm = ({
 
   return (
     <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
-      <DialogContent className="p-0 bg-transparent border-0">
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          // デフォルトを無効
+          e.preventDefault();
+          // refマークした箇所を指定
+          targetKcalRef.current?.focus();
+        }}
+        className="p-0 bg-transparent border-0"
+      >
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
             <DialogTitle>{title}</DialogTitle>
@@ -211,6 +220,7 @@ export const TargetKcalPlanForm = ({
                     <div className="flex items-end gap-2">
                       <Input
                         {...field}
+                        ref={targetKcalRef}
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         placeholder="2000"

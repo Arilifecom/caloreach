@@ -25,7 +25,7 @@ import { addMealRecord, editMealRecord } from "@/utils/api/mealRecords";
 import { formatTime, formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 import { toast } from "sonner";
@@ -61,6 +61,7 @@ export const MealRecordForm = ({
   const { setQuery, searchResult } = useFoodSearch();
   const [selectedFood, setSelectedFood] = useState<selectedFood>(null);
   const [eatenGrams, setEatenGrams] = useState("");
+  const foodNameRef = useRef<HTMLInputElement>(null);
 
   //InitialValues "Add or Edit mode"
   const defaultValues: mealRecordInputSchemaInput = useMemo(() => {
@@ -188,7 +189,14 @@ export const MealRecordForm = ({
 
   return (
     <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
-      <DialogContent className="p-0 bg-transparent border-0">
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          // Forcus for foodName input
+          e.preventDefault();
+          foodNameRef.current?.focus();
+        }}
+        className="p-0 bg-transparent border-0"
+      >
         <CardWithShadow>
           <DialogHeader className="text-left px-6">
             <DialogTitle>{title}</DialogTitle>
@@ -248,6 +256,7 @@ export const MealRecordForm = ({
                         <FieldLabel>たべたもの</FieldLabel>
                         <Input
                           {...field}
+                          ref={foodNameRef}
                           id={field.name}
                           aria-invalid={fieldState.invalid}
                           placeholder="食品、料理名を入れてください"
