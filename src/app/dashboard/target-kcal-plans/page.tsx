@@ -1,5 +1,4 @@
 import { TargetKcalSection } from "@/app/dashboard/target-kcal-plans/_component";
-import { PageHeader } from "@/components";
 import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
 import { getUserId } from "@/utils/auth";
 import { getQueryClient, TargetKcalkeys } from "@/utils/tanstack";
@@ -19,10 +18,6 @@ export default async function TargetKcalPage() {
 
   return (
     <>
-      <PageHeader
-        title="目標カロリープラン"
-        description="開始日を指定して、増量・減量を設定。無理のない計画で継続を目指しましょう。"
-      />
       <HydrationBoundary state={dehydratedState}>
         <TargetKcalSection userId={userId} />
       </HydrationBoundary>
