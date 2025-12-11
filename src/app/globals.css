@@ -98,7 +98,7 @@
 
 @layer base {
   * {
-    @apply text-sm border-border outline-ring/50 md:text-base;
+    @apply text-base border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
