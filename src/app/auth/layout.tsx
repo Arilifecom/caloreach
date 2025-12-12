@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative grid justify-items-center min-h-dvh bg-cover bg-center pt-10 md:pt-16">
+    <div className="relative grid justify-items-center min-h-dvh bg-cover bg-center p-5 pt-8 md:pt-16">
       <Image
         src="/images/bg.webp"
         alt="background-image"
@@ -14,7 +14,7 @@ export default function AuthLayout({
         style={{ objectFit: "cover", zIndex: -1 }}
         priority
       />
-      <main className="flex flex-col gap-4 w-full max-w-md items-center">
+      <main className="flex flex-col gap-2 w-full max-w-md items-center">
         {children}
       </main>
     </div>

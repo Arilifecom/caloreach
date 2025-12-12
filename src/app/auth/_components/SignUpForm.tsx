@@ -70,13 +70,10 @@ export const SignupForm = () => {
 
   return (
     <>
-      <SiteLogo className="w-20 md:w-28" />
-      <CardWithShadow className="relative px-2 max-w-sm bg-primary-foreground">
+      <SiteLogo className="w-24 md:w-28" />
+      <CardWithShadow className="relative gap-2 max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
-          <PageHeader
-            title="サインアップ"
-            description="Let's leach your  calorie target!"
-          />
+          <PageHeader title="サインアップ" />
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <FieldGroup>
@@ -88,7 +85,7 @@ export const SignupForm = () => {
               text="Googleアカウントで登録"
               submitGoogle={submitGoogle}
             />
-            <VerticalLine text="or" className="px-6" />
+            <VerticalLine text="or" />
 
             <Controller
               control={form.control}

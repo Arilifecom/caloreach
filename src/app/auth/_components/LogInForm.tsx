@@ -65,9 +65,9 @@ export const LogInForm = () => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow className="relative px-2 max-w-sm bg-primary-foreground">
+      <CardWithShadow className="relative gap-2 max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
-          <PageHeader title="ログイン" description="Welcome back!" />
+          <PageHeader title="ログイン" />
           <p className="text-red-500">{errorMessage}</p>
         </div>
         <FieldGroup>
@@ -79,13 +79,15 @@ export const LogInForm = () => {
               text="Googleアカウントでログイン"
               submitGoogle={submitGoogle}
             />
-            <VerticalLine text="or" className="px-6" />
+            <VerticalLine text="or" />
             <Controller
               control={form.control}
               name="email"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>メールアドレス</FieldLabel>
+                  <FieldLabel htmlFor={field.name} className="gap-0">
+                    メールアドレス
+                  </FieldLabel>
                   <Input
                     {...field}
                     id={field.name}
