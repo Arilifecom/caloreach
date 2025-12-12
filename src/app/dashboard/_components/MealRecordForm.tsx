@@ -207,7 +207,7 @@ export const MealRecordForm = ({
               onSubmit={form.handleSubmit(submitMealRecordSent)}
               className="space-y-4 px-6 w-full"
             >
-              <div className="flex w-full gap-6">
+              <div className="flex w-full gap-4">
                 <Controller
                   control={form.control}
                   name="date"
@@ -219,6 +219,7 @@ export const MealRecordForm = ({
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="date"
+                        className="px-0 pl-3"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -238,6 +239,7 @@ export const MealRecordForm = ({
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="time"
+                        className="px-0 pl-3"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
