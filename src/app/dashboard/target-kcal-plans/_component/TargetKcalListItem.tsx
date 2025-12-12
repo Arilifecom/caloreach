@@ -3,7 +3,7 @@
 import { TargetKcalActionMenu } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalActionMenu";
 import { List } from "@/components";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
-import { formatDateWithDay } from "@/utils/format/date";
+import { formatDateWithDay, formatYY } from "@/utils/format/date";
 import { memo } from "react";
 
 type TargetKcalListItemProps = {
@@ -18,9 +18,14 @@ const Component = ({ data, firstEffectiveDate }: TargetKcalListItemProps) => {
         <List>
           <div className="flex w-full justify-between min-h-[49.5px]">
             <div className="flex items-center gap-6">
-              <h3 className="">
-                {formatDateWithDay(new Date(data.effectiveDate))}
-              </h3>
+              <div>
+                <h3 className="relative min-w-[90px] pt-2">
+                  {formatDateWithDay(new Date(data.effectiveDate))}
+                  <span className="absolute -top-1.5 left-0 text-xs text-foreground/70">
+                    {formatYY(new Date(data.effectiveDate))}年
+                  </span>
+                </h3>
+              </div>
               <p className="">開始</p>
               <p className="font-bold text-xl">{data.targetKcal}kcal</p>
             </div>
