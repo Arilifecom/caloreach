@@ -207,12 +207,12 @@ export const MealRecordForm = ({
               onSubmit={form.handleSubmit(submitMealRecordSent)}
               className="space-y-4 px-6 w-full"
             >
-              <div className="flex gap-4">
+              <div className="flex w-full gap-6">
                 <Controller
                   control={form.control}
                   name="date"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="w-1/2">
+                    <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>日付</FieldLabel>
                       <Input
                         {...field}
@@ -231,7 +231,7 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="time"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="w-1/2">
+                    <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>時間</FieldLabel>
                       <Input
                         {...field}
