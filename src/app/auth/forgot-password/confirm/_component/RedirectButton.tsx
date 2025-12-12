@@ -37,7 +37,7 @@ export const RedairectButton = ({ confirmation_url }: RedairectButtonProps) => {
 
   return (
     <>
-      <SiteLogo className="w-28" />
+      <SiteLogo className="w-24 md:w-28" />
       <CardWithShadow className="relative w-full bg-primary-foreground">
         <div className="text-center px-6">
           <PageHeader
