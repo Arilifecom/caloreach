@@ -7,16 +7,19 @@ import {
 } from "@/app/dashboard/_components/";
 import { getTodayTotalKcal } from "@/utils/api/progress";
 import { getEfeectiveTargetKcal } from "@/utils/api/targetKcal";
+import { formatYYMMDD } from "@/utils/format/date";
 import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type ProgressSectionProps = {
   userId: string;
-  date: string;
 };
 
-const Component = ({ userId, date }: ProgressSectionProps) => {
+const today = new Date();
+const date = formatYYMMDD(today);
+
+const Component = ({ userId }: ProgressSectionProps) => {
   //Get user's diary amount Kcal form mealRecords
   const {
     data: totalKcal,
