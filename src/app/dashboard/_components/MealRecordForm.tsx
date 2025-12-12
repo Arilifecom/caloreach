@@ -212,14 +212,14 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="date"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="flex-1">
                       <FieldLabel htmlFor={field.name}>日付</FieldLabel>
                       <Input
                         {...field}
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="date"
-                        className="px-0 pl-3"
+                        className="box-border"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -232,14 +232,14 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="time"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="flex-1">
                       <FieldLabel htmlFor={field.name}>時間</FieldLabel>
                       <Input
                         {...field}
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="time"
-                        className="px-0 pl-3"
+                        className="box-border"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />

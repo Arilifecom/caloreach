@@ -7,7 +7,6 @@ function makeQueryClient() {
       queries: {
         staleTime: 1000 * 60 * 5,
         retry: false,
-        refetchOnWindowFocus: false,
       },
     },
     queryCache: new QueryCache({
