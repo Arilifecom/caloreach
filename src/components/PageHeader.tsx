@@ -24,7 +24,7 @@ function Component({ title, description, className }: PageHeaderProps) {
   return (
     <CardHeader className={cn("w-full px-0", className)}>
       <div>
-        <CardTitle className="text-2xl mb-2">{title}</CardTitle>
+        <CardTitle className="text-[20px] mb-2 md:text-2xl">{title}</CardTitle>
         <CardDescription>{formatParagraph(description)}</CardDescription>
       </div>
     </CardHeader>
