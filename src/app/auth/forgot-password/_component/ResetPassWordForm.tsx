@@ -53,8 +53,8 @@ export const ResetPassWordForm = () => {
 
   return (
     <>
-      <SiteLogo className="w-28" />
-      <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
+      <SiteLogo className="w-24 md:w-28" />
+      <CardWithShadow className="relative px-2 max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
           <PageHeader
             title="Reset your password"

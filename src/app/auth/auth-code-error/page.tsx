@@ -16,7 +16,7 @@ export default function AuthCodeErrorPage() {
 
   return (
     <>
-      <SiteLogo className="w-28" />
+      <SiteLogo className="w-24 md:w-28" />
       <CardWithShadow className="text-center">
         <CardHeader>
           <CardTitle className="text-xl">ログインに失敗しました</CardTitle>

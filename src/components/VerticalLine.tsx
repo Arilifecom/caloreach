@@ -15,9 +15,9 @@ function Component({ text, className }: VerticalLineProps) {
           className
         )}
       >
-        <div className="col-1 border-t"></div>
-        <span className="col-2 w-full text-sm text-gray-500">{text}</span>
-        <div className="col-3 border-t"></div>
+        <div className="col-1 border-t border-foreground"></div>
+        <span className="col-2 w-full text-sm text-foreground">{text}</span>
+        <div className="col-3 border-t border-foreground"></div>
       </div>
     );
   }

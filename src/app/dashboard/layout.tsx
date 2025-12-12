@@ -9,7 +9,7 @@ export default function RootLayout({
     <>
       <DashboardHeader />
       <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20">
-        <main className="flex flex-col gap-6 w-full row-start-2 md:gap-8">
+        <main className="flex flex-col gap-6 w-full items-center row-start-2 md:gap-8">
           <Toaster />
           <TanstackQueryProvider>{children}</TanstackQueryProvider>
           <DashboardNav />

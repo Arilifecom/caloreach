@@ -37,7 +37,7 @@ const Component = ({ type }: EmailSentNoticeProps) => {
 
   return (
     <>
-      <SiteLogo className="w-28" />
+      <SiteLogo className="w-24 md:w-28" />
       <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
         <div className="text-center px-6">
           <PageHeader title={text.title} description={text.description} />

@@ -21,7 +21,7 @@ export default function ErrorPage({
 
   return (
     <>
-      <SiteLogo className="w-28" color="#000" />
+      <SiteLogo className="w-24 md:w-28" color="#000" />
       <CardWithShadow>
         <CardHeader>
           <CardTitle className="text-xl">Something went wrong...</CardTitle>
