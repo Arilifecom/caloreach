@@ -9,12 +9,12 @@ import { memo } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
+  recordDate?: string;
 };
 
-const today = new Date();
-const date = formatYYMMDD(today);
+const Component = ({ userId, recordDate }: MealRecordSectionProps) => {
+  const date = recordDate ? recordDate : formatYYMMDD(new Date());
 
-const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
       <MealRecordLists userId={userId} date={date} />

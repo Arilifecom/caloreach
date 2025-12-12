@@ -14,12 +14,12 @@ import { memo } from "react";
 
 type ProgressSectionProps = {
   userId: string;
+  recordDate?: string;
 };
 
-const today = new Date();
-const date = formatYYMMDD(today);
+const Component = ({ userId, recordDate }: ProgressSectionProps) => {
+  const date = recordDate ? recordDate : formatYYMMDD(new Date());
 
-const Component = ({ userId }: ProgressSectionProps) => {
   //Get user's diary amount Kcal form mealRecords
   const {
     data: totalKcal,
