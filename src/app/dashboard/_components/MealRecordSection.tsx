@@ -4,14 +4,17 @@ import {
   MealRecordAddOption,
   MealRecordLists,
 } from "@/app/dashboard/_components/";
+import { formatYYMMDD } from "@/utils/format/date";
 import { memo } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
-  date: string;
 };
 
-const Component = ({ userId, date }: MealRecordSectionProps) => {
+const today = new Date();
+const date = formatYYMMDD(today);
+
+const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
       <MealRecordLists userId={userId} date={date} />
