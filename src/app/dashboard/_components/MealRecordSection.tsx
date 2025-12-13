@@ -9,12 +9,13 @@ import { memo } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
+  targetDate?: string;
 };
 
-const today = new Date();
-const date = formatYYMMDD(today);
+const Component = ({ userId, targetDate }: MealRecordSectionProps) => {
+  // Use targetDate when referencing past data or get current-day
+  const date = targetDate ? targetDate : formatYYMMDD(new Date());
 
-const Component = ({ userId }: MealRecordSectionProps) => {
   return (
     <>
       <MealRecordLists userId={userId} date={date} />

@@ -16,11 +16,11 @@ export default async function MealDetailPage({
 }) {
   const userId = await getUserId();
   const queryClient = getQueryClient();
-  const { date } = await params;
+  const { date: targetDate } = await params;
 
   await queryClient.prefetchQuery({
-    queryKey: mealRecordkeys.dailyList(userId, date),
-    queryFn: () => fetchUserDailyMealRecords(userId, date),
+    queryKey: mealRecordkeys.dailyList(userId, targetDate),
+    queryFn: () => fetchUserDailyMealRecords(userId, targetDate),
   });
 
   const dehydratedState = dehydrate(queryClient);
@@ -28,12 +28,12 @@ export default async function MealDetailPage({
   return (
     <>
       <PageHeader
-        title={formatDateWithDay(new Date(date))}
+        title={formatDateWithDay(new Date(targetDate))}
         description="過去の食事履歴の詳細です。"
       />
       <HydrationBoundary state={dehydratedState}>
-        <ProgressSection userId={userId} date={date} />
-        <MealRecordSection userId={userId} date={date} />
+        <ProgressSection userId={userId} targetDate={targetDate} />
+        <MealRecordSection userId={userId} targetDate={targetDate} />
       </HydrationBoundary>
     </>
   );
