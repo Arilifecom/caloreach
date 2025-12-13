@@ -14,12 +14,13 @@ import { memo } from "react";
 
 type ProgressSectionProps = {
   userId: string;
+  targetDate?: string;
 };
 
-const today = new Date();
-const date = formatYYMMDD(today);
+const Component = ({ userId, targetDate }: ProgressSectionProps) => {
+  // Use targetDate when referencing past data or get current-day
+  const date = targetDate ? targetDate : formatYYMMDD(new Date());
 
-const Component = ({ userId }: ProgressSectionProps) => {
   //Get user's diary amount Kcal form mealRecords
   const {
     data: totalKcal,
