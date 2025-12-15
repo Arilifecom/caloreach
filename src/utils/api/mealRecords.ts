@@ -8,8 +8,7 @@ import {
   SelectMealRecord,
   userFoodSelections,
 } from "@/db/schema";
-import { endOfDay, startOfDay } from "date-fns";
-import { and, asc, eq, gte, like, lte, sql } from "drizzle-orm";
+import { and, asc, eq, like, sql } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
 
 //Get user diary　mealRecords
@@ -20,8 +19,7 @@ export const fetchUserDailyMealRecords = async (
   const res = await db.query.mealRecords.findMany({
     where: and(
       eq(mealRecords.userId, userId),
-      gte(mealRecords.eatenAt, startOfDay(date)),
-      lte(mealRecords.eatenAt, endOfDay(date))
+      sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`
     ),
     orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
   });
