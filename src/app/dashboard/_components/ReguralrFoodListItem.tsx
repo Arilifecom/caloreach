@@ -1,4 +1,4 @@
-import { List } from "@/components";
+import { List, Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/api/mealRecords";
 import { createJstDate, formatTime, formatYYMMDD } from "@/utils/format/date";
@@ -61,16 +61,25 @@ const Component = ({
   return (
     <>
       <li key={regularFood.id} className="text-sm">
-        <button onClick={() => handleAddMealRecords(regularFood)}>
+        <button
+          onClick={() => handleAddMealRecords(regularFood)}
+          disabled={addMutation.isPending}
+        >
           <List className="w-fit">
-            <div className="flex items-center gap-3">
-              <div>
-                <h3 className="font-bold text-sm">{regularFood.foodName}</h3>
-                <p className="text-xs">
-                  {regularFood.gram}g / {regularFood.kcal}kcal
-                </p>
+            {addMutation.isPending ? (
+              <div className="flex items-center justify-center h-9 min-w-[90px]">
+                <Loading />
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div>
+                  <h3 className="font-bold text-sm">{regularFood.foodName}</h3>
+                  <p className="text-xs">
+                    {regularFood.gram}g / {regularFood.kcal}kcal
+                  </p>
+                </div>
+              </div>
+            )}
           </List>
         </button>
       </li>
