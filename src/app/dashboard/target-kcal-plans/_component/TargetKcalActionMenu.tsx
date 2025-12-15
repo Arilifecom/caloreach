@@ -1,4 +1,5 @@
 import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalPlanForm";
+import { Loading } from "@/components";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteTargetKcal } from "@/utils/api/targetKcal";
@@ -80,9 +81,10 @@ const Component = ({
             ) : (
               <button
                 onClick={() => handleDelete(targetKcal)}
-                className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
+                disabled={deleteMutation.isPending}
+                className="bg-muted border-2 flex items-center justify-center h-[44px] p-3 w-[44px] rounded-lg"
               >
-                <Trash2 />
+                {deleteMutation.isPending ? <Loading /> : <Trash2 />}
               </button>
             )}
 

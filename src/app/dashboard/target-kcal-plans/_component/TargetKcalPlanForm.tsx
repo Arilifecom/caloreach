@@ -5,6 +5,7 @@ import {
   TargetKcalPlanInputSchemaInput,
   TargetKcalPlanInputSchemaOutput,
 } from "@/app/dashboard/target-kcal-plans/_component/schema";
+import { Loading } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Dialog,
@@ -244,8 +245,16 @@ export const TargetKcalPlanForm = ({
                   キャンセル
                 </Button>
 
-                <Button type="submit" className="rounded-lg w-28">
-                  登録
+                <Button
+                  type="submit"
+                  className="rounded-lg w-28"
+                  disabled={addMutation.isPending || editMutation.isPending}
+                >
+                  {addMutation.isPending || editMutation.isPending ? (
+                    <Loading />
+                  ) : (
+                    "登録"
+                  )}
                 </Button>
               </div>
             </form>

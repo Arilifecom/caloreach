@@ -6,6 +6,7 @@ import {
   RegularFoodFormInputSchemaOutput,
   RegularFoodFormSchemaResolver,
 } from "@/app/dashboard/regular-foods/_components/_schema";
+import { Loading } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Dialog,
@@ -288,8 +289,16 @@ export const RegularFoodForm = ({
                   キャンセル
                 </Button>
 
-                <Button type="submit" className="rounded-lg w-28">
-                  登録
+                <Button
+                  type="submit"
+                  className="rounded-lg w-28"
+                  disabled={addMutation.isPending || editMutation.isPending}
+                >
+                  {addMutation.isPending || editMutation.isPending ? (
+                    <Loading />
+                  ) : (
+                    "登録"
+                  )}
                 </Button>
               </div>
             </form>

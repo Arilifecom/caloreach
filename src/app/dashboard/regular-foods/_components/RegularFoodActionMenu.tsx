@@ -1,4 +1,5 @@
 import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/";
+import { Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteRegularFood } from "@/utils/api/regularFoods";
@@ -69,13 +70,14 @@ const Component = ({ regularFood }: ActionMenuProps) => {
             />
             <button
               onClick={() => handleDelete(regularFood)}
-              className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
+              disabled={deleteMutation.isPending}
+              className="bg-muted border-2 flex items-center justify-center h-[44px] p-3 w-[44px] rounded-lg"
             >
-              <Trash2 />
+              {deleteMutation.isPending ? <Loading /> : <Trash2 />}
             </button>
             <button
               onClick={handleOpenChange}
-              className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
+              className="bg-muted border-2 flex items-center justify-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <X />
             </button>

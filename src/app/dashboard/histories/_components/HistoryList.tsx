@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
@@ -20,6 +20,7 @@ type HistoryListProps = {
 
 const Component = ({ userId, limit }: HistoryListProps) => {
   const queryClient = useQueryClient();
+  const [fetchMoreLoading, setfetchMoreLoading] = useState(false);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: historieskeys.list(userId),
@@ -39,11 +40,13 @@ const Component = ({ userId, limit }: HistoryListProps) => {
 
   const fetchMore = async () => {
     try {
+      setfetchMoreLoading(true);
       const res = await fetchDailyKcalSummary({
         userId,
         limit,
         currentCursor: nextCursor,
       });
+      setfetchMoreLoading(false);
 
       queryClient.setQueryData(
         historieskeys.list(userId),
@@ -54,6 +57,7 @@ const Component = ({ userId, limit }: HistoryListProps) => {
         })
       );
     } catch {
+      setfetchMoreLoading(false);
       console.error("Error fetch regularFood");
       toast.error("履歴データの取得に失敗しました");
     }
@@ -73,8 +77,12 @@ const Component = ({ userId, limit }: HistoryListProps) => {
           {hasNext ? (
             <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2">
               <div className="col-1 border-t" />
-              <Button variant="outline" onClick={() => fetchMore()}>
-                Load more
+              <Button
+                variant="outline"
+                onClick={() => fetchMore()}
+                disabled={fetchMoreLoading}
+              >
+                {fetchMoreLoading ? <Loading /> : "Load more"}
               </Button>
               <div className="col-3 border-t" />
             </div>

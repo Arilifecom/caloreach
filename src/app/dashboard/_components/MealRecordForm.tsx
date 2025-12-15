@@ -29,6 +29,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 import { toast } from "sonner";
+import { Loading } from "@/components";
 
 type MealRecordFormProps = {
   userId: string;
@@ -370,8 +371,16 @@ export const MealRecordForm = ({
                   キャンセル
                 </Button>
 
-                <Button type="submit" className="rounded-lg w-28">
-                  登録
+                <Button
+                  type="submit"
+                  disabled={addMutation.isPending}
+                  className="rounded-lg w-28"
+                >
+                  {addMutation.isPending || editMutation.isPending ? (
+                    <Loading />
+                  ) : (
+                    "登録"
+                  )}
                 </Button>
               </div>
             </form>

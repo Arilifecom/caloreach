@@ -1,11 +1,11 @@
 "use client";
 
-import { List } from "@/components";
+import { List, Loading } from "@/components";
 import { DailyKcalSummary } from "@/utils/api/history";
 import { formatDateWithDay } from "@/utils/format/date";
 import { BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { memo } from "react";
+import { memo, useState } from "react";
 
 type HistoryListItemProps = {
   data: DailyKcalSummary;
@@ -13,8 +13,10 @@ type HistoryListItemProps = {
 
 const Component = ({ data }: HistoryListItemProps) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
+    setIsLoading(true);
     router.push(`/dashboard/histories/${data.date}`);
   };
   return (
@@ -29,9 +31,14 @@ const Component = ({ data }: HistoryListItemProps) => {
             </div>
             <button
               onClick={handleClick}
-              className="flex items-center bg-background w-[44px] h-[44px] p-3 rounded-lg"
+              disabled={isLoading}
+              className="flex items-center justify-center bg-background w-[44px] h-[44px] p-3 rounded-lg"
             >
-              <BookOpen className="text-foreground" />
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <BookOpen className="text-foreground" />
+              )}
             </button>
           </div>
         </List>
