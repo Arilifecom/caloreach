@@ -5,8 +5,8 @@ import {
   ProgressRatio,
   RemainingKcal,
 } from "@/app/dashboard/_components/";
-import { getTodayTotalKcal } from "@/utils/api/progress";
-import { getEfeectiveTargetKcal } from "@/utils/api/targetKcal";
+import { getTodayTotalKcal } from "@/utils/db/progress";
+import { getEfeectiveTargetKcal } from "@/utils/db/targetKcal";
 import { formatYYMMDD } from "@/utils/format/date";
 import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";

@@ -22,7 +22,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectregularFood } from "@/db/schema";
-import { addRegularFood, editRegularFood } from "@/utils/api/regularFoods";
+import { addRegularFood, editRegularFood } from "@/utils/db/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";

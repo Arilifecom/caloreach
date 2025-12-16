@@ -1,6 +1,6 @@
 import { TargetKcalSection } from "@/app/dashboard/target-kcal-plans/_component";
-import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
-import { getUserId } from "@/utils/auth";
+import { fetchUserTargetKcal } from "@/utils/db/targetKcal";
+import { getUserId } from "@/utils/db/auth";
 import { getQueryClient, TargetKcalkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 

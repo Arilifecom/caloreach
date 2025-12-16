@@ -12,7 +12,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { createProfile } from "@/utils/api/setup";
+import { createProfile } from "@/utils/db/setup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";

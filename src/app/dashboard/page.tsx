@@ -2,7 +2,7 @@ import {
   MealRecordSection,
   ProgressSection,
 } from "@/app/dashboard/_components";
-import { getUserId } from "@/utils/auth";
+import { getUserId } from "@/utils/db/auth";
 
 export default async function Dashboard() {
   const userId = await getUserId();

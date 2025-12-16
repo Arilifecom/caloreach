@@ -2,7 +2,7 @@ import { MealRecordForm } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { SelectMealRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { deleteMealRecord } from "@/utils/api/mealRecords";
+import { deleteMealRecord } from "@/utils/db/mealRecords";
 import { formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

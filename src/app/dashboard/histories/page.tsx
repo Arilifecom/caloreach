@@ -1,6 +1,6 @@
 import { HistoryList } from "@/app/dashboard/histories/_components";
-import { fetchDailyKcalSummary } from "@/utils/api/history";
-import { getUserId } from "@/utils/auth";
+import { fetchDailyKcalSummary } from "@/utils/db/history";
+import { getUserId } from "@/utils/db/auth";
 import { getQueryClient, historieskeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 

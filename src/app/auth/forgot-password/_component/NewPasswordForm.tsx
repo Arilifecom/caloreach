@@ -13,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { signOut, updateNewPassWord } from "@/utils/api/auth";
+import { signOut, updateNewPassWord } from "@/utils/db/auth";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
