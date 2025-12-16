@@ -2,8 +2,7 @@
 
 import { db } from "@/db";
 import { mealRecords } from "@/db/schema";
-import { endOfDay, startOfDay } from "date-fns";
-import { and, eq, gte, lte, sum } from "drizzle-orm";
+import { and, eq, sql, sum } from "drizzle-orm";
 
 //Get user amount Kcal diary mealRecords
 export const getTodayTotalKcal = async (userId: string, date: string) => {
@@ -13,8 +12,7 @@ export const getTodayTotalKcal = async (userId: string, date: string) => {
     .where(
       and(
         eq(mealRecords.userId, userId),
-        gte(mealRecords.eatenAt, startOfDay(date)),
-        lte(mealRecords.eatenAt, endOfDay(date))
+        sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`
       )
     );
 
