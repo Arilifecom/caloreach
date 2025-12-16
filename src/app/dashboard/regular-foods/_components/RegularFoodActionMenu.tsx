@@ -2,7 +2,7 @@ import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/";
 import { Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { deleteRegularFood } from "@/utils/server/regularFoods";
+import { deleteRegularFood } from "@/utils/db/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";

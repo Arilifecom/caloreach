@@ -3,7 +3,7 @@
 import { FetchErrorMessage } from "@/app/dashboard/_components/FetchErrorMessage";
 import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodListItem";
 import { Loading } from "@/components";
-import { fetchUserRegularFoods } from "@/utils/server/regularFoods";
+import { fetchUserRegularFoods } from "@/utils/db/regularFoods";
 import { RegularFoodskeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 

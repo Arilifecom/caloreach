@@ -2,7 +2,7 @@
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
-import { fetchUserDailyMealRecords } from "@/utils/server/mealRecords";
+import { fetchUserDailyMealRecords } from "@/utils/db/mealRecords";
 import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";

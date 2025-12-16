@@ -21,7 +21,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectMealRecord } from "@/db/schema";
-import { addMealRecord, editMealRecord } from "@/utils/server/mealRecords";
+import { addMealRecord, editMealRecord } from "@/utils/db/mealRecords";
 import { formatTime, formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

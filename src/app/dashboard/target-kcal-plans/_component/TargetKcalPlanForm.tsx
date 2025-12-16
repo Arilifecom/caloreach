@@ -21,7 +21,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
-import { createTargetKcal, editTargetKcal } from "@/utils/server/targetKcal";
+import { createTargetKcal, editTargetKcal } from "@/utils/db/targetKcal";
 import { formattedTomorrow, formatYYMMDD } from "@/utils/format/date";
 import { TargetKcalkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
