@@ -1,7 +1,7 @@
 "use client";
 
 import { List, Loading } from "@/components";
-import { DailyKcalSummary } from "@/utils/api/history";
+import { DailyKcalSummary } from "@/utils/server/history";
 import { formatDateWithDay } from "@/utils/format/date";
 import { BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";

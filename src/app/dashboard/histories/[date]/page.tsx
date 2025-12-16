@@ -3,11 +3,11 @@ import {
   ProgressSection,
 } from "@/app/dashboard/_components";
 import { PageHeader } from "@/components";
-import { fetchUserDailyMealRecords } from "@/utils/api/mealRecords";
-import { getUserId } from "@/utils/auth";
+import { fetchUserDailyMealRecords } from "@/utils/server/mealRecords";
 import { formatDateWithDay } from "@/utils/format/date";
 import { getQueryClient, mealRecordkeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getUserId } from "@/utils/server/auth";
 
 export default async function MealDetailPage({
   params,

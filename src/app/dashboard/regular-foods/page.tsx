@@ -1,6 +1,6 @@
 import { RegularFoodSection } from "@/app/dashboard/regular-foods/_components";
-import { fetchUserRegularFoods } from "@/utils/api/regularFoods";
-import { getUserId } from "@/utils/auth";
+import { fetchUserRegularFoods } from "@/utils/server/regularFoods";
+import { getUserId } from "@/utils/server/auth";
 import { getQueryClient, RegularFoodskeys } from "@/utils/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 

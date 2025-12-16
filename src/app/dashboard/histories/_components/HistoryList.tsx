@@ -7,7 +7,7 @@ import { Button } from "@/components/ui";
 import {
   DailyKcalSummaryResponse,
   fetchDailyKcalSummary,
-} from "@/utils/api/history";
+} from "@/utils/server/history";
 import { historieskeys, TErrCodes } from "@/utils/tanstack";
 import { Loading } from "@/components";
 import { FetchErrorMessage } from "@/app/dashboard/_components";

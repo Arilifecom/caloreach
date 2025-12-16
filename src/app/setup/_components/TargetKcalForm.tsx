@@ -13,7 +13,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { createTargetKcal } from "@/utils/api/setup";
+import { createTargetKcal } from "@/utils/server/setup";
 import { formatYYMMDD } from "@/utils/format/date";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

@@ -8,7 +8,7 @@ import {
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { useModalControl } from "@/hooks";
-import { fetchUserTargetKcal } from "@/utils/api/targetKcal";
+import { fetchUserTargetKcal } from "@/utils/server/targetKcal";
 import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";

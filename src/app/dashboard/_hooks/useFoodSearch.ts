@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebounce } from "@/app/dashboard/_hooks/";
-import { fetchFoodsBySearch } from "@/utils/api/mealRecords";
+import { fetchFoodsBySearch } from "@/utils/server/mealRecords";
 import { foodskeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";

@@ -14,7 +14,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { login, loginGoogle } from "@/utils/api/auth";
+import { login, loginGoogle } from "@/utils/server/auth";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

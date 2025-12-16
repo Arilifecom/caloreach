@@ -1,6 +1,6 @@
 import { GetStartedButton } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { checkAuthClient } from "@/utils/auth";
+import { checkAuthClient } from "@/utils/server/auth";
 
 export const Header = async () => {
   const isLoggedIn = await checkAuthClient();
