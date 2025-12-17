@@ -3,9 +3,10 @@
 import {
   MealRecordAddOption,
   MealRecordLists,
+  MealRecordListsSkeleton,
 } from "@/app/dashboard/_components/";
 import { formatYYMMDD } from "@/utils/format/date";
-import { memo } from "react";
+import { memo, Suspense } from "react";
 
 type MealRecordSectionProps = {
   userId: string;
@@ -18,8 +19,10 @@ const Component = ({ userId, targetDate }: MealRecordSectionProps) => {
 
   return (
     <>
-      <MealRecordLists userId={userId} date={date} />
-      <MealRecordAddOption userId={userId} date={date} />
+      <Suspense fallback={<MealRecordListsSkeleton />}>
+        <MealRecordLists userId={userId} date={date} />
+        <MealRecordAddOption userId={userId} date={date} />
+      </Suspense>
     </>
   );
 };

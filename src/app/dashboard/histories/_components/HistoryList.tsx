@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
 import { historieskeys, TErrCodes } from "@/utils/tanstack";
@@ -22,8 +22,8 @@ const Component = ({ userId }: HistoryListProps) => {
   const [fetchMoreLoading, setfetchMoreLoading] = useState(false);
   const limit = 7;
 
-  const { data, isLoading, isError, refetch } =
-    useQuery<DailyKcalSummaryResponse>({
+  const { data, isError, refetch } = useSuspenseQuery<DailyKcalSummaryResponse>(
+    {
       queryKey: historieskeys.list(userId),
       queryFn: async () => {
         const res = await fetch(
@@ -37,9 +37,9 @@ const Component = ({ userId }: HistoryListProps) => {
         return res.json();
       },
       meta: { errCode: TErrCodes.HISTORY_FETCH_FAILED },
-    });
+    }
+  );
 
-  if (isLoading) return <Loading />;
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
   const nextCursor = data ? data.nextCursor : null;

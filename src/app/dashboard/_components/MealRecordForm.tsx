@@ -373,7 +373,7 @@ export const MealRecordForm = ({
 
                 <Button
                   type="submit"
-                  disabled={addMutation.isPending}
+                  disabled={addMutation.isPending || editMutation.isPending}
                   className="rounded-lg w-28"
                 >
                   {addMutation.isPending || editMutation.isPending ? (

@@ -28,7 +28,9 @@ const Component = ({
           <div className="flex flex-col">
             <span className="text-xs font-medium -mb-1">残りカロリー</span>
             {isLoading ? (
-              <span className="text-xs text-gray-500 pt-2">取得中...</span>
+              <span className="text-xs text-gray-500 pt-2 min-h-8">
+                取得中...
+              </span>
             ) : isError ? (
               <p className="text-2xl font-black">--</p>
             ) : (
