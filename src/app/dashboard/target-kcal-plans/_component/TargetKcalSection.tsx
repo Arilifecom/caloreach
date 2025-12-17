@@ -7,8 +7,8 @@ import {
 } from "@/app/dashboard/target-kcal-plans/_component/";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
+import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { fetchUserTargetKcal } from "@/utils/db/targetKcal";
 import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
@@ -21,9 +21,20 @@ type TargetKcalSectionProps = {
 const Component = ({ userId }: TargetKcalSectionProps) => {
   const { isFormOpen, handleFormOpenChange } = useModalControl();
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery<
+    SelectTargetKcalPlansRecord[]
+  >({
     queryKey: TargetKcalkeys.list(userId),
-    queryFn: () => fetchUserTargetKcal(userId),
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ORIGIN}/api/target-kcal?userId=${userId}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) {
+        throw new Error("totalKcalLists fetch failed");
+      }
+      return res.json();
+    },
     meta: { errCode: TErrCodes.TARGETKCALL_FETCH_FAILED },
   });
 
