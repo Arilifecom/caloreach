@@ -37,6 +37,7 @@ const Component = ({
 
       handleCloseAllWindows();
     },
+
     onError: () => {
       console.error("Error creating mealRecord");
       toast.error("追加に失敗しました");
@@ -49,8 +50,11 @@ const Component = ({
     const eatenAt = createJstDate(date, time);
 
     const sentDate = {
-      ...data,
       id: uuidv7(),
+      userId: data.userId,
+      foodName: data.foodName,
+      gram: data.gram,
+      kcal: data.kcal,
       eatenAt: eatenAt,
     };
 
