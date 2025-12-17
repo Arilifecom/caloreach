@@ -1,7 +1,6 @@
 "use clinet";
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
-import { Loading } from "@/components";
 import { SelectMealRecord } from "@/db/schema";
 import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -13,9 +12,7 @@ type MealRecordListsProps = {
 };
 
 const Component = ({ userId, date }: MealRecordListsProps) => {
-  const { data, isLoading, isError, refetch } = useSuspenseQuery<
-    SelectMealRecord[]
-  >({
+  const { data, isError, refetch } = useSuspenseQuery<SelectMealRecord[]>({
     queryKey: mealRecordkeys.dailyList(userId, date),
     queryFn: async () => {
       const res = await fetch(
@@ -30,7 +27,6 @@ const Component = ({ userId, date }: MealRecordListsProps) => {
     meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 
-  if (isLoading) return <Loading />;
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
   return (
