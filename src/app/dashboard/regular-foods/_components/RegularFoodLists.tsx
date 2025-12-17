@@ -2,10 +2,9 @@
 
 import { FetchErrorMessage } from "@/app/dashboard/_components";
 import { ReguralrFoodListItem } from "@/app/dashboard/regular-foods/_components/";
-import { Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { RegularFoodskeys, TErrCodes } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type RegularFoodLsitsProps = {
@@ -13,7 +12,7 @@ type RegularFoodLsitsProps = {
 };
 
 const Component = ({ userId }: RegularFoodLsitsProps) => {
-  const { data, isLoading, isError, refetch } = useQuery<SelectregularFood[]>({
+  const { data, isError, refetch } = useSuspenseQuery<SelectregularFood[]>({
     queryKey: RegularFoodskeys.list(userId),
     queryFn: async () => {
       const res = await fetch(
@@ -28,7 +27,6 @@ const Component = ({ userId }: RegularFoodLsitsProps) => {
     meta: { errCode: TErrCodes.REGULAR_FOOD_SEARCH_FAILED },
   });
 
-  if (isLoading) return <Loading />;
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
   return (
