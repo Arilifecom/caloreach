@@ -1,8 +1,7 @@
-"use server";
-
 import { db } from "@/db";
 import { mealRecords, targetKcalPlans } from "@/db/schema";
-import { sql, desc, and, eq, lte } from "drizzle-orm";
+import { and, desc, eq, lte, sql } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
 
 export type DailyKcalSummary = {
   date: string;
@@ -16,17 +15,20 @@ export type DailyKcalSummaryResponse = {
   hasNext: string | null;
 };
 
-type fetchDailyKcalSummaryProps = {
-  userId: string;
-  limit: number;
-  currentCursor: string | null;
-};
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("userId");
+  const limitStr = req.nextUrl.searchParams.get("limit");
+  const currentCursor = req.nextUrl.searchParams.get("currentCursor");
 
-export async function fetchDailyKcalSummary({
-  userId,
-  currentCursor,
-  limit,
-}: fetchDailyKcalSummaryProps) {
+  if (!userId || !limitStr) {
+    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+  }
+
+  const limit = Number(limitStr);
+  if (isNaN(limit)) {
+    return NextResponse.json({ error: "Invalid limit" }, { status: 400 });
+  }
+
   //Sum the calories for each day over the 7-day period
   const totalKcalData = await db
     .select({
@@ -37,20 +39,20 @@ export async function fetchDailyKcalSummary({
     })
     .from(mealRecords)
     .where(
-      sql`
-        ${mealRecords.userId} = ${userId}
-        ${
-          currentCursor
-            ? sql`AND DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') < ${currentCursor}`
-            : sql``
-        }
-      `
+      and(
+        eq(mealRecords.userId, userId),
+        currentCursor
+          ? sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') < ${currentCursor}`
+          : sql``
+      )
     )
     .groupBy(sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`)
     .orderBy(desc(sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`))
     .limit(limit);
 
-  if (totalKcalData.length === 0) return { items: [], nextCursor: null };
+  if (totalKcalData.length === 0) {
+    return NextResponse.json({ items: [], nextCursor: null });
+  }
 
   //Get the effective target kcal for that day
   const latestDate = totalKcalData[0].date;
@@ -88,5 +90,5 @@ export async function fetchDailyKcalSummary({
   //has next
   const hasNext = items.length === limit;
 
-  return { items, nextCursor, hasNext };
+  return NextResponse.json({ items, nextCursor, hasNext });
 }

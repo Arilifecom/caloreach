@@ -1,27 +1,12 @@
 import { HistoryList } from "@/app/dashboard/histories/_components";
-import { fetchDailyKcalSummary } from "@/utils/db/history";
 import { getUserId } from "@/utils/db/auth";
-import { getQueryClient, historieskeys } from "@/utils/tanstack";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function HistoryPage() {
   const userId = await getUserId();
-  const queryClient = getQueryClient();
-  const limit = 7;
-
-  await queryClient.prefetchQuery({
-    queryKey: historieskeys.list(userId),
-    queryFn: () =>
-      fetchDailyKcalSummary({ userId, limit, currentCursor: null }),
-  });
-
-  const dehydratedState = dehydrate(queryClient);
 
   return (
     <>
-      <HydrationBoundary state={dehydratedState}>
-        <HistoryList userId={userId} limit={limit} />
-      </HydrationBoundary>
+      <HistoryList userId={userId} />
     </>
   );
 }

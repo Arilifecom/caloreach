@@ -3,7 +3,7 @@
 import { FetchErrorMessage } from "@/app/dashboard/_components/FetchErrorMessage";
 import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodListItem";
 import { Loading } from "@/components";
-import { fetchUserRegularFoods } from "@/utils/db/regularFoods";
+import { SelectregularFood } from "@/db/schema";
 import { RegularFoodskeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,9 +20,18 @@ export const RegularFoodLsits = ({
   isRegularOpen,
   date,
 }: RegularFoodSelectorProps) => {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery<SelectregularFood[]>({
     queryKey: RegularFoodskeys.list(userId),
-    queryFn: () => fetchUserRegularFoods(userId),
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ORIGIN}/api/regular-foods?userId=${userId}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) {
+        throw new Error("RegularFoods fetch failed");
+      }
+      return res.json();
+    },
     enabled: isRegularOpen,
     meta: { errCode: TErrCodes.REGULAR_FOOD_SEARCH_FAILED },
   });

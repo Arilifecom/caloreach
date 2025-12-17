@@ -2,17 +2,7 @@
 
 import { db } from "@/db";
 import { InsertregularFood, regularFoods } from "@/db/schema";
-import { asc, eq, sql } from "drizzle-orm";
-
-//Get user regular Foods
-export const fetchUserRegularFoods = async (userId: string) => {
-  const res = await db.query.regularFoods.findMany({
-    where: eq(regularFoods.userId, userId),
-    orderBy: [asc(regularFoods.createdAt), asc(regularFoods.id)],
-  });
-
-  return res;
-};
+import { eq, sql } from "drizzle-orm";
 
 //Insert user regular Foods
 export const addRegularFood = async (InputData: InsertregularFood) => {
