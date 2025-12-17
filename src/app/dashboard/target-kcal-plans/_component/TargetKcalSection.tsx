@@ -10,7 +10,7 @@ import { Button } from "@/components/ui";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -21,7 +21,7 @@ type TargetKcalSectionProps = {
 const Component = ({ userId }: TargetKcalSectionProps) => {
   const { isFormOpen, handleFormOpenChange } = useModalControl();
 
-  const { data, isLoading, isError, refetch } = useQuery<
+  const { data, isLoading, isError, refetch } = useSuspenseQuery<
     SelectTargetKcalPlansRecord[]
   >({
     queryKey: TargetKcalkeys.list(userId),
@@ -49,7 +49,6 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
   return (
     <>
       <TargetKcalLists data={data} firstEffectiveDate={firstEffectiveDate} />
-
       <Button
         onClick={handleFormOpenChange}
         className="w-14 h-14 fixed bottom-24 right-4 md:right-[calc(50%-200px)]"
