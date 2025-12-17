@@ -43,19 +43,14 @@ export const HiroSection = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-[450px] flex place-content-center overflow-hidden md:max-w-[750px]">
-          <div className="relative flex place-content-center slide-in">
-            <div className="overflow-hidden">
-              <Image
-                src="/images/phone.png"
-                priority
-                alt="phone"
-                width={450}
-                height={750}
-                className="h-full w-auto"
-              />
-            </div>
-          </div>
+        <div className="relative w-full h-[600px] md:h-[1000px]">
+          <Image
+            src="/images/phone.png"
+            alt="phone"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
       </div>
     </section>
