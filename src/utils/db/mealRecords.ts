@@ -2,29 +2,13 @@
 
 import { db } from "@/db";
 import {
-  foods,
   InsertMealRecord,
   mealRecords,
   SelectMealRecord,
   userFoodSelections,
 } from "@/db/schema";
-import { and, asc, eq, like, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { v7 as uuidv7 } from "uuid";
-
-//Get user diary　mealRecords
-export const fetchUserDailyMealRecords = async (
-  userId: string,
-  date: string
-) => {
-  const res = await db.query.mealRecords.findMany({
-    where: and(
-      eq(mealRecords.userId, userId),
-      sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`
-    ),
-    orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
-  });
-  return res;
-};
 
 //Insert user meal Record
 export const addMealRecord = async (InputData: InsertMealRecord) => {
@@ -70,19 +54,19 @@ export const editMealRecord = async (InputData: InsertMealRecord) => {
     .where(eq(mealRecords.id, InputData.id));
 };
 
-//Search food by keyword from foods table
-export const fetchFoodsBySearch = async (keyword: string) => {
-  if (!keyword) return [];
+// //Search food by keyword from foods table
+// export const fetchFoodsBySearch = async (keyword: string) => {
+//   if (!keyword) return [];
 
-  const res = await db.query.foods.findMany({
-    where: like(foods.reading, `%${keyword}%`),
-    limit: 10,
-    columns: {
-      id: true,
-      foodName: true,
-      kcalPer100g: true,
-    },
-  });
+//   const res = await db.query.foods.findMany({
+//     where: like(foods.reading, `%${keyword}%`),
+//     limit: 10,
+//     columns: {
+//       id: true,
+//       foodName: true,
+//       kcalPer100g: true,
+//     },
+//   });
 
-  return res;
-};
+//   return res;
+// };

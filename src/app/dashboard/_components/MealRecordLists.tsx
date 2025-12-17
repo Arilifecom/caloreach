@@ -2,9 +2,9 @@
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
-import { fetchUserDailyMealRecords } from "@/utils/db/mealRecords";
+import { SelectMealRecord } from "@/db/schema";
 import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
 type MealRecordListsProps = {
@@ -13,9 +13,20 @@ type MealRecordListsProps = {
 };
 
 const Component = ({ userId, date }: MealRecordListsProps) => {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useSuspenseQuery<
+    SelectMealRecord[]
+  >({
     queryKey: mealRecordkeys.dailyList(userId, date),
-    queryFn: () => fetchUserDailyMealRecords(userId, date),
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ORIGIN}/api/meal-records?userId=${userId}&date=${date}`,
+        { cache: "no-store" }
+      );
+      if (!res.ok) {
+        throw new Error("MealRecord fetch failed");
+      }
+      return res.json();
+    },
     meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 
