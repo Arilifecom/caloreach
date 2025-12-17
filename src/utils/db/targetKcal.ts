@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { InsertTargetKcalPlansRecord, targetKcalPlans } from "@/db/schema";
-import { and, asc, desc, eq, lte, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 
 //fetch user targetKcal
 export const fetchUserTargetKcal = async (userId: string) => {
@@ -11,19 +11,6 @@ export const fetchUserTargetKcal = async (userId: string) => {
     orderBy: asc(targetKcalPlans.effectiveDate),
   });
   return res;
-};
-
-//get Current effective user targetKcal
-export const getEfeectiveTargetKcal = async (userId: string, date: string) => {
-  const res = await db.query.targetKcalPlans.findFirst({
-    where: and(
-      eq(targetKcalPlans.userId, userId),
-      lte(targetKcalPlans.effectiveDate, date)
-    ),
-    orderBy: desc(targetKcalPlans.effectiveDate),
-  });
-
-  return res!.targetKcal;
 };
 
 //Insert user's TargetKcal
