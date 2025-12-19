@@ -30,6 +30,7 @@ const defaultValues: signupInputSchemaInput = {
 export const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleAuthLoading, setIsGoogleAuthLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -57,14 +58,14 @@ export const SignupForm = () => {
   };
 
   //Signin with Google
-  const submitGoogle = async () => {
+  const submitGoogle = () => {
     try {
-      setIsLoading(true);
-      await loginGoogle();
+      setIsGoogleAuthLoading(true);
+      loginGoogle();
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
-      setIsLoading(false);
+      setIsGoogleAuthLoading(false);
     }
   };
 
@@ -84,6 +85,7 @@ export const SignupForm = () => {
             <ButtonWithGooleIcon
               text="Googleアカウントで登録"
               submitGoogle={submitGoogle}
+              isLoading={isGoogleAuthLoading}
             />
             <VerticalLine text="or" />
 

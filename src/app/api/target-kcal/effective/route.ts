@@ -19,6 +19,6 @@ export async function GET(req: NextRequest) {
     orderBy: desc(targetKcalPlans.effectiveDate),
   });
 
-  const targetKcal = result?.targetKcal;
+  const targetKcal = result ? result.targetKcal : null;
   return NextResponse.json(targetKcal);
 }

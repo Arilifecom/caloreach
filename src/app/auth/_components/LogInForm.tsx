@@ -29,6 +29,7 @@ const loginDefaultValues: LoginFormInputSchema = {
 export const LogInForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleAuthLoading, setIsGoogleAuthLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -44,21 +45,20 @@ export const LogInForm = () => {
       await login(values);
       router.push("/dashboard");
     } catch (error) {
-      setIsLoading(false);
       console.error(error);
       setErrorMessage("ログインに失敗しました");
+      setIsLoading(false);
     }
   };
 
   //Signin with Google
   const submitGoogle = async () => {
     try {
-      setIsLoading(true);
+      setIsGoogleAuthLoading(true);
       await loginGoogle();
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
+      setIsGoogleAuthLoading(false);
     }
   };
 
@@ -78,6 +78,7 @@ export const LogInForm = () => {
             <ButtonWithGooleIcon
               text="Googleアカウントでログイン"
               submitGoogle={submitGoogle}
+              isLoading={isGoogleAuthLoading}
             />
             <VerticalLine text="or" />
             <Controller
