@@ -126,7 +126,7 @@ export const resetPassWord = async (formData: ResetPassWordInputSchema) => {
   if (!email) return;
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/auth/forgot-password/update-password`,
+    redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/auth/forgot-password/callback`,
   });
 
   if (error) {
