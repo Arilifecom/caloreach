@@ -69,7 +69,7 @@ const Component = ({
           onClick={() => handleAddMealRecords(regularFood)}
           disabled={addMutation.isPending}
         >
-          <List className="w-fit">
+          <List className="w-fit px-2">
             {addMutation.isPending ? (
               <div className="flex items-center justify-center h-9 min-w-[90px]">
                 <Loading />
