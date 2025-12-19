@@ -5,7 +5,7 @@ import {
   TargetKcalInputSchemaInput,
   TargetKcalInputSchemaOutput,
 } from "@/app/setup/_components/_schema";
-import { PageHeader } from "@/components";
+import { Loading, PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
@@ -30,6 +30,7 @@ const defaultValues: TargetKcalInputSchemaInput = {
 
 export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<
@@ -53,11 +54,13 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
     };
 
     try {
+      setIsLoading(true);
       await createTargetKcal(targetkcalData);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
+      setIsLoading(false);
     }
   };
 
@@ -102,8 +105,12 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
             />
 
             <div className="flex justify-center gap-2 mt-6 h-10">
-              <Button type="submit" className="rounded-lg w-28">
-                登録
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="flex flex-col items-center justify-center rounded-lg w-28"
+              >
+                {isLoading ? <Loading /> : "登録"}
               </Button>
             </div>
           </form>

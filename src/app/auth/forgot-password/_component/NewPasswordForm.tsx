@@ -99,7 +99,7 @@ export const NewPassWordForm = () => {
             />
             <Button
               type="submit"
-              className="rounded-lg block mx-auto mt-4 h-10"
+              className="rounded-lg block mx-auto mt-4 h-10 min-w-36"
               disabled={isLoading}
             >
               {isLoading ? <Loading /> : "パスワード再登録"}

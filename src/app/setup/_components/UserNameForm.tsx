@@ -4,7 +4,7 @@ import {
   userNameInputResolver,
   UserNameInputSchema,
 } from "@/app/setup/_components/_schema";
-import { PageHeader } from "@/components";
+import { Loading, PageHeader } from "@/components";
 import { Button, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
@@ -27,6 +27,7 @@ const defaultValues: UserNameInputSchema = {
 
 export const UserNameForm = ({ userId }: UserNameFormProps) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<UserNameInputSchema>({
@@ -40,12 +41,14 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
       id: userId,
     };
     try {
+      setIsLoading(true);
       await createProfile(profileData);
       //go to next setup
       router.push("/setup/step-2-target-kcal");
     } catch (error) {
       console.error(error);
       setErrorMessage("登録に失敗しました");
+      setIsLoading(false);
     }
   };
 
@@ -86,8 +89,12 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
             <p className="text-red-500">{errorMessage}</p>
 
             <div className="flex justify-center gap-2 mt-6 h-10">
-              <Button type="submit" className="rounded-lg w-28">
-                登録
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="flex flex-col items-center justify-center rounded-lg w-28"
+              >
+                {isLoading ? <Loading /> : "登録"}
               </Button>
             </div>
           </form>
