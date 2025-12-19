@@ -31,7 +31,10 @@ export default async function Aboutpage() {
               <div>
                 <h2>制作背景</h2>
                 <p>
-                  本ウェブアプリは、プログラミングスクールのポートフォリオ課題として制作したもので、Next.jsとSupabaseを用いて設計から実装まで一貫して構築しました。
+                  本ウェブアプリは、プログラミングスクールのポートフォリオ課題として制作しました。
+                </p>
+                <p>
+                  Next.jsとSupabaseを使用し、設計から実装まで一貫して行っています。
                 </p>
               </div>
 
@@ -48,7 +51,7 @@ export default async function Aboutpage() {
                   </li>
                   <li>
                     <span className="text-primary">&#9655;</span>
-                    過去の記録をさっと振り返る
+                    過去の記録をさっと振り返り
                   </li>
                 </ul>
                 <div>
@@ -56,31 +59,16 @@ export default async function Aboutpage() {
                     検索機能で使用している食品データは日本食品標準成分表をもとにしていますが、すべての食品を網羅しているわけではありません。
                   </p>
                   <p>
-                    また、調理法や廃棄率は考慮していません。このアプリはあくまで気軽にカロリー目安の記録を継続することを目的としています。
+                    また、調理法や廃棄率は考慮しておらず、あくまでカロリーの目安を気軽に記録し続けるためのアプリとして設計しています。
                   </p>
                 </div>
               </div>
 
-              <ul>
-                <li className="cursor-pointer">
-                  <a
-                    href="https://www.instagram.com/arilifedev"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <span className="text-primary">&#10022;</span> Instagram
-                  </a>
-                </li>
-                <li className="cursor-pointer">
-                  <a
-                    href="https://x.com/Sunny_sideupup"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    <span className="text-primary">&#10022;</span> X
-                  </a>
-                </li>
-              </ul>
+              <div className="mb-16">
+                <h2>さいごに</h2>
+                <p>ここまでお読みいただき、ありがとうございます。</p>
+                <p>もしよければ、実際に触ってみてください。</p>
+              </div>
 
               <p className="text-center underline">
                 <Link href="/" className="font-bold cursor-pointer">
