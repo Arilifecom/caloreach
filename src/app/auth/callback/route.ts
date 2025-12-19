@@ -3,44 +3,35 @@ import { createClient } from "@/utils/supabase/server";
 import { getProfileByUserId } from "@/utils/db/profile";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/dashboard";
+  const ORIGIN = process.env.NEXT_PUBLIC_ORIGIN;
+  const ERROR_REDIRECT = `${ORIGIN}/auth/auth-code-error`;
+  const SETUP_REDIRECT = `${ORIGIN}/setup/step-1-user-profile/`;
+  const DASHBOARD_REDIRECT = `${ORIGIN}/dashboard`;
 
-  if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+  if (!code) {
+    return NextResponse.redirect(ERROR_REDIRECT);
+  }
+  const supabase = await createClient();
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
-
-      // get user id
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        return NextResponse.redirect(`${origin}/auth/auth-code-error`);
-      }
-      const userId = user.id;
-
-      // check profile data
-      const profile = await getProfileByUserId(userId);
-
-      //if no profile data, redirect to /setup/step-1-user-profile
-      const redirectPath =
-        !profile || !profile.userName ? "/setup/step-1-user-profile" : next;
-
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${redirectPath}`);
-      }
-      if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`);
-      }
-
-      return NextResponse.redirect(`${origin}${redirectPath}`);
-    }
+  if (error) {
+    return NextResponse.redirect(ERROR_REDIRECT);
   }
 
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  //Check user Profile
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return NextResponse.redirect("/auth/login");
+
+  const userId = user.id;
+  const profile = await getProfileByUserId(userId);
+
+  const redirectPath =
+    !profile || !profile.userName ? SETUP_REDIRECT : DASHBOARD_REDIRECT;
+
+  return NextResponse.redirect(redirectPath);
 }
