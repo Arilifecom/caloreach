@@ -25,7 +25,7 @@ import { SelectregularFood } from "@/db/schema";
 import { addRegularFood, editRegularFood } from "@/utils/db/regularFoods";
 import { RegularFoodskeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
@@ -37,6 +37,12 @@ type RegularFoodFormProps = {
   isFormOpen: boolean;
   handleFormWindow: () => void;
   handleCloseAllWindows?: () => void;
+};
+
+const defaultValues: RegularFoodFormInputSchemaInput = {
+  foodName: "",
+  gram: "",
+  kcal: "",
 };
 
 export const RegularFoodForm = ({
@@ -54,23 +60,6 @@ export const RegularFoodForm = ({
   const [selectedFoodKcal, setSelectedFoodKcal] = useState<number | null>(null);
   const [eatenGrams, setEatenGrams] = useState("");
 
-  //InitialValues "Add or Edit mode"
-  const defaultValues: RegularFoodFormInputSchemaInput = useMemo(() => {
-    if (mode === "edit" && editItem) {
-      return {
-        foodName: editItem.foodName,
-        gram: editItem.gram.toString(),
-        kcal: editItem.kcal.toString(),
-      };
-    } else {
-      return {
-        foodName: "",
-        gram: "",
-        kcal: "",
-      };
-    }
-  }, [mode, editItem]);
-
   const form = useForm<
     RegularFoodFormInputSchemaInput,
     unknown,
@@ -79,6 +68,23 @@ export const RegularFoodForm = ({
     resolver: RegularFoodFormSchemaResolver,
     defaultValues,
   });
+
+  //InitialValues "Add or Edit mode"
+  useEffect(() => {
+    if (!isFormOpen) return;
+    if (mode === "edit" && editItem) {
+      form.reset({
+        foodName: editItem.foodName,
+        gram: editItem.gram.toString(),
+        kcal: editItem.kcal.toString(),
+      });
+    } else
+      form.reset({
+        foodName: "",
+        gram: "",
+        kcal: "",
+      });
+  }, [mode, isFormOpen, editItem, form]);
 
   // Auto-Calculation
   useEffect(() => {
@@ -154,7 +160,7 @@ export const RegularFoodForm = ({
   const dsc =
     mode === "add"
       ? "レギュラーフードを登録してください"
-      : "カロリー自動計算は食品の再検索・再選択時にのみ適用されます";
+      : "レギュラーフードを編集してください";
 
   return (
     <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
@@ -176,7 +182,14 @@ export const RegularFoodForm = ({
                   render={({ field, fieldState }) => (
                     <>
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>食品名</FieldLabel>
+                        <div className="flex flex-col md:flex-row md:gap-6">
+                          <FieldLabel htmlFor={field.name}>食品名</FieldLabel>
+                          {mode === "edit" && (
+                            <p className="text-xs text-foreground/80">
+                              ※カロリー自動計算は再度検索が必要です
+                            </p>
+                          )}
+                        </div>
                         <Input
                           {...field}
                           id={field.name}

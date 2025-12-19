@@ -2,10 +2,12 @@
 
 import { FetchErrorMessage } from "@/app/dashboard/_components/FetchErrorMessage";
 import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodListItem";
-import { Loading } from "@/components";
+import { List, Loading } from "@/components";
+import { Button } from "@/components/ui";
 import { SelectregularFood } from "@/db/schema";
 import { RegularFoodskeys, TErrCodes } from "@/utils/tanstack";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 type RegularFoodSelectorProps = {
   userId: string;
@@ -20,6 +22,8 @@ export const RegularFoodLsits = ({
   isRegularOpen,
   date,
 }: RegularFoodSelectorProps) => {
+  const router = useRouter();
+
   const { data, isLoading, isError, refetch } = useQuery<SelectregularFood[]>({
     queryKey: RegularFoodskeys.list(userId),
     queryFn: async () => {
@@ -53,9 +57,20 @@ export const RegularFoodLsits = ({
             />
           ))
         ) : (
-          <p className="font-medium text-center">
-            登録されているレギュラーフードはありません
-          </p>
+          <List className="mx-auto max-w-80">
+            <div className="flex flex-col gap-4 items-center px-4 py-2">
+              <p>
+                よく食べるレギュラーフードを登録すると、ここから選択できるようになります。
+              </p>
+
+              <Button
+                onClick={() => router.push("/dashboard/regular-foods")}
+                className="mx-auto"
+              >
+                登録ページへ
+              </Button>
+            </div>
+          </List>
         )}
       </ul>
     </>

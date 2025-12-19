@@ -25,7 +25,7 @@ import { addMealRecord, editMealRecord } from "@/utils/db/mealRecords";
 import { formatTime, formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 import { toast } from "sonner";
@@ -47,6 +47,14 @@ type selectedFood = {
   kcalPer100g: number;
 } | null;
 
+const defaultValues: mealRecordInputSchemaInput = {
+  date: "",
+  time: "",
+  foodName: "",
+  gram: "",
+  kcal: "",
+};
+
 export const MealRecordForm = ({
   userId,
   isFormOpen,
@@ -64,27 +72,6 @@ export const MealRecordForm = ({
   const [eatenGrams, setEatenGrams] = useState("");
   const foodNameRef = useRef<HTMLInputElement>(null);
 
-  //InitialValues "Add or Edit mode"
-  const defaultValues: mealRecordInputSchemaInput = useMemo(() => {
-    if (mode === "edit" && editItem) {
-      return {
-        date: date,
-        time: formatTime(editItem.eatenAt),
-        foodName: editItem.foodName,
-        gram: editItem.gram.toString(),
-        kcal: editItem.kcal.toString(),
-      };
-    } else {
-      return {
-        date: date,
-        time: formatTime(new Date()),
-        foodName: "",
-        gram: "",
-        kcal: "",
-      };
-    }
-  }, [mode, editItem, date]);
-
   const form = useForm<
     mealRecordInputSchemaInput,
     unknown,
@@ -93,6 +80,27 @@ export const MealRecordForm = ({
     resolver: mealRecordSchemaResolver,
     defaultValues,
   });
+
+  //set value mode "add" or "edit"
+  useEffect(() => {
+    if (!isFormOpen) return;
+    if (mode === "edit" && editItem) {
+      form.reset({
+        date: formatYYMMDD(editItem.eatenAt).toString(),
+        time: formatTime(editItem.eatenAt).toString(),
+        foodName: editItem.foodName,
+        gram: editItem.gram.toString(),
+        kcal: editItem.kcal.toString(),
+      });
+    } else
+      form.reset({
+        date: date,
+        time: formatTime(new Date()),
+        foodName: "",
+        gram: "",
+        kcal: "",
+      });
+  }, [mode, isFormOpen, form, editItem, date]);
 
   // Auto-Calculation
   useEffect(() => {
@@ -184,9 +192,7 @@ export const MealRecordForm = ({
   const title = mode === "add" ? "食事を記録" : "食事記録を編集";
 
   const dsc =
-    mode === "add"
-      ? "食事を追加してください"
-      : "カロリー自動計算は食品の再検索・再選択時にのみ適用されます";
+    mode === "add" ? "食事を追加してください" : "食事を編集してください";
 
   return (
     <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
@@ -257,7 +263,14 @@ export const MealRecordForm = ({
                   render={({ field, fieldState }) => (
                     <>
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>たべたもの</FieldLabel>
+                        <div className="flex flex-col md:flex-row md:gap-6">
+                          <FieldLabel>たべたもの</FieldLabel>
+                          {mode === "edit" && (
+                            <p className="text-xs text-foreground/80">
+                              ※カロリー自動計算は再度検索が必要です
+                            </p>
+                          )}
+                        </div>
                         <Input
                           {...field}
                           ref={foodNameRef}

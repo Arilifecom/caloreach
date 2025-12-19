@@ -25,7 +25,7 @@ import { createTargetKcal, editTargetKcal } from "@/utils/db/targetKcal";
 import { formattedTomorrow, formatYYMMDD } from "@/utils/format/date";
 import { TargetKcalkeys } from "@/utils/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
@@ -38,6 +38,11 @@ type TargetKcalFormProps = {
   handleFormWindow: () => void;
   handleCloseAllWindows?: () => void;
   firstEffectiveDate?: string;
+};
+
+const defaultValues: TargetKcalPlanInputSchemaInput = {
+  targetKcal: "",
+  effectiveDate: formattedTomorrow(),
 };
 
 export const TargetKcalPlanForm = ({
@@ -53,21 +58,6 @@ export const TargetKcalPlanForm = ({
   const [isDateEditable, setIsDateEditable] = useState(true);
   const targetKcalRef = useRef<HTMLInputElement>(null);
 
-  //InitialValues "Add or Edit mode"
-  const defaultValues: TargetKcalPlanInputSchemaInput = useMemo(() => {
-    if (mode === "edit" && editItem) {
-      return {
-        targetKcal: editItem.targetKcal.toString(),
-        effectiveDate: editItem.effectiveDate,
-      };
-    } else {
-      return {
-        targetKcal: "",
-        effectiveDate: formattedTomorrow(),
-      };
-    }
-  }, [mode, editItem]);
-
   const form = useForm<
     TargetKcalPlanInputSchemaInput,
     unknown,
@@ -76,6 +66,22 @@ export const TargetKcalPlanForm = ({
     resolver: TargetKcalPlanInputResolver,
     defaultValues,
   });
+
+  //InitialValues "Add or Edit mode"
+  useEffect(() => {
+    if (!isFormOpen) return;
+    if (mode === "edit" && editItem) {
+      form.reset({
+        targetKcal: editItem.targetKcal.toString(),
+        effectiveDate: editItem.effectiveDate,
+      });
+    } else {
+      form.reset({
+        targetKcal: "",
+        effectiveDate: formattedTomorrow(),
+      });
+    }
+  }, [mode, editItem, isFormOpen, form]);
 
   //Mutations
   const addMutation = useMutation({
