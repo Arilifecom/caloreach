@@ -6,7 +6,7 @@ import {
 } from "@/app/auth/forgot-password/_schema";
 import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardHeader, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
   FieldError,
@@ -54,25 +54,26 @@ export const ResetPassWordForm = () => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow className="relative px-2 max-w-sm bg-primary-foreground">
-        <div className="text-center px-6">
+      <CardWithShadow className="relative px-2 bg-primary-foreground">
+        <CardHeader className="text-center">
           <PageHeader
             title="Reset your password"
             description="パスワードをリセットする"
           />
           <p className="text-red-500">{errorMessage}</p>
-        </div>
+        </CardHeader>
         <VerticalLine className="px-6" />
         <div className="px-6">
           <p>
             ご登録のメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。
           </p>
         </div>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitEmailSent)}
-            className="space-y-4 px-6"
-          >
+
+        <form
+          onSubmit={form.handleSubmit(submitEmailSent)}
+          className="space-y-4 px-6"
+        >
+          <FieldGroup>
             <Controller
               control={form.control}
               name="email"
@@ -100,18 +101,18 @@ export const ResetPassWordForm = () => {
                 variant={"outline"}
                 disabled={isLoading}
               >
-                ログインに戻る
+                キャンセル
               </Button>
               <Button
                 type="submit"
                 className="rounded-lg min-w-36"
                 disabled={isLoading}
               >
-                {isLoading ? <Loading /> : "リセットメール送信"}
+                {isLoading ? <Loading /> : "送信"}
               </Button>
             </div>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
       </CardWithShadow>
     </>
   );

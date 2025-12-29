@@ -12,7 +12,7 @@ export default async function TermsPage() {
     <>
       <Header />
       <div className="relative grid grid-rows-[40px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 bg-cover bg-center">
-        <main className="flex flex-col gap-[32px] w-full max-w-2xl row-start-2 items-center">
+        <main className="flex flex-col gap-8 w-full max-w-2xl row-start-2 items-center">
           <CardWithShadow className="md:p-10">
             <CardHeader>
               <h1 className="text-2xl font-bold">
@@ -73,7 +73,7 @@ export default async function TermsPage() {
                 <p>
                   ご自身のログイン情報やデータ削除をご希望の場合は、下記フォーム（Googleフォーム）からご連絡ください。
                 </p>
-                <Button className="mb-2">
+                <Button aria-label="お問合せフォーム" className="mb-2">
                   <a
                     href="https://forms.gle/PtJFkJc4o9uYvK1Q9"
                     rel="noopener noreferrer"

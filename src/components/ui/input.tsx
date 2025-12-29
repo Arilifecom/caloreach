@@ -4,11 +4,12 @@ import { cn } from "@/lib/utils";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
-    <div className="relative z-10">
+    <div className="relative z-0">
       <input
         type={type}
         data-slot="input"
         className={cn(
+          "relative z-10",
           "file: text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-foreground flex h-10 w-full min-w-0 rounded-lg border bg-card px-3 py-1 transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-card file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -16,7 +17,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         )}
         {...props}
       />
-      <div className="absolute top-1 -right-[3px] -z-30 w-[100%] h-[101%] rounded-lg bg-foreground" />
+      <div className="absolute top-1 -right-0.75 -z-30 w-full h-[101%] rounded-lg bg-foreground" />
     </div>
   );
 }

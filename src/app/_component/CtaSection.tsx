@@ -9,9 +9,9 @@ export const CtaSection = () => {
 
   return (
     <section className="min-h-[70vh] grid place-items-center p-[5%] md:min-h-screen">
-      <CardWithShadow className="max-w-2xl">
+      <CardWithShadow>
         <CardHeader>
-          <div className="text-center text-4xl font-black uppercase leading-snug md:text-6xl md:leading-[80px]">
+          <div className="text-center text-4xl font-black uppercase leading-snug md:text-6xl md:leading-20">
             <h2 className="leading-tight">Reach Your calorie target</h2>
           </div>
         </CardHeader>

@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="flex flex-col gap-[32px] justify-center">
+      <main className="flex flex-col gap-8 justify-center">
         <HiroSection />
         <HowToUseSection />
         <CtaSection />

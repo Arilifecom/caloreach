@@ -7,7 +7,7 @@ import {
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
 import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardHeader, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
   FieldError,
@@ -72,16 +72,16 @@ export const SignupForm = () => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow className="relative gap-2 max-w-sm bg-primary-foreground">
-        <div className="text-center px-6">
+      <CardWithShadow>
+        <CardHeader className="text-center">
           <PageHeader title="サインアップ" />
           <p className="text-red-500">{errorMessage}</p>
-        </div>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitEmailSignup)}
-            className="space-y-4 px-6"
-          >
+        </CardHeader>
+        <form
+          onSubmit={form.handleSubmit(submitEmailSignup)}
+          className="space-y-4 px-6"
+        >
+          <FieldGroup>
             <ButtonWithGooleIcon
               text="Googleアカウントで登録"
               submitGoogle={submitGoogle}
@@ -180,8 +180,8 @@ export const SignupForm = () => {
             >
               {isLoading ? <Loading /> : "アカウント登録"}
             </Button>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
 
         <div className="grid gap-4 justify-center">
           <p>

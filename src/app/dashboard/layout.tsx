@@ -7,13 +7,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <DashboardHeader />
-      <div className="relative font-sans grid grid-rows-[20px_1fr_20px] mx-auto justify-items-center min-h-screen max-w-md text-sm p-6 pb-20">
-        <main className="flex flex-col gap-6 w-full items-center row-start-2 md:gap-8">
-          <Toaster />
-          <TanstackQueryProvider>{children}</TanstackQueryProvider>
-          <DashboardNav />
-        </main>
+      <div className="min-h-screen">
+        <DashboardHeader />
+        <div className="font-sans grid justify-items-center  max-w-md mx-auto px-6 text-sm pb-20">
+          <main className="flex flex-col gap-6 w-full items-center md:gap-8">
+            <Toaster />
+            <TanstackQueryProvider>{children}</TanstackQueryProvider>
+            <DashboardNav />
+          </main>
+        </div>
       </div>
     </>
   );

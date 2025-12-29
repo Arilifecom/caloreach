@@ -164,17 +164,17 @@ export const RegularFoodForm = ({
 
   return (
     <Dialog open={isFormOpen} onOpenChange={handleFormWindow}>
-      <DialogContent className="p-0 bg-transparent border-0">
+      <DialogContent>
         <CardWithShadow>
-          <DialogHeader className="text-left px-6">
+          <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
-          <FieldGroup>
-            <form
-              onSubmit={form.handleSubmit(submitRegularFoodSent)}
-              className="space-y-4 px-6 w-full"
-            >
+          <form
+            onSubmit={form.handleSubmit(submitRegularFoodSent)}
+            className="space-y-4 px-6 w-full"
+          >
+            <FieldGroup>
               <div className="relative">
                 <Controller
                   control={form.control}
@@ -214,7 +214,7 @@ export const RegularFoodForm = ({
                       )}
 
                       {searchResult.data && searchResult.data.length > 0 && (
-                        <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border-1 border-t-0 border-background rounded-b-lg">
+                        <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border border-t-0 border-background rounded-b-lg">
                           {searchResult.data.map((item) => (
                             <li
                               key={item.id}
@@ -314,8 +314,8 @@ export const RegularFoodForm = ({
                   )}
                 </Button>
               </div>
-            </form>
-          </FieldGroup>
+            </FieldGroup>
+          </form>
         </CardWithShadow>
       </DialogContent>
     </Dialog>

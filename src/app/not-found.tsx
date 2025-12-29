@@ -8,7 +8,7 @@ export default function Custom404() {
   const router = useRouter();
   return (
     <div className="relative font-sans grid grid-rows-[20px_1fr_20px] items-center mx-auto justify-items-center min-h-screen p-6 pb-20 sm:p-20">
-      <main className="flex flex-col gap-[32px] w-full row-start-2 items-center">
+      <main className="flex flex-col gap-8 w-full row-start-2 items-center">
         <SiteLogo className="w-24 md:w-28" color={"#000"} />
         <h1 className="text-2xl font-black md:text-4xl">
           404 - Page Not Found

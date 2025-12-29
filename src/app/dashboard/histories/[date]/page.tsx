@@ -33,6 +33,7 @@ export default async function MealDetailPage({
   return (
     <>
       <PageHeader
+        variant="small"
         title={formatDateWithDay(new Date(targetDate))}
         description="過去の食事履歴の詳細です。"
       />

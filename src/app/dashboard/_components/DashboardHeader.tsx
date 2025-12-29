@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -12,6 +13,7 @@ import { Logo, SiteLogo } from "@/components/icons";
 import { LogoutButton } from "@/components";
 import { usePathname } from "next/navigation";
 import { formatDateWithDay } from "@/utils/format/date";
+import { CardWithShadow } from "@/components/ui";
 
 const formatedDisplayDate = formatDateWithDay(new Date());
 
@@ -38,7 +40,7 @@ export const DashboardHeader = () => {
   const colorClass = TITLE_COLORS[pathname] || "text-gray-600";
 
   return (
-    <header className="fixed w-screen bg-card shadow-border z-30">
+    <header className="w-screen bg-card shadow-border">
       <nav className="w-[90vw] py-2 mx-auto">
         <div className="flex justify-between items-center">
           <SiteLogo color="#000" className="w-24" />
@@ -66,22 +68,26 @@ export const DashboardHeader = () => {
               Menu
             </DialogTrigger>
 
-            <DialogContent className="flex flex-col gap-8 p-6 max-w-xs text-center">
-              <DialogTitle>
-                <Logo className="w-6 mr-2 inline" />
-                Menu
-              </DialogTitle>
-              <nav className="flex flex-col items-center gap-6 text-lg">
-                <Link
-                  href="/"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center"
-                >
-                  HOME
-                </Link>
+            <DialogContent>
+              <CardWithShadow>
+                <DialogHeader className="text-center">
+                  <DialogTitle>
+                    <Logo className="w-6 mr-2 inline" />
+                    Menu
+                  </DialogTitle>
+                </DialogHeader>
+                <nav className="flex flex-col items-center gap-6 text-lg">
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center"
+                  >
+                    HOME
+                  </Link>
 
-                <LogoutButton />
-              </nav>
+                  <LogoutButton />
+                </nav>
+              </CardWithShadow>
             </DialogContent>
           </Dialog>
         </div>
