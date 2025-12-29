@@ -20,11 +20,11 @@ const Component = ({
         onClick={submitGoogle}
         disabled={isLoading}
         className={cn(
-          "w-full bg-card text-card-foreground flex items-center justify-center rounded-lg border-1 border-foreground gap-2 px-4 py-2 text-sm"
+          "w-full bg-card text-card-foreground flex items-center justify-center rounded-lg border border-foreground gap-2 px-4 py-2 text-sm"
         )}
       >
         {isLoading ? <Loading /> : text}
-        <div className="absolute top-1 -right-[3px] -z-30 w-[100%] h-[101%] rounded-lg bg-foreground" />
+        <div className="absolute top-1 -right-0.75 -z-30 w-full h-[101%] rounded-lg bg-foreground" />
       </button>
     </div>
   );

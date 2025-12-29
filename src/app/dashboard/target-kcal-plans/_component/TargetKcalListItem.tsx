@@ -16,10 +16,10 @@ const Component = ({ data, firstEffectiveDate }: TargetKcalListItemProps) => {
     <>
       <li key={data.id} className="mb-2">
         <List>
-          <div className="flex w-full justify-between min-h-[49.5px]">
+          <div className="flex w-full justify-between items-center min-h-[49.5px]">
             <div className="flex items-center gap-6">
               <div>
-                <h3 className="relative min-w-[90px] pt-2">
+                <h3 className="relative min-w-22.5 pt-2">
                   {formatDateWithDay(new Date(data.effectiveDate))}
                   <span className="absolute -top-1.5 left-0 text-xs text-foreground/70">
                     {formatYY(new Date(data.effectiveDate))}年

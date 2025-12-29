@@ -17,7 +17,7 @@ function CardWithShadow({
       {...props}
     >
       {children}
-      <div className="absolute top-1 -right-1.5 -z-10 w-[100%] h-[101%] rounded-lg bg-foreground" />
+      <div className="absolute top-1 -right-1.5 -z-10 w-full h-[101%] rounded-lg bg-foreground" />
     </div>
   );
 }
@@ -82,7 +82,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex justify-end [.border-t]:pt-6", className)}
+      className={cn("flex justify-end px-6 [.border-t]:pt-6", className)}
       {...props}
     />
   );

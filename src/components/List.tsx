@@ -16,7 +16,7 @@ const Component: React.FC<Props> = ({ children, className, ...props }) => {
       {...props}
     >
       <div>{children}</div>
-      <div className="absolute top-1 -right-1.5 -z-10 w-[100%] h-[101%] rounded-lg bg-foreground" />
+      <div className="absolute top-1 -right-1.5 -z-10 w-full h-[101%] rounded-lg bg-foreground" />
     </div>
   );
 };

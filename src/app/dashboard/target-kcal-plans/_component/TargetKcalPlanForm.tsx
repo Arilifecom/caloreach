@@ -170,10 +170,9 @@ export const TargetKcalPlanForm = ({
           // refマークした箇所を指定
           targetKcalRef.current?.focus();
         }}
-        className="p-0 bg-transparent border-0"
       >
         <CardWithShadow>
-          <DialogHeader className="text-left px-6">
+          <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>

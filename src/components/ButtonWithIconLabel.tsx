@@ -16,7 +16,7 @@ function Component({ icon, label, onClick }: IconLabelButtonProps) {
         {icon}
         <span className="text-[12px] font-bold">{label}</span>
       </button>
-      <div className="absolute top-1 -right-1.5 -z-10 w-[100%] h-[102%] rounded-lg bg-foreground" />
+      <div className="absolute top-1 -right-1.5 -z-10 w-full h-[102%] rounded-lg bg-foreground" />
     </div>
   );
 }
