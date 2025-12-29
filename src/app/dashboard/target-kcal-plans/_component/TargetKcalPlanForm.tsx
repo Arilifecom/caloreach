@@ -176,11 +176,11 @@ export const TargetKcalPlanForm = ({
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
-          <FieldGroup className="tex-center">
-            <form
-              onSubmit={form.handleSubmit(submitTargetKcalPlanSent)}
-              className="space-y-6 px-6 w-full"
-            >
+          <form
+            onSubmit={form.handleSubmit(submitTargetKcalPlanSent)}
+            className="space-y-6 px-6 w-full"
+          >
+            <FieldGroup className="tex-center">
               <Controller
                 control={form.control}
                 name="effectiveDate"
@@ -262,8 +262,8 @@ export const TargetKcalPlanForm = ({
                   )}
                 </Button>
               </div>
-            </form>
-          </FieldGroup>
+            </FieldGroup>
+          </form>
         </CardWithShadow>
       </DialogContent>
     </Dialog>

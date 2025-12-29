@@ -170,11 +170,11 @@ export const RegularFoodForm = ({
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
-          <FieldGroup>
-            <form
-              onSubmit={form.handleSubmit(submitRegularFoodSent)}
-              className="space-y-4 px-6 w-full"
-            >
+          <form
+            onSubmit={form.handleSubmit(submitRegularFoodSent)}
+            className="space-y-4 px-6 w-full"
+          >
+            <FieldGroup>
               <div className="relative">
                 <Controller
                   control={form.control}
@@ -314,8 +314,8 @@ export const RegularFoodForm = ({
                   )}
                 </Button>
               </div>
-            </form>
-          </FieldGroup>
+            </FieldGroup>
+          </form>
         </CardWithShadow>
       </DialogContent>
     </Dialog>

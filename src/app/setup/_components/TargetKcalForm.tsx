@@ -72,11 +72,12 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
       />
       <CardWithShadow className="py-8">
         <p className="absolute -top-7 right-2 font-bold">step 2/2</p>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitTargetKcalSent)}
-            className="space-y-4 px-6 w-full mx-auto"
-          >
+
+        <form
+          onSubmit={form.handleSubmit(submitTargetKcalSent)}
+          className="space-y-4 px-6 w-full mx-auto"
+        >
+          <FieldGroup>
             <p className="text-red-500">{errorMessage}</p>
             <Controller
               control={form.control}
@@ -113,8 +114,8 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
                 {isLoading ? <Loading /> : "登録"}
               </Button>
             </div>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
       </CardWithShadow>
     </>
   );

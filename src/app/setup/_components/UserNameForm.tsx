@@ -60,11 +60,11 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
       />
       <CardWithShadow className="py-8">
         <p className="absolute -top-7 right-2 font-bold">step 1/2</p>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitUserProfileSent)}
-            className="space-y-4 px-6 w-[80%] mx-auto"
-          >
+        <form
+          onSubmit={form.handleSubmit(submitUserProfileSent)}
+          className="space-y-4 px-6 w-[80%] mx-auto"
+        >
+          <FieldGroup>
             <Controller
               control={form.control}
               name="userName"
@@ -97,8 +97,8 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
                 {isLoading ? <Loading /> : "登録"}
               </Button>
             </div>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
       </CardWithShadow>
     </>
   );

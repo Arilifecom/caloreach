@@ -68,11 +68,12 @@ export const ResetPassWordForm = () => {
             ご登録のメールアドレスを入力してください。パスワードリセット用のリンクをお送りします。
           </p>
         </div>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitEmailSent)}
-            className="space-y-4 px-6"
-          >
+
+        <form
+          onSubmit={form.handleSubmit(submitEmailSent)}
+          className="space-y-4 px-6"
+        >
+          <FieldGroup>
             <Controller
               control={form.control}
               name="email"
@@ -110,8 +111,8 @@ export const ResetPassWordForm = () => {
                 {isLoading ? <Loading /> : "送信"}
               </Button>
             </div>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
       </CardWithShadow>
     </>
   );

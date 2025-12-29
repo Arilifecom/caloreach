@@ -61,11 +61,12 @@ export const NewPassWordForm = () => {
           <p className="text-red-500">{errorMessage}</p>
         </CardHeader>
         <VerticalLine className="px-6" />
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitPasswordSent)}
-            className="space-y-4 px-6"
-          >
+
+        <form
+          onSubmit={form.handleSubmit(submitPasswordSent)}
+          className="space-y-4 px-6"
+        >
+          <FieldGroup>
             <Controller
               control={form.control}
               name="password"
@@ -104,8 +105,8 @@ export const NewPassWordForm = () => {
             >
               {isLoading ? <Loading /> : "パスワード再登録"}
             </Button>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
       </CardWithShadow>
     </>
   );

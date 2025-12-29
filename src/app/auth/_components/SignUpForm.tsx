@@ -77,11 +77,11 @@ export const SignupForm = () => {
           <PageHeader title="サインアップ" />
           <p className="text-red-500">{errorMessage}</p>
         </CardHeader>
-        <FieldGroup>
-          <form
-            onSubmit={form.handleSubmit(submitEmailSignup)}
-            className="space-y-4 px-6"
-          >
+        <form
+          onSubmit={form.handleSubmit(submitEmailSignup)}
+          className="space-y-4 px-6"
+        >
+          <FieldGroup>
             <ButtonWithGooleIcon
               text="Googleアカウントで登録"
               submitGoogle={submitGoogle}
@@ -180,8 +180,8 @@ export const SignupForm = () => {
             >
               {isLoading ? <Loading /> : "アカウント登録"}
             </Button>
-          </form>
-        </FieldGroup>
+          </FieldGroup>
+        </form>
 
         <div className="grid gap-4 justify-center">
           <p>

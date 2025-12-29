@@ -205,15 +205,16 @@ export const MealRecordForm = ({
         className="p-0 bg-transparent border-0"
       >
         <CardWithShadow>
-          <DialogHeader className="text-left px-6">
+          <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{dsc}</DialogDescription>
           </DialogHeader>
-          <FieldGroup>
-            <form
-              onSubmit={form.handleSubmit(submitMealRecordSent)}
-              className="space-y-4 px-6 w-full"
-            >
+
+          <form
+            onSubmit={form.handleSubmit(submitMealRecordSent)}
+            className="space-y-4 px-6 w-full"
+          >
+            <FieldGroup>
               <div className="flex w-full gap-4">
                 <Controller
                   control={form.control}
@@ -264,7 +265,9 @@ export const MealRecordForm = ({
                     <>
                       <Field data-invalid={fieldState.invalid}>
                         <div className="flex flex-col md:flex-row md:gap-6">
-                          <FieldLabel>たべたもの</FieldLabel>
+                          <FieldLabel htmlFor={field.name}>
+                            たべたもの
+                          </FieldLabel>
                           {mode === "edit" && (
                             <p className="text-xs text-foreground/80">
                               ※カロリー自動計算は再度検索が必要です
@@ -296,7 +299,7 @@ export const MealRecordForm = ({
                       )}
 
                       {searchResult.data && searchResult.data.length > 0 && (
-                        <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border-1 border-t-0 border-background rounded-b-lg">
+                        <ul className="absolute bg-white mt-0.5 mx-auto w-full z-20 max-h-60 overflow-auto border border-t-0 border-background rounded-b-lg">
                           {searchResult.data.map((item) => (
                             <li
                               key={item.id}
@@ -396,8 +399,8 @@ export const MealRecordForm = ({
                   )}
                 </Button>
               </div>
-            </form>
-          </FieldGroup>
+            </FieldGroup>
+          </form>
         </CardWithShadow>
       </DialogContent>
     </Dialog>
