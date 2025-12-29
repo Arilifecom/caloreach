@@ -1,5 +1,6 @@
 import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalPlanForm";
 import { Loading } from "@/components";
+import { Button } from "@/components/ui";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteTargetKcal } from "@/utils/db/targetKcal";
@@ -50,20 +51,27 @@ const Component = ({
 
   return (
     <>
-      <button onClick={handleOpenChange}>
+      <Button
+        size="icon"
+        variant="outline"
+        aria-label="編集"
+        onClick={handleOpenChange}
+      >
         <EllipsisVertical />
-      </button>
+      </Button>
 
       {isOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={handleOpenChange} />
-          <div className="absolute border-1 rounded-lg  right-0 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
-            <button
+          <div className="absolute border rounded-lg  right-0 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
+            <Button
+              size="icon"
+              variant="dark"
+              aria-label="編集"
               onClick={handleFormOpenChange}
-              className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg"
             >
               <Pencil className="text-popover" />
-            </button>
+            </Button>
             <TargetKcalPlanForm
               mode="edit"
               editItem={targetKcal}
@@ -75,25 +83,29 @@ const Component = ({
             />
 
             {targetKcal.effectiveDate === firstEffectiveDate ? (
-              <div className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg opacity-30">
+              <div className="bg-muted border-2 flex items-center h-11 p-3 w-11 rounded-lg opacity-30">
                 <Trash2 />
               </div>
             ) : (
-              <button
+              <Button
+                size="icon"
+                variant="destructive"
+                aria-label="削除"
                 onClick={() => handleDelete(targetKcal)}
                 disabled={deleteMutation.isPending}
-                className="bg-muted border-2 flex items-center justify-center h-[44px] p-3 w-[44px] rounded-lg"
               >
                 {deleteMutation.isPending ? <Loading /> : <Trash2 />}
-              </button>
+              </Button>
             )}
 
-            <button
+            <Button
+              size="icon"
+              variant="outline"
+              aria-label="キャンセル"
               onClick={handleOpenChange}
-              className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <X />
-            </button>
+            </Button>
           </div>
         </>
       )}

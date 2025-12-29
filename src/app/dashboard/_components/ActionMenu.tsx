@@ -1,5 +1,6 @@
 import { MealRecordForm } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
+import { Button } from "@/components/ui";
 import { SelectMealRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/db/mealRecords";
@@ -56,20 +57,27 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
 
   return (
     <>
-      <button onClick={handleOpenChange}>
+      <Button
+        size="icon"
+        variant="outline"
+        aria-label="編集"
+        onClick={handleOpenChange}
+      >
         <EllipsisVertical />
-      </button>
+      </Button>
 
       {isOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={handleOpenChange} />
-          <div className="absolute border-1 rounded-lg  right-0 -top-4 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
-            <button
+          <div className="absolute border rounded-lg  right-0 -top-4 flex gap-2 z-20 items-center justify-center bg-muted p-6 transition-opacity duration-300">
+            <Button
+              size="icon"
+              variant="dark"
+              aria-label="編集"
               onClick={handleFormOpenChange}
-              className="flex items-center bg-foreground w-[44px] h-[44px] p-3 rounded-lg"
             >
               <Pencil className="text-popover" />
-            </button>
+            </Button>
             <MealRecordForm
               mode="edit"
               editItem={mealRecord}
@@ -79,19 +87,23 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
               handleCloseAllWindows={closeAllWindows}
               date={editDate}
             />
-            <button
+            <Button
+              size="icon"
+              variant="destructive"
+              aria-label="削除"
               onClick={() => handleDelete(mealRecord)}
               disabled={deleteMutation.isPending}
-              className="bg-muted border-2 flex items-center justify-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               {deleteMutation.isPending ? <Loading /> : <Trash2 />}
-            </button>
-            <button
+            </Button>
+            <Button
+              size="icon"
+              variant="outline"
+              aria-label="キャンセル"
               onClick={handleOpenChange}
-              className="bg-muted border-2 flex items-center h-[44px] p-3 w-[44px] rounded-lg"
             >
               <X />
-            </button>
+            </Button>
           </div>
         </>
       )}

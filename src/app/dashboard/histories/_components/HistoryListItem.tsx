@@ -2,6 +2,7 @@
 
 import { DailyKcalSummary } from "@/app/api/histories/route";
 import { List, Loading } from "@/components";
+import { Button } from "@/components/ui";
 import { formatDateWithDay } from "@/utils/format/date";
 import { BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -29,17 +30,19 @@ const Component = ({ data }: HistoryListItemProps) => {
               <p className="font-bold text-xl mr-0.5">{data.totalKcal}</p>
               <span className="text-sm">/ {data.targetKcal} kcal</span>
             </div>
-            <button
+            <Button
+              size="icon"
+              variant="outline"
+              aria-label="詳細"
               onClick={handleClick}
               disabled={isLoading}
-              className="flex items-center justify-center bg-background w-[44px] h-[44px] p-3 rounded-lg"
             >
               {isLoading ? (
                 <Loading />
               ) : (
                 <BookOpen className="text-foreground" />
               )}
-            </button>
+            </Button>
           </div>
         </List>
       </li>
