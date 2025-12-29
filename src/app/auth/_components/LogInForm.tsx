@@ -7,7 +7,7 @@ import {
 import { ButtonWithGooleIcon } from "@/app/auth/_components/ButtonWithGooleIcon";
 import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardHeader, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
   FieldError,
@@ -65,11 +65,11 @@ export const LogInForm = () => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow className="relative gap-2 max-w-sm bg-primary-foreground">
-        <div className="text-center px-6">
+      <CardWithShadow>
+        <CardHeader className="text-center">
           <PageHeader title="ログイン" />
           <p className="text-red-500">{errorMessage}</p>
-        </div>
+        </CardHeader>
         <FieldGroup>
           <form
             onSubmit={form.handleSubmit(submitEmailLogin)}

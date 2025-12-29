@@ -6,7 +6,7 @@ import {
 } from "@/app/auth/forgot-password/_schema";
 import { Loading, PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { Button, CardWithShadow, Input } from "@/components/ui";
+import { Button, CardHeader, CardWithShadow, Input } from "@/components/ui";
 import {
   Field,
   FieldError,
@@ -52,14 +52,14 @@ export const NewPassWordForm = () => {
   return (
     <>
       <SiteLogo className="w-20 md:w-28" />
-      <CardWithShadow className="relative px-2 max-w-sm bg-primary-foreground">
-        <div className="text-center px-6">
+      <CardWithShadow className="relative px-2 bg-primary-foreground">
+        <CardHeader className="text-center">
           <PageHeader
             title="Comfirm your New password"
             description="新しいパスワードの入力"
           />
           <p className="text-red-500">{errorMessage}</p>
-        </div>
+        </CardHeader>
         <VerticalLine className="px-6" />
         <FieldGroup>
           <form

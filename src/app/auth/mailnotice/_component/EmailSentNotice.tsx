@@ -1,7 +1,7 @@
 import { LoginButton } from "@/app/auth/_components/LoginButton";
 import { PageHeader, VerticalLine } from "@/components";
 import { SiteLogo } from "@/components/icons";
-import { CardContent, CardWithShadow } from "@/components/ui";
+import { CardContent, CardHeader, CardWithShadow } from "@/components/ui";
 import { memo } from "react";
 
 interface EmailSentNoticeProps {
@@ -38,10 +38,10 @@ const Component = ({ type }: EmailSentNoticeProps) => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow className="relative w-full max-w-sm bg-primary-foreground">
-        <div className="text-center px-6">
+      <CardWithShadow className="bg-primary-foreground">
+        <CardHeader className="text-center">
           <PageHeader title={text.title} description={text.description} />
-        </div>
+        </CardHeader>
         <VerticalLine className="px-6" />
         <CardContent>
           <div>
