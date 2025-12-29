@@ -1,33 +1,35 @@
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { formatParagraph } from "@/utils/format/string";
 import { memo } from "react";
 
+type Variant = "small" | "default" | "large";
 interface PageHeaderProps {
+  /** カードタイトル　*/
   title: string;
+  /** 説明文。改行ができます。*/
   description?: string;
-  className?: string;
+  /** タイトルサイズと下の余白調整*/
+  variant?: Variant;
 }
 
-// Format Paragraph
-const formatParagraph = (text: string | undefined) => {
-  if (!text) return null;
+function Component({
+  title,
+  description,
+  variant = "default",
+}: PageHeaderProps) {
+  const titleClassMap: Record<Variant, string> = {
+    small: "text-lg md:text-xl mb-1",
+    default: "text-xl md:text-2xl mb-2",
+    large: "text-2xl md:text-3xl mb-3",
+  };
 
-  const lines = text
-    .split(/(?<=。)/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0);
+  const titleClass = titleClassMap[variant];
 
-  return lines.map((line, index) => <p key={index}>{line}</p>);
-};
-
-function Component({ title, description, className }: PageHeaderProps) {
   return (
-    <CardHeader className={cn("w-full px-0", className)}>
-      <div>
-        <CardTitle className="text-[20px] md:text-2xl">{title}</CardTitle>
-        <CardDescription>{formatParagraph(description)}</CardDescription>
-      </div>
-    </CardHeader>
+    <div>
+      <CardTitle className={titleClass}>{title}</CardTitle>
+      <CardDescription>{formatParagraph(description)}</CardDescription>
+    </div>
   );
 }
 
