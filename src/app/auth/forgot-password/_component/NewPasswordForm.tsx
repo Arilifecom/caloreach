@@ -52,7 +52,7 @@ export const NewPassWordForm = () => {
   return (
     <>
       <SiteLogo className="w-20 md:w-28" />
-      <CardWithShadow className="relative px-2 bg-primary-foreground">
+      <CardWithShadow className="relative px-2 bg-primary-foreground max-w-96">
         <CardHeader className="text-center">
           <PageHeader
             title="Comfirm your New password"

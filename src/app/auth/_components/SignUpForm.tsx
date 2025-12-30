@@ -72,7 +72,7 @@ export const SignupForm = () => {
   return (
     <>
       <SiteLogo className="w-24 md:w-28" />
-      <CardWithShadow>
+      <CardWithShadow className="max-w-96">
         <CardHeader className="text-center">
           <PageHeader title="サインアップ" />
           <p className="text-red-500">{errorMessage}</p>
