@@ -11,7 +11,7 @@ function Component({ text, className }: VerticalLineProps) {
     return (
       <div
         className={cn(
-          "grid grid-cols-[1fr_auto_1fr] items-center w-full my-4 gap-2",
+          "grid grid-cols-[1fr_auto_1fr] items-center w-full gap-2",
           className
         )}
       >

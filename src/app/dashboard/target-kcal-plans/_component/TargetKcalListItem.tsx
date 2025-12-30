@@ -17,7 +17,7 @@ const Component = ({ data, firstEffectiveDate }: TargetKcalListItemProps) => {
       <li key={data.id} className="mb-2">
         <List>
           <div className="flex w-full justify-between items-center min-h-[49.5px]">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3.5">
               <div>
                 <h3 className="relative min-w-22.5 pt-2">
                   {formatDateWithDay(new Date(data.effectiveDate))}
@@ -26,8 +26,8 @@ const Component = ({ data, firstEffectiveDate }: TargetKcalListItemProps) => {
                   </span>
                 </h3>
               </div>
-              <p className="">開始</p>
-              <p className="font-bold text-xl">{data.targetKcal}kcal</p>
+              <p className="text-sm">開始</p>
+              <p className="font-bold text-lg">{data.targetKcal}kcal</p>
             </div>
             <TargetKcalActionMenu
               targetKcal={data}

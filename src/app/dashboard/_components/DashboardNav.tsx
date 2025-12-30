@@ -9,8 +9,8 @@ import Link from "next/link";
 export const DashboardNav = () => {
   return (
     <div className="flex justify-center">
-      <nav className="fixed bottom-4 w-[90vw] max-w-[400px]">
-        <ul className="flex justify-around py-2 px-4 bg-white rounded-full w-full">
+      <nav className="fixed bottom-4 w-[90vw] max-w-100">
+        <ul className="flex justify-around py-2 px-4 bg-white rounded-full w-full shadow-2xs">
           <li>
             <Link href="/dashboard">
               <div className="flex flex-col items-center gap-1">

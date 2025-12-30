@@ -70,10 +70,7 @@ export const LogInForm = () => {
           <PageHeader title="ログイン" />
           <p className="text-red-500">{errorMessage}</p>
         </CardHeader>
-        <form
-          onSubmit={form.handleSubmit(submitEmailLogin)}
-          className="space-y-4 px-6"
-        >
+        <form onSubmit={form.handleSubmit(submitEmailLogin)} className="px-6">
           <FieldGroup>
             <ButtonWithGooleIcon
               text="Googleアカウントでログイン"
