@@ -215,19 +215,19 @@ export const MealRecordForm = ({
             className="space-y-4 px-6 w-full"
           >
             <FieldGroup>
-              <div className="flex w-full gap-4">
+              <div className="flex gap-4">
                 <Controller
                   control={form.control}
                   name="date"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="flex-1">
+                    <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>日付</FieldLabel>
                       <Input
                         {...field}
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="date"
-                        className="box-border"
+                        className="px-0 justify-center"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -240,14 +240,14 @@ export const MealRecordForm = ({
                   control={form.control}
                   name="time"
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} className="flex-1">
+                    <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>時間</FieldLabel>
                       <Input
                         {...field}
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="time"
-                        className="box-border"
+                        className="px-0 justify-center"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
