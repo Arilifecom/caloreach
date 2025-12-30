@@ -193,7 +193,7 @@ export const TargetKcalPlanForm = ({
                         id={field.name}
                         aria-invalid={fieldState.invalid}
                         type="date"
-                        className={`w-40 ${
+                        className={`w-40 px-0 justify-center${
                           isDateEditable
                             ? "disabled:opacity-100 text-muted-foreground cursor-not-allowed"
                             : ""
