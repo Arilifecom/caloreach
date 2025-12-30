@@ -18,9 +18,11 @@ const Component = ({
 }: ProgressRatioProps) => {
   return (
     <CardWithShadow className={cn("py-4", className)}>
-      <CardContent className="pl-2">
-        <div className="flex justify-left gap-2">
-          <FlagIcon className="w-8" />
+      <CardContent className="pl-2 flex justify-left items-center gap-1">
+        <div className="">
+          <FlagIcon className="w-6" />
+        </div>
+        <div className="items-center">
           <div className="flex flex-col">
             <span className="text-xs font-medium -mb-1">達成率</span>
             {isLoading ? (

@@ -82,7 +82,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
 
   return (
     <>
-      <div className="w-full grid grid-cols-2 grid-rows-2 gap-3 min-h-[150px]">
+      <div className="w-full grid grid-cols-2 grid-rows-2 gap-3 min-h-37.5">
         <ProgressCircle
           progressValue={progressValue}
           currentKcalDisplay={totalKcalDisplay}

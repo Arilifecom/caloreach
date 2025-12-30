@@ -97,11 +97,11 @@ const Component = ({
           <span className="text-xs text-gray-500 pt-2">取得中...</span>
         ) : (
           <>
-            <span className="text-2xl font-black leading-none min-h-[2rem] flex items-center justify-center">
+            <span className="text-2xl font-black leading-none min-h-8 flex items-center justify-center">
               {progressError ? "--" : currentKcalDisplay?.toLocaleString()}
             </span>
             <span className="block w-10 border-b border-muted-foreground my-1" />
-            <span className="text-sm font-semibold leading-none min-h-[1.5rem] flex items-center justify-center">
+            <span className="text-sm font-semibold leading-none min-h-6 flex items-center justify-center">
               {targetKcalError
                 ? "--"
                 : currentTargetKcalDisplay?.toLocaleString()}

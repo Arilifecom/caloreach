@@ -22,9 +22,11 @@ const Component = ({
 
   return (
     <CardWithShadow className={cn("py-4", className)}>
-      <CardContent className="pl-2">
-        <div className="flex justify-left gap-2">
-          <ScaleIcon className="w-8" />
+      <CardContent className="pl-2 flex justify-left items-center gap-1">
+        <div>
+          <ScaleIcon className="w-6" />
+        </div>
+        <div>
           <div className="flex flex-col">
             <span className="text-xs font-medium -mb-1">残りカロリー</span>
             {isLoading ? (
@@ -32,9 +34,9 @@ const Component = ({
                 取得中...
               </span>
             ) : isError ? (
-              <p className="text-2xl font-black">--</p>
+              <p className="text-xl font-black">--</p>
             ) : (
-              <p className="text-2xl font-black">
+              <p className="text-xl font-black">
                 {isOver && "+"}
                 {formattedRemainingKcal}
                 <span className="text-sm ml-1">Kcal</span>
