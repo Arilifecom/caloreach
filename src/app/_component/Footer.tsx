@@ -4,7 +4,7 @@ export const Footer = () => {
   return (
     <footer
       className={
-        "flex flex-col justify-center w-full border-t-2 border-slate-400 border-solid px-8 md:px-12 lg:px-32 text-gray-700"
+        "flex flex-col justify-center w-full  px-8 md:px-12 lg:px-32 text-gray-700"
       }
     >
       <div className="pt-8 pb-20 md:py-8 flex flex-col md:flex-row gap-6 items-center justify-between">
