@@ -48,7 +48,7 @@ export const HiroSection = () => {
 
         <div className="relative w-full h-150 md:h-250">
           <Image
-            src="/images/phone.png"
+            src="/images/phone.webp"
             alt="phone"
             fill
             className="object-contain"
