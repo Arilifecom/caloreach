@@ -135,6 +135,6 @@ https://caloreach.ari-life.com/
 
 ## ER 図
 
-[FigJam ER Diagram (view only)](https://www.figma.com/board/3PEY8JpBJK2v25kzjU6J7U/ER%E5%9B%B3?node-id=0-1&t=35DsXmcw5ZxN6rYL-1)
+[FigJam ER(view only)](https://www.figma.com/board/3PEY8JpBJK2v25kzjU6J7U/ER%E5%9B%B3?node-id=0-1&t=35DsXmcw5ZxN6rYL-1)
 
 ![ER Overview](./docs/images/ER.webp)
