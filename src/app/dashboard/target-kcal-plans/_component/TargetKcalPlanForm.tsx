@@ -23,7 +23,7 @@ import {
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { createTargetKcal, editTargetKcal } from "@/utils/db/targetKcal";
 import { formattedTomorrow, formatYYMMDD } from "@/utils/format/date";
-import { TargetKcalkeys } from "@/utils/tanstack";
+import { TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -114,7 +114,7 @@ export const TargetKcalPlanForm = ({
 
   //Form submit function
   const submitTargetKcalPlanSent = async (
-    data: TargetKcalPlanInputSchemaOutput
+    data: TargetKcalPlanInputSchemaOutput,
   ) => {
     const formatDate = formatYYMMDD(data.effectiveDate);
     const sentDate =

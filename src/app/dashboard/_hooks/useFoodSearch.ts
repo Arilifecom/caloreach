@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebounce } from "@/app/dashboard/_hooks/";
-import { foodskeys, TErrCodes } from "@/utils/tanstack";
+import { foodskeys, TErrCodes } from "@/lib/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -21,7 +21,7 @@ export const useFoodSearch = () => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/foods/search?keyword=${debounced}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (!res.ok) {
         throw new Error("Foods sarch fetch failed");

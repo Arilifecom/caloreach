@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { SelectregularFood } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteRegularFood } from "@/utils/db/regularFoods";
-import { RegularFoodskeys } from "@/utils/tanstack";
+import { RegularFoodskeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";

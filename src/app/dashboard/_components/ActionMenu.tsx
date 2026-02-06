@@ -5,7 +5,7 @@ import { SelectMealRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteMealRecord } from "@/utils/db/mealRecords";
 import { formatYYMMDD } from "@/utils/format/date";
-import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
+import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
@@ -36,7 +36,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
           mealRecord.userId,
-          formatYYMMDD(mealRecord.eatenAt)
+          formatYYMMDD(mealRecord.eatenAt),
         ),
       });
       queryClient.invalidateQueries({

@@ -5,7 +5,7 @@ import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodLi
 import { List, Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { SelectregularFood } from "@/db/schema";
-import { RegularFoodskeys, TErrCodes } from "@/utils/tanstack";
+import { RegularFoodskeys, TErrCodes } from "@/lib/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +29,7 @@ export const RegularFoodLsits = ({
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/regular-foods?userId=${userId}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (!res.ok) {
         throw new Error("RegularFoods fetch failed");
