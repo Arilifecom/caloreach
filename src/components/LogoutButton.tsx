@@ -3,8 +3,8 @@
 import { NavLogoutIcon } from "@/components/icons";
 import { Loading } from "@/components/Loading";
 import { Button } from "@/components/ui";
-import { createClient } from "@/utils/supabase/client";
-import { getQueryClient } from "@/utils/tanstack";
+import { createClient } from "@/lib/supabase/client";
+import { getQueryClient } from "@/lib/tanstack";
 import { useRouter } from "next/navigation";
 import React, { memo, useState } from "react";
 import { toast } from "sonner";

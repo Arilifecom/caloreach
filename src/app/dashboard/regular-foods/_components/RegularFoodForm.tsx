@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/field";
 import { SelectregularFood } from "@/db/schema";
 import { addRegularFood, editRegularFood } from "@/utils/db/regularFoods";
-import { RegularFoodskeys } from "@/utils/tanstack";
+import { RegularFoodskeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -136,7 +136,7 @@ export const RegularFoodForm = ({
 
   //Submit form
   const submitRegularFoodSent = async (
-    data: RegularFoodFormInputSchemaOutput
+    data: RegularFoodFormInputSchemaOutput,
   ) => {
     const sentDate =
       mode === "edit" && editItem

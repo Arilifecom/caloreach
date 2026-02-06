@@ -9,7 +9,7 @@ import { Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
+import { TargetKcalkeys, TErrCodes } from "@/lib/tanstack";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { memo } from "react";
@@ -28,7 +28,7 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/target-kcal?userId=${userId}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (!res.ok) {
         throw new Error("totalKcalLists fetch failed");
@@ -43,7 +43,7 @@ const Component = ({ userId }: TargetKcalSectionProps) => {
 
   //get first createdAt date for unebled delete
   const firstEffectiveDate = data?.reduce((oldest, item) =>
-    item.createdAt < oldest.createdAt ? item : oldest
+    item.createdAt < oldest.createdAt ? item : oldest,
   )?.effectiveDate;
 
   return (

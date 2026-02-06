@@ -8,7 +8,7 @@ import {
   NewPassWordInputSchema,
   ResetPassWordInputSchema,
 } from "@/app/auth/forgot-password/_schema";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 //Check JWT auth and get userId
@@ -20,7 +20,7 @@ export const getUserId = async () => {
   if (error || !data?.claims) {
     console.error(
       "Authentication failed via getClaims:",
-      error?.message || "No claims data"
+      error?.message || "No claims data",
     );
     redirect("/auth/login");
   }

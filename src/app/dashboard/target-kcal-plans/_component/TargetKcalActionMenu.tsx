@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
 import { deleteTargetKcal } from "@/utils/db/targetKcal";
-import { TargetKcalkeys } from "@/utils/tanstack";
+import { TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";

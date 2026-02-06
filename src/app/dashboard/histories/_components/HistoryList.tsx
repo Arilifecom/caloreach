@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
-import { historieskeys, TErrCodes } from "@/utils/tanstack";
+import { historieskeys, TErrCodes } from "@/lib/tanstack";
 import { Loading } from "@/components";
 import { FetchErrorMessage } from "@/app/dashboard/_components";
 import { toast } from "sonner";
@@ -28,7 +28,7 @@ const Component = ({ userId }: HistoryListProps) => {
       queryFn: async () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ORIGIN}/api/histories?userId=${userId}&limit=${limit}&currentCursor=${today}`,
-          { cache: "no-store" }
+          { cache: "no-store" },
         );
         if (!res.ok) {
           throw new Error("DailyKcalSummary fetch failed");
@@ -37,7 +37,7 @@ const Component = ({ userId }: HistoryListProps) => {
         return res.json();
       },
       meta: { errCode: TErrCodes.HISTORY_FETCH_FAILED },
-    }
+    },
   );
 
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
@@ -49,7 +49,7 @@ const Component = ({ userId }: HistoryListProps) => {
       setfetchMoreLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/histories?userId=${userId}&limit=${limit}&currentCursor=${nextCursor}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
 
       if (!res.ok) {
@@ -64,7 +64,7 @@ const Component = ({ userId }: HistoryListProps) => {
           items: [...(prevData?.items || []), ...data.items],
           nextCursor: data.nextCursor,
           hasNext: data.hasNext,
-        })
+        }),
       );
     } catch {
       setfetchMoreLoading(false);

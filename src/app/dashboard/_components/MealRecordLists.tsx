@@ -2,7 +2,7 @@
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { SelectMealRecord } from "@/db/schema";
-import { mealRecordkeys, TErrCodes } from "@/utils/tanstack";
+import { mealRecordkeys, TErrCodes } from "@/lib/tanstack";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
@@ -17,7 +17,7 @@ const Component = ({ userId, date }: MealRecordListsProps) => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/meal-records?userId=${userId}&date=${date}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (!res.ok) {
         throw new Error("MealRecord fetch failed");

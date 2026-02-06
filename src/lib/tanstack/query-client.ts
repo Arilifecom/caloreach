@@ -1,4 +1,4 @@
-import { handleQueryError } from "@/utils/tanstack/queryErrorHandler";
+import { handleQueryError } from "@/lib/tanstack/queryErrorHandler";
 import { isServer, QueryCache, QueryClient } from "@tanstack/react-query";
 
 function makeQueryClient() {

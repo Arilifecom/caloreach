@@ -6,7 +6,7 @@ import {
   RemainingKcal,
 } from "@/app/dashboard/_components/";
 import { formatYYMMDD } from "@/utils/format/date";
-import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
+import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/lib/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
@@ -29,7 +29,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/meal-records/total-kcal?userId=${userId}&date=${date}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       if (!res.ok) {
         throw new Error("totalKcal fetch failed");
@@ -50,7 +50,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORIGIN}/api/target-kcal/effective?userId=${userId}&date=${date}`,
-        { cache: "no-cache" }
+        { cache: "no-cache" },
       );
       if (!res.ok) {
         throw new Error("taegetKcal fetch failed");

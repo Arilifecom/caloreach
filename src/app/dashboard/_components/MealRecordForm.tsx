@@ -23,7 +23,7 @@ import {
 import { SelectMealRecord } from "@/db/schema";
 import { addMealRecord, editMealRecord } from "@/utils/db/mealRecords";
 import { formatTime, formatYYMMDD } from "@/utils/format/date";
-import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
+import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -108,7 +108,7 @@ export const MealRecordForm = ({
 
     const eatenGramsToNum = Number(eatenGrams);
     const result = Math.floor(
-      (selectedFood.kcalPer100g * eatenGramsToNum) / 100
+      (selectedFood.kcalPer100g * eatenGramsToNum) / 100,
     );
     form.setValue("kcal", result.toString());
   }, [selectedFood, form, eatenGrams]);
@@ -132,7 +132,7 @@ export const MealRecordForm = ({
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
           sentDate.userId,
-          formatYYMMDD(sentDate.eatenAt)
+          formatYYMMDD(sentDate.eatenAt),
         ),
       });
 

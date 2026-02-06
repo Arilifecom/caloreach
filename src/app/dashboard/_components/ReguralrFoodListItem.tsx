@@ -2,7 +2,7 @@ import { List, Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
 import { addMealRecord } from "@/utils/db/mealRecords";
 import { createJstDate, formatTime, formatYYMMDD } from "@/utils/format/date";
-import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
+import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
 import { toast } from "sonner";
@@ -27,7 +27,7 @@ const Component = ({
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
           sentDate.userId,
-          formatYYMMDD(sentDate.eatenAt)
+          formatYYMMDD(sentDate.eatenAt),
         ),
       });
 
