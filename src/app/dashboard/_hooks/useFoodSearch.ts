@@ -20,7 +20,7 @@ export const useFoodSearch = () => {
     queryKey: foodskeys.list(debounced),
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/foods/search?keyword=${debounced}`,
+        `${process.env.NEXT_PUBLIC_ORIGIN}/api/foods/search?q=${debounced}`,
         { cache: "no-store" },
       );
       if (!res.ok) {

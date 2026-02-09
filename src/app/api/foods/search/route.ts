@@ -4,12 +4,12 @@ import { like } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const keyword = req.nextUrl.searchParams.get("keyword");
+  const q = req.nextUrl.searchParams.get("q");
 
-  if (!keyword) return NextResponse.json([]);
+  if (!q) return NextResponse.json([]);
 
   const result = await db.query.foods.findMany({
-    where: like(foods.reading, `%${keyword}%`),
+    where: like(foods.reading, `%${q}%`),
     limit: 10,
     columns: {
       id: true,
