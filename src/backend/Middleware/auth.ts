@@ -1,11 +1,12 @@
 // src/lib/auth-middleware.ts
 import { createClient } from "@/lib/supabase/server";
+import { User } from "@supabase/supabase-js";
 import { createMiddleware } from "hono/factory";
 
 // 型定義
 declare module "hono" {
   interface ContextVariableMap {
-    userId: string;
+    user: User;
   }
 }
 
@@ -26,6 +27,6 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     return c.json({ error: "無効なトークンです" }, 401);
   }
 
-  c.set("userId", user.id);
+  c.set("user", user);
   await next();
 });

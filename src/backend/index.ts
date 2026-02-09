@@ -10,11 +10,11 @@ app.use("/dashboard/*", authMiddleware);
 
 app.get("/dashboard/meal-records/:date", async (c) => {
   const date = c.req.param("date");
-  const userId = c.get("userId");
+  const user = c.get("user");
 
   const data = await db.query.mealRecords.findMany({
     where: and(
-      eq(mealRecords.userId, userId),
+      eq(mealRecords.userId, user.id),
       sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`,
     ),
     orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
