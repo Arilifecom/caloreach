@@ -13,13 +13,13 @@ import { Hono } from "hono";
 import { v7 as uuidv7 } from "uuid";
 
 const app = new Hono().basePath("/api");
-app
+
+//MealRecord-----------------------------------------
+
+const route = app
   .use("/dashboard/*", authMiddleware)
-
-  //MealRecord-----------------------------------------
-
   // GET：指定された日付で一覧を取得
-  .get("/dashboard/meal-records", async (c) => {
+  .get("/dashboard/mealrecords", async (c) => {
     const date = c.req.query("date");
     const user = c.get("user");
 
@@ -35,7 +35,7 @@ app
   })
 
   //GET：指定された日付のKcalを合計した結果を取得
-  .get("/dashboard/meal-records/total-kcal", async (c) => {
+  .get("/dashboard/mealrecords/totalkcal", async (c) => {
     const date = c.req.query("date");
     const user = c.get("user");
 
@@ -53,7 +53,7 @@ app
   })
 
   //POST
-  .post("/dashboard/meal-records", async (c) => {
+  .post("/dashboard/mealrecords", async (c) => {
     const InputData = await c.req.json();
 
     await db.transaction(async (tx) => {
@@ -73,7 +73,7 @@ app
   })
 
   //DELETE
-  .delete("/dashboard/meal-records/:id", async (c) => {
+  .delete("/dashboard/mealrecords/:id", async (c) => {
     const id = c.req.param("id");
 
     await db.transaction(async (tx) => {
@@ -95,7 +95,7 @@ app
   })
 
   //UPDATE
-  .put("/dashboard/meal-records/:id", async (c) => {
+  .put("/dashboard/mealrecords/:id", async (c) => {
     const InputData = await c.req.json();
 
     await db
@@ -109,7 +109,7 @@ app
   //RegularFoods------------------------------------
 
   // GET
-  .get("/dashboard/regular-foods", async (c) => {
+  .get("/dashboard/regularfoods", async (c) => {
     const user = c.get("user");
 
     const data = await db.query.regularFoods.findMany({
@@ -121,7 +121,7 @@ app
   })
 
   //POST
-  .post("/dashboard/regular-foods", async (c) => {
+  .post("/dashboard/regularfoods", async (c) => {
     const InputData = await c.req.json();
 
     await db.insert(regularFoods).values(InputData);
@@ -130,7 +130,7 @@ app
   })
 
   //DELETE
-  .delete("/dashboard/regular-foods/:id", async (c) => {
+  .delete("/dashboard/regularfoods/:id", async (c) => {
     const id = c.req.param("id");
 
     await db.delete(regularFoods).where(eq(regularFoods.id, id));
@@ -139,7 +139,7 @@ app
   })
 
   //UPDATE
-  .put("/dashboard/regular-foods/:id", async (c) => {
+  .put("/dashboard/regularfoods/:id", async (c) => {
     const InputData = await c.req.json();
 
     await db
@@ -175,7 +175,7 @@ app
 
   //TargetKcalHistory------------------------------------\
 
-  .get("/dashboard/target-kcal-plans", async (c) => {
+  .get("/dashboard/targetkcalplans", async (c) => {
     const user = c.get("user");
 
     const data = await db.query.targetKcalPlans.findMany({
@@ -187,7 +187,7 @@ app
   })
 
   //POST
-  .post("/dashboard/target-kcal-plans", async (c) => {
+  .post("/dashboard/targetkcalplans", async (c) => {
     const InputData = await c.req.json();
 
     await db.insert(targetKcalPlans).values(InputData);
@@ -196,7 +196,7 @@ app
   })
 
   //DELETE
-  .delete("/dashboard/target-kcal-plans/:id", async (c) => {
+  .delete("/dashboard/targetkcalplans/:id", async (c) => {
     const id = c.req.param("id");
 
     await db.delete(targetKcalPlans).where(eq(targetKcalPlans.id, id));
@@ -205,7 +205,7 @@ app
   })
 
   //UPDATE
-  .put("/dashboard/target-kcal-plans/:id", async (c) => {
+  .put("/dashboard/targetkcalplans/:id", async (c) => {
     const InputData = await c.req.json();
 
     await db
@@ -235,3 +235,5 @@ app
   });
 
 export default app;
+
+export type AppType = typeof route;
