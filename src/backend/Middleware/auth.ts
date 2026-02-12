@@ -12,11 +12,23 @@ declare module "hono" {
 
 export const authMiddleware = createMiddleware(async (c, next) => {
   const supabase = await createClient();
-  const token = c.req.header("Authorization")?.replace("Bearer ", "");
 
-  if (!token) {
+  const authHeader = c.req.header("Authorization");
+
+  if (!authHeader) {
     return c.json({ error: "認証が必要です" }, 401);
   }
+
+  if (!authHeader.startsWith("Bearer ")) {
+    return c.json(
+      {
+        error: "トークン形式が正しくありません",
+        code: "INVALID_FORMAT",
+      },
+      401,
+    );
+  }
+  const token = authHeader.substring(7);
 
   const {
     data: { user },

@@ -1,0 +1,22 @@
+import z from "zod";
+
+// MealRecord CREATE用スキーマ
+export const createRecordSchema = z.object({
+  id: z.uuid(),
+  foodName: z.string().min(1).max(100),
+  gram: z.number(),
+  kcal: z.number(),
+  eatenAt: z.coerce.date(),
+  userId: z.uuid(),
+  foodId: z.string().nullable().optional(),
+});
+
+// パスパラメータのスキーマ (UUID)
+export const idParamSchema = z.object({
+  id: z.uuid("有効なUUID形式ではありません"),
+});
+
+// 日付クエリのスキーマ (YYYY-MM-DD)
+export const dateQuerySchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+});

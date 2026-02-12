@@ -1,22 +1,22 @@
 import { MealRecordForm } from "@/app/dashboard/_components";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { SelectMealRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { deleteMealRecord } from "@/utils/db/mealRecords";
-import { formatYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
 import { toast } from "sonner";
+import { MealRecordResponse } from "@/shared/types/";
+import { formatUtcToJstYYMMDD } from "@/utils/format/date";
+import { deleteMealRecord } from "@/services/mealRecords";
 
 type ActionMenuProps = {
-  mealRecord: SelectMealRecord;
+  mealRecord: MealRecordResponse;
 };
 
 const Component = ({ mealRecord }: ActionMenuProps) => {
-  const editDate = formatYYMMDD(mealRecord.eatenAt);
+  const editDate = mealRecord.eatenAt;
 
   const {
     isOpen,
@@ -28,16 +28,13 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: async (mealRecord: SelectMealRecord) => {
-      await deleteMealRecord(mealRecord);
-      return mealRecord;
-    },
+    mutationFn: deleteMealRecord,
     onSuccess: (_, mealRecord) => {
+      const userId = mealRecord.userId;
+      const date = formatUtcToJstYYMMDD(mealRecord.eatenAt);
+
       queryClient.invalidateQueries({
-        queryKey: mealRecordkeys.dailyList(
-          mealRecord.userId,
-          formatYYMMDD(mealRecord.eatenAt),
-        ),
+        queryKey: mealRecordkeys.dailyList(userId, date),
       });
       queryClient.invalidateQueries({
         queryKey: historieskeys.list(mealRecord.userId),
@@ -50,7 +47,7 @@ const Component = ({ mealRecord }: ActionMenuProps) => {
     },
   });
 
-  const handleDelete = (mealRecord: SelectMealRecord) => {
+  const handleDelete = (mealRecord: MealRecordResponse) => {
     if (deleteMutation.isPending) return;
     deleteMutation.mutate(mealRecord);
   };

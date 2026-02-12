@@ -1,6 +1,6 @@
 import { addDays, format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { toZonedTime } from "date-fns-tz";
+import { formatInTimeZone, toZonedTime } from "date-fns-tz";
 
 // M月d日(E)
 export const formatDateWithDay = (date: Date) => {
@@ -31,3 +31,13 @@ export const createJstDate = (date: string, time: string) => {
 export const formattedTomorrow = (date: Date = new Date()) => {
   return format(addDays(date, 1), "yyyy-MM-dd");
 };
+
+const JST = "Asia/Tokyo";
+
+//UTC String to Tokyo String
+export const formatUtcToJstTime = (utcDate: string) =>
+  formatInTimeZone(utcDate, JST, "HH:mm", { locale: ja });
+
+//UTC String to Tokyo String
+export const formatUtcToJstYYMMDD = (utcDate: string) =>
+  formatInTimeZone(utcDate, JST, "yyyy-MM-dd", { locale: ja });

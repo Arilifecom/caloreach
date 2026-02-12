@@ -20,9 +20,11 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { SelectMealRecord } from "@/db/schema";
-import { addMealRecord, editMealRecord } from "@/utils/db/mealRecords";
-import { formatTime, formatYYMMDD } from "@/utils/format/date";
+import {
+  formatTime,
+  formatUtcToJstTime,
+  formatUtcToJstYYMMDD,
+} from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
@@ -30,11 +32,13 @@ import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 import { toast } from "sonner";
 import { Loading } from "@/components";
+import { MealRecordResponse } from "@/shared/types/";
+import { addMealRecord, updateMealRecord } from "@/services/mealRecords";
 
 type MealRecordFormProps = {
   userId: string;
   mode: "add" | "edit";
-  editItem?: SelectMealRecord;
+  editItem?: MealRecordResponse;
   isFormOpen: boolean;
   handleFormWindow: () => void;
   handleCloseAllWindows: () => void;
@@ -85,9 +89,11 @@ export const MealRecordForm = ({
   useEffect(() => {
     if (!isFormOpen) return;
     if (mode === "edit" && editItem) {
+      const date = formatUtcToJstYYMMDD(editItem.eatenAt);
+      const time = formatUtcToJstTime(editItem.eatenAt);
       form.reset({
-        date: formatYYMMDD(editItem.eatenAt).toString(),
-        time: formatTime(editItem.eatenAt).toString(),
+        date: date,
+        time: time,
         foodName: editItem.foodName,
         gram: editItem.gram.toString(),
         kcal: editItem.kcal.toString(),
@@ -128,16 +134,16 @@ export const MealRecordForm = ({
   //Mutations
   const addMutation = useMutation({
     mutationFn: addMealRecord,
-    onSuccess: (_, sentDate) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
-          sentDate.userId,
-          formatYYMMDD(sentDate.eatenAt),
+          data.userId,
+          formatUtcToJstYYMMDD(data.eatenAt),
         ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: historieskeys.list(sentDate.userId),
+        queryKey: historieskeys.list(data.userId),
       });
 
       handleCloseAllWindows();
@@ -149,7 +155,7 @@ export const MealRecordForm = ({
   });
 
   const editMutation = useMutation({
-    mutationFn: editMealRecord,
+    mutationFn: updateMealRecord,
     onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.all(),
