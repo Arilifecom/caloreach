@@ -1,8 +1,8 @@
 "use clinet";
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
-import { createClientRPC } from "@/lib/createClientRPC";
 import { mealRecordkeys, TErrCodes } from "@/lib/tanstack";
+import { fetchMealRecords } from "@/services/mealRecords";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
@@ -14,14 +14,7 @@ type MealRecordListsProps = {
 const Component = ({ userId, date }: MealRecordListsProps) => {
   const { data, isError, refetch } = useSuspenseQuery({
     queryKey: mealRecordkeys.dailyList(userId, date),
-    queryFn: async () => {
-      const client = await createClientRPC();
-      const res = await client.api.dashboard.mealrecords.$get({
-        query: { date },
-      });
-      const data = await res.json();
-      return data.mealRecords;
-    },
+    queryFn: async () => await fetchMealRecords(date),
     meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 
