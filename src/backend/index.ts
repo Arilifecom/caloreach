@@ -11,6 +11,12 @@ import {
 import { and, asc, eq, like, sql, sum } from "drizzle-orm";
 import { Hono } from "hono";
 import { v7 as uuidv7 } from "uuid";
+import { zValidator } from "@hono/zod-validator";
+import {
+  createRecordSchema,
+  dateQuerySchema,
+  idParamSchema,
+} from "@/backend/validators";
 
 const app = new Hono().basePath("/api");
 
@@ -19,92 +25,119 @@ const app = new Hono().basePath("/api");
 const route = app
   .use("/dashboard/*", authMiddleware)
   // GET：指定された日付で一覧を取得
-  .get("/dashboard/mealrecords", async (c) => {
-    const date = c.req.query("date");
-    const user = c.get("user");
+  .get(
+    "/dashboard/mealrecords",
+    zValidator("query", dateQuerySchema),
+    async (c) => {
+      const date = c.req.query("date");
+      const user = c.get("user");
 
-    const data = await db.query.mealRecords.findMany({
-      where: and(
-        eq(mealRecords.userId, user.id),
-        sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`,
-      ),
-      orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
-    });
-
-    return c.json({ mealRecords: data }, 200);
-  })
-
-  //GET：指定された日付のKcalを合計した結果を取得
-  .get("/dashboard/mealrecords/totalkcal", async (c) => {
-    const date = c.req.query("date");
-    const user = c.get("user");
-
-    const [result] = await db
-      .select({ totalKcal: sum(mealRecords.kcal) })
-      .from(mealRecords)
-      .where(
-        and(
+      const data = await db.query.mealRecords.findMany({
+        where: and(
           eq(mealRecords.userId, user.id),
           sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`,
         ),
-      );
+        orderBy: [asc(mealRecords.eatenAt), asc(mealRecords.id)],
+      });
 
-    return c.json({ totalKcal: Number(result.totalKcal) || 0 }, 200);
-  })
+      return c.json({ mealRecords: data }, 200);
+    },
+  )
+
+  //GET：指定された日付のKcalを合計した結果を取得
+  .get(
+    "/dashboard/mealrecords/totalkcal",
+    zValidator("query", dateQuerySchema),
+    async (c) => {
+      const date = c.req.query("date");
+      const user = c.get("user");
+
+      const [result] = await db
+        .select({ totalKcal: sum(mealRecords.kcal) })
+        .from(mealRecords)
+        .where(
+          and(
+            eq(mealRecords.userId, user.id),
+            sql`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo') = ${date}`,
+          ),
+        );
+
+      return c.json({ totalKcal: Number(result.totalKcal) || 0 }, 200);
+    },
+  )
 
   //POST
-  .post("/dashboard/mealrecords", async (c) => {
-    const InputData = await c.req.json();
+  .post(
+    "/dashboard/mealrecords",
+    zValidator("json", createRecordSchema),
+    async (c) => {
+      const InputData = c.req.valid("json");
 
-    await db.transaction(async (tx) => {
-      await tx.insert(mealRecords).values(InputData);
+      const data = await db.transaction(async (tx) => {
+        const [insertedRecord] = await tx
+          .insert(mealRecords)
+          .values(InputData)
+          .returning();
 
-      // userFoodSelectionsテーブルから追加
-      if (InputData.foodId) {
-        await tx.insert(userFoodSelections).values({
-          id: uuidv7(),
-          userId: InputData.userId,
-          foodId: InputData.foodId,
-        });
-      }
-    });
+        // userFoodSelectionsテーブルから追加
+        if (InputData.foodId) {
+          await tx.insert(userFoodSelections).values({
+            id: uuidv7(),
+            userId: InputData.userId,
+            foodId: InputData.foodId,
+          });
+        }
+        return insertedRecord;
+      });
 
-    return c.json({ success: true }, 201);
-  })
-
-  //DELETE
-  .delete("/dashboard/mealrecords/:id", async (c) => {
-    const id = c.req.param("id");
-
-    await db.transaction(async (tx) => {
-      const [record] = await tx
-        .select()
-        .from(mealRecords)
-        .where(eq(mealRecords.id, id));
-
-      await tx.delete(mealRecords).where(eq(mealRecords.id, id));
-
-      // userFoodSelectionsテーブルから削除
-      if (record.foodId) {
-        await tx
-          .delete(userFoodSelections)
-          .where(eq(userFoodSelections.foodId, record.foodId));
-      }
-    });
-    return c.status(204);
-  })
+      return c.json({ data }, 201);
+    },
+  )
 
   //UPDATE
-  .put("/dashboard/mealrecords/:id", async (c) => {
-    const InputData = await c.req.json();
+  .put(
+    "/dashboard/mealrecords/:id",
+    zValidator("json", createRecordSchema),
+    zValidator("param", idParamSchema),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const InputData = c.req.valid("json");
 
-    await db
-      .update(mealRecords)
-      .set({ ...InputData, updatedAt: sql`NOW()` })
-      .where(eq(mealRecords.id, InputData.id));
+      const data = await db
+        .update(mealRecords)
+        .set(InputData)
+        .where(eq(mealRecords.id, id))
+        .returning();
 
-    return c.json({ success: true }, 201);
-  })
+      return c.json({ data }, 201);
+    },
+  )
+
+  //DELETE
+  .delete(
+    "/dashboard/mealrecords/:id",
+    zValidator("param", idParamSchema),
+    async (c) => {
+      const id = c.req.param("id");
+
+      await db.transaction(async (tx) => {
+        const [record] = await tx
+          .select()
+          .from(mealRecords)
+          .where(eq(mealRecords.id, id));
+
+        await tx.delete(mealRecords).where(eq(mealRecords.id, id));
+
+        // userFoodSelectionsテーブルから削除
+        if (record.foodId) {
+          await tx
+            .delete(userFoodSelections)
+            .where(eq(userFoodSelections.foodId, record.foodId));
+        }
+      });
+      return c.body(null, 204);
+    },
+  )
 
   //RegularFoods------------------------------------
 
@@ -135,7 +168,7 @@ const route = app
 
     await db.delete(regularFoods).where(eq(regularFoods.id, id));
 
-    return c.status(204);
+    return c.body(null, 204);
   })
 
   //UPDATE
@@ -201,7 +234,7 @@ const route = app
 
     await db.delete(targetKcalPlans).where(eq(targetKcalPlans.id, id));
 
-    return c.status(204);
+    return c.body(null, 204);
   })
 
   //UPDATE
