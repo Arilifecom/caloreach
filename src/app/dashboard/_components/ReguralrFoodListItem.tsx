@@ -1,12 +1,12 @@
 import { List, Loading } from "@/components";
 import { SelectregularFood } from "@/db/schema";
-import { addMealRecord } from "@/utils/db/mealRecords";
-import { createJstDate, formatTime, formatYYMMDD } from "@/utils/format/date";
+import { formatTime, formatUtcToJstYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
+import { addMealRecord } from "@/services/mealRecords";
 
 type ReguralrFoodItemProps = {
   regularFood: SelectregularFood;
@@ -23,16 +23,16 @@ const Component = ({
   //AddMutations
   const addMutation = useMutation({
     mutationFn: addMealRecord,
-    onSuccess: (_, sentDate) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
-          sentDate.userId,
-          formatYYMMDD(sentDate.eatenAt),
+          data.userId,
+          formatUtcToJstYYMMDD(data.eatenAt),
         ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: historieskeys.list(sentDate.userId),
+        queryKey: historieskeys.list(data.userId),
       });
 
       handleCloseAllWindows();
@@ -47,7 +47,7 @@ const Component = ({
   //Insert data to meralRecord
   const handleAddMealRecords = (data: SelectregularFood) => {
     const time = formatTime(new Date());
-    const eatenAt = createJstDate(date, time);
+    const eatenAt = `${date} ${time}`;
 
     const sentDate = {
       id: uuidv7(),
@@ -71,7 +71,7 @@ const Component = ({
         >
           <List className="w-fit px-2">
             {addMutation.isPending ? (
-              <div className="flex items-center justify-center h-9 min-w-[90px]">
+              <div className="flex items-center justify-center h-9 min-w-22.5">
                 <Loading />
               </div>
             ) : (
