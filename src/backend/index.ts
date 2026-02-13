@@ -30,7 +30,7 @@ const route = app
     "/dashboard/mealrecords",
     zValidator("query", dateQuerySchema),
     async (c) => {
-      const date = c.req.query("date");
+      const { date } = c.req.valid("query");
       const user = c.get("user");
 
       const data = await db.query.mealRecords.findMany({
@@ -50,7 +50,7 @@ const route = app
     "/dashboard/mealrecords/totalkcal",
     zValidator("query", dateQuerySchema),
     async (c) => {
-      const date = c.req.query("date");
+      const { date } = c.req.valid("query");
       const user = c.get("user");
 
       const [result] = await db
@@ -119,7 +119,7 @@ const route = app
     "/dashboard/mealrecords/:id",
     zValidator("param", idParamSchema),
     async (c) => {
-      const id = c.req.param("id");
+      const { id } = c.req.valid("param");
 
       await db.transaction(async (tx) => {
         const [record] = await tx
