@@ -1,17 +1,17 @@
 import { RegularFoodForm } from "@/app/dashboard/regular-foods/_components/";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { SelectregularFood } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { deleteRegularFood } from "@/utils/db/regularFoods";
 import { RegularFoodskeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
 import { toast } from "sonner";
+import { RegularFoodsRequest, RegularFoodsResponse } from "@/shared/types";
+import { deleteRegularFood } from "@/services/regularFoods";
 
 type ActionMenuProps = {
-  regularFood: SelectregularFood;
+  regularFood: RegularFoodsRequest;
 };
 
 const Component = ({ regularFood }: ActionMenuProps) => {
@@ -25,10 +25,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: async (regularFood: SelectregularFood) => {
-      await deleteRegularFood(regularFood.id);
-      return regularFood;
-    },
+    mutationFn: deleteRegularFood,
     onSuccess: (_, regularFood) => {
       queryClient.invalidateQueries({
         queryKey: RegularFoodskeys.list(regularFood.userId),
@@ -40,7 +37,7 @@ const Component = ({ regularFood }: ActionMenuProps) => {
     },
   });
 
-  const handleDelete = (regularFood: SelectregularFood) => {
+  const handleDelete = (regularFood: RegularFoodsResponse) => {
     if (deleteMutation.isPending) return;
     deleteMutation.mutate(regularFood);
   };

@@ -20,3 +20,12 @@ export const idParamSchema = z.object({
 export const dateQuerySchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
 });
+
+// ReguralrFoodd CREATE用スキーマ
+export const createRegularFoodSchema = z.object({
+  id: z.string(),
+  foodName: z.string(),
+  gram: z.number(),
+  kcal: z.number(),
+  userId: z.uuid(),
+});

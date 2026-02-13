@@ -14,6 +14,7 @@ import { v7 as uuidv7 } from "uuid";
 import { zValidator } from "@hono/zod-validator";
 import {
   createRecordSchema,
+  createRegularFoodSchema,
   dateQuerySchema,
   idParamSchema,
 } from "@/backend/validators";
@@ -154,34 +155,48 @@ const route = app
   })
 
   //POST
-  .post("/dashboard/regularfoods", async (c) => {
-    const InputData = await c.req.json();
+  .post(
+    "/dashboard/regularfoods",
+    zValidator("json", createRegularFoodSchema),
+    async (c) => {
+      const InputData = c.req.valid("json");
 
-    await db.insert(regularFoods).values(InputData);
+      const data = await db.insert(regularFoods).values(InputData).returning();
 
-    return c.json({ success: true }, 201);
-  })
+      return c.json({ data }, 201);
+    },
+  )
 
   //DELETE
-  .delete("/dashboard/regularfoods/:id", async (c) => {
-    const id = c.req.param("id");
+  .delete(
+    "/dashboard/regularfoods/:id",
+    zValidator("param", idParamSchema),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      await db.delete(regularFoods).where(eq(regularFoods.id, id));
 
-    await db.delete(regularFoods).where(eq(regularFoods.id, id));
-
-    return c.body(null, 204);
-  })
+      return c.body(null, 204);
+    },
+  )
 
   //UPDATE
-  .put("/dashboard/regularfoods/:id", async (c) => {
-    const InputData = await c.req.json();
+  .put(
+    "/dashboard/regularfoods/:id",
+    zValidator("json", createRegularFoodSchema),
+    zValidator("param", idParamSchema),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const InputData = c.req.valid("json");
 
-    await db
-      .update(regularFoods)
-      .set({ ...InputData, updatedAt: sql`NOW()` })
-      .where(eq(regularFoods.id, InputData.id));
+      const data = await db
+        .update(regularFoods)
+        .set(InputData)
+        .where(eq(regularFoods.id, id))
+        .returning();
 
-    return c.json({ success: true }, 201);
-  })
+      return c.json({ data }, 201);
+    },
+  )
 
   //Profiles------------------------------------
 

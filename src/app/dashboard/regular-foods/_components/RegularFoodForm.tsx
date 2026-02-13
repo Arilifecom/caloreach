@@ -21,19 +21,19 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { SelectregularFood } from "@/db/schema";
-import { addRegularFood, editRegularFood } from "@/utils/db/regularFoods";
 import { RegularFoodskeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
+import { RegularFoodsRequest } from "@/shared/types";
+import { addRegularFood, editRegularFood } from "@/services/regularFoods";
 
 type RegularFoodFormProps = {
   userId: string;
   mode: "add" | "edit";
-  editItem?: SelectregularFood;
+  editItem?: RegularFoodsRequest;
   isFormOpen: boolean;
   handleFormWindow: () => void;
   handleCloseAllWindows?: () => void;
