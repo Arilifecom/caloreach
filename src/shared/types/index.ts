@@ -1,6 +1,11 @@
 //DB由来の型をフロント用に置き換え
 
-import { InsertMealRecord, SelectMealRecord } from "@/db/schema";
+import {
+  InsertMealRecord,
+  InsertregularFood,
+  SelectMealRecord,
+  SelectregularFood,
+} from "@/db/schema";
 
 export type MealRecordResponse = Omit<
   SelectMealRecord,
@@ -15,3 +20,13 @@ export type MealRecordRequest = Omit<
 > & {
   eatenAt: string;
 };
+
+export type RegularFoodsResponse = Omit<
+  SelectregularFood,
+  "createdAt" | "updatedAt" | "deletedAt"
+>;
+
+export type RegularFoodsRequest = Omit<
+  InsertregularFood,
+  "createdAt" | "updatedAt" | "deletedAt"
+>;
