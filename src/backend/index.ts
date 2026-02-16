@@ -15,6 +15,7 @@ import { zValidator } from "@hono/zod-validator";
 import {
   createRecordSchema,
   createRegularFoodSchema,
+  createTargetKcalPlansSchema,
   dateQuerySchema,
   idParamSchema,
 } from "@/backend/validators";
@@ -221,48 +222,72 @@ const route = app
     return c.json({ success: true }, 201);
   })
 
-  //TargetKcalHistory------------------------------------\
+  //TargetKcalPlans------------------------------------\
 
+  // GET
   .get("/dashboard/targetkcalplans", async (c) => {
     const user = c.get("user");
 
     const data = await db.query.targetKcalPlans.findMany({
       where: eq(targetKcalPlans.userId, user.id),
-      orderBy: [asc(targetKcalPlans.createdAt), asc(targetKcalPlans.id)],
+      orderBy: [asc(targetKcalPlans.effectiveDate), asc(targetKcalPlans.id)],
     });
 
-    return c.json({ historyRecords: data }, 200);
+    return c.json({ targetkcalRecords: data }, 200);
   })
 
   //POST
   .post("/dashboard/targetkcalplans", async (c) => {
     const InputData = await c.req.json();
+    const user = c.get("user");
 
-    await db.insert(targetKcalPlans).values(InputData);
+    const [result] = await db
+      .insert(targetKcalPlans)
+      .values({
+        ...InputData,
+        id: uuidv7(),
+        userId: user.id,
+      })
+      .returning();
 
-    return c.json({ success: true }, 201);
+    return c.json(result, 201);
   })
 
   //DELETE
   .delete("/dashboard/targetkcalplans/:id", async (c) => {
     const id = c.req.param("id");
+    const user = c.get("user");
 
-    await db.delete(targetKcalPlans).where(eq(targetKcalPlans.id, id));
+    await db
+      .delete(targetKcalPlans)
+      .where(
+        and(eq(targetKcalPlans.id, id), eq(targetKcalPlans.userId, user.id)),
+      );
 
     return c.body(null, 204);
   })
 
   //UPDATE
-  .put("/dashboard/targetkcalplans/:id", async (c) => {
-    const InputData = await c.req.json();
+  .put(
+    "/dashboard/targetkcalplans/:id",
+    zValidator("param", idParamSchema),
+    zValidator("json", createTargetKcalPlansSchema),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const InputData = c.req.valid("json");
+      const user = c.get("user");
 
-    await db
-      .update(targetKcalPlans)
-      .set({ ...targetKcalPlans, updatedAt: sql`NOW()` })
-      .where(eq(targetKcalPlans.id, InputData.id));
+      const [result] = await db
+        .update(targetKcalPlans)
+        .set(InputData)
+        .where(
+          and(eq(targetKcalPlans.id, id), eq(targetKcalPlans.userId, user.id)),
+        )
+        .returning();
 
-    return c.json({ success: true }, 201);
-  })
+      return c.json(result, 201);
+    },
+  )
 
   //Foods------------------------------------\
 

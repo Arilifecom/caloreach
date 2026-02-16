@@ -3,8 +3,10 @@
 import {
   InsertMealRecord,
   InsertregularFood,
+  InsertTargetKcalPlansRecord,
   SelectMealRecord,
   SelectregularFood,
+  SelectTargetKcalPlansRecord,
 } from "@/db/schema";
 
 export type MealRecordResponse = Omit<
@@ -29,4 +31,20 @@ export type RegularFoodsResponse = Omit<
 export type RegularFoodsRequest = Omit<
   InsertregularFood,
   "createdAt" | "updatedAt" | "deletedAt"
+>;
+
+//TargetKcalPlans
+export type TargetKcalPlansResponse = Omit<
+  SelectTargetKcalPlansRecord,
+  "createdAt" | "updatedAt" | "deletedAt"
+>;
+
+export type CreateTargetKcalInput = Omit<
+  InsertTargetKcalPlansRecord,
+  "id" | "userId" | "createdAt" | "updatedAt" | "deletedAt"
+>;
+
+export type UpdateTargetKcalInput = Omit<
+  InsertTargetKcalPlansRecord,
+  "userId" | "createdAt" | "updatedAt" | "deletedAt"
 >;

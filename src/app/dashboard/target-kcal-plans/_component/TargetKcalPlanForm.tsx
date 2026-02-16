@@ -20,18 +20,17 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { SelectTargetKcalPlansRecord } from "@/db/schema";
-import { createTargetKcal, editTargetKcal } from "@/utils/db/targetKcal";
 import { formattedTomorrow, formatYYMMDD } from "@/utils/format/date";
 import { TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { v7 as uuidv7 } from "uuid";
+import { TargetKcalPlansResponse } from "@/shared/types";
+import { createTargetKcal, updateTargetKcal } from "@/services/targetKcal";
 
 type TargetKcalFormProps = {
-  editItem?: SelectTargetKcalPlansRecord;
+  editItem?: TargetKcalPlansResponse;
   userId: string;
   mode: "add" | "edit";
   isFormOpen: boolean;
@@ -86,9 +85,13 @@ export const TargetKcalPlanForm = ({
   //Mutations
   const addMutation = useMutation({
     mutationFn: createTargetKcal,
-    onSuccess: (_, sentDate) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: TargetKcalkeys.list(sentDate.userId),
+        queryKey: TargetKcalkeys.list(userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: TargetKcalkeys.effective(userId),
       });
       handleFormWindow();
     },
@@ -99,10 +102,14 @@ export const TargetKcalPlanForm = ({
   });
 
   const editMutation = useMutation({
-    mutationFn: editTargetKcal,
-    onSuccess: (_, sentDate) => {
+    mutationFn: updateTargetKcal,
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: TargetKcalkeys.list(sentDate.userId),
+        queryKey: TargetKcalkeys.list(userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: TargetKcalkeys.effective(userId),
       });
       handleCloseAllWindows?.();
     },
@@ -114,32 +121,26 @@ export const TargetKcalPlanForm = ({
 
   //Form submit function
   const submitTargetKcalPlanSent = async (
-    data: TargetKcalPlanInputSchemaOutput,
+    InputData: TargetKcalPlanInputSchemaOutput,
   ) => {
-    const formatDate = formatYYMMDD(data.effectiveDate);
-    const sentDate =
-      mode === "edit" && editItem
-        ? {
-            id: editItem.id,
-            userId: editItem.userId,
-            targetKcal: data.targetKcal,
-            effectiveDate: formatDate,
-          }
-        : {
-            id: uuidv7(),
-            userId: userId,
-            targetKcal: data.targetKcal,
-            effectiveDate: formatDate,
-          };
+    const formatDate = formatYYMMDD(InputData.effectiveDate);
 
     if (mode === "edit" && editItem) {
       if (editMutation.isPending) return;
-      editMutation.mutate(sentDate);
+
+      editMutation.mutate({
+        id: editItem.id,
+        targetKcal: InputData.targetKcal,
+        effectiveDate: formatDate,
+      });
+
       return;
     }
 
-    if (addMutation.isPending) return;
-    addMutation.mutate(sentDate);
+    addMutation.mutate({
+      targetKcal: InputData.targetKcal,
+      effectiveDate: formatDate,
+    });
   };
 
   const title = mode === "add" ? "目標カロリーを登録" : "目標カロリーを編集";
