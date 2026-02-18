@@ -174,21 +174,32 @@ export const MealRecordForm = ({
 
   //Submit form
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
-    const sentDate =
-      mode === "edit" && editItem
-        ? {
-            ...data,
-            id: editItem.id,
-            userId: editItem.userId,
-            foodId: selectedFood?.id,
-          }
-        : { ...data, id: uuidv7(), userId: userId, foodId: selectedFood?.id };
+    const local = new Date(data.eatenAtLocal);
+    const utsIso = local.toISOString();
 
     if (mode === "edit" && editItem) {
+      const sentDate = {
+        ...data,
+        id: editItem.id,
+        userId: editItem.userId,
+        eatenAt: utsIso,
+        foodId: selectedFood?.id,
+      };
+
       if (editMutation.isPending) return;
+
       editMutation.mutate(sentDate);
+
       return;
     }
+
+    const sentDate = {
+      ...data,
+      id: uuidv7(),
+      userId: userId,
+      eatenAt: utsIso,
+      foodId: selectedFood?.id,
+    };
 
     if (addMutation.isPending) return;
     addMutation.mutate(sentDate);

@@ -5,7 +5,7 @@ import {
 import { createServerRPC } from "@/lib/createServerRPC";
 import { getQueryClient, mealRecordkeys } from "@/lib/tanstack";
 import { getUserId } from "@/utils/db/auth";
-import { formatYYMMDD } from "@/utils/format/date";
+import { getTodayJST } from "@/utils/format/date";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,8 @@ export const dynamic = "force-dynamic";
 export default async function Dashboard() {
   const userId = await getUserId();
   const queryClient = getQueryClient();
-  const date = formatYYMMDD(new Date());
+  //yyyy-MM-dd
+  const date = getTodayJST();
 
   await queryClient.prefetchQuery({
     queryKey: mealRecordkeys.dailyList(userId, date),
