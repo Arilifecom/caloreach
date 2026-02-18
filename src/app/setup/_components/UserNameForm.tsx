@@ -12,20 +12,16 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { createProfile } from "@/utils/db/setup";
+import { createProfile } from "@/services/profile";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-
-interface UserNameFormProps {
-  userId: string;
-}
 
 const defaultValues: UserNameInputSchema = {
   userName: "",
 };
 
-export const UserNameForm = ({ userId }: UserNameFormProps) => {
+export const UserNameForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -35,14 +31,10 @@ export const UserNameForm = ({ userId }: UserNameFormProps) => {
     defaultValues,
   });
 
-  const submitUserProfileSent = async (values: UserNameInputSchema) => {
-    const profileData = {
-      userName: values.userName,
-      id: userId,
-    };
+  const submitUserProfileSent = async (InputDate: UserNameInputSchema) => {
     try {
       setIsLoading(true);
-      await createProfile(profileData);
+      await createProfile(InputDate);
       //go to next setup
       router.push("/setup/step-2-target-kcal");
     } catch (error) {

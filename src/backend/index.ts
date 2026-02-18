@@ -13,6 +13,7 @@ import { Hono } from "hono";
 import { v7 as uuidv7 } from "uuid";
 import { zValidator } from "@hono/zod-validator";
 import {
+  createProfileSchema,
   createRecordSchema,
   createRegularFoodSchema,
   createTargetKcalPlansSchema,
@@ -214,13 +215,24 @@ const route = app
   })
 
   //POST
-  .post("/dashboard/profiles", async (c) => {
-    const InputData = await c.req.json();
+  .post(
+    "/dashboard/profiles",
+    zValidator("json", createProfileSchema),
+    async (c) => {
+      const InputData = c.req.valid("json");
+      const user = c.get("user");
 
-    await db.insert(profiles).values(InputData);
+      const [result] = await db
+        .insert(profiles)
+        .values({
+          ...InputData,
+          id: user.id,
+        })
+        .returning();
 
-    return c.json({ success: true }, 201);
-  })
+      return c.json({ result }, 201);
+    },
+  )
 
   //TargetKcalPlans------------------------------------\
 
@@ -237,21 +249,25 @@ const route = app
   })
 
   //POST
-  .post("/dashboard/targetkcalplans", async (c) => {
-    const InputData = await c.req.json();
-    const user = c.get("user");
+  .post(
+    "/dashboard/targetkcalplans",
+    zValidator("json", createTargetKcalPlansSchema),
+    async (c) => {
+      const InputData = c.req.valid("json");
+      const user = c.get("user");
 
-    const [result] = await db
-      .insert(targetKcalPlans)
-      .values({
-        ...InputData,
-        id: uuidv7(),
-        userId: user.id,
-      })
-      .returning();
+      const [result] = await db
+        .insert(targetKcalPlans)
+        .values({
+          ...InputData,
+          id: uuidv7(),
+          userId: user.id,
+        })
+        .returning();
 
-    return c.json(result, 201);
-  })
+      return c.json(result, 201);
+    },
+  )
 
   //DELETE
   .delete("/dashboard/targetkcalplans/:id", async (c) => {

@@ -2,6 +2,7 @@
 
 import {
   InsertMealRecord,
+  InsertProfileRecord,
   InsertregularFood,
   InsertTargetKcalPlansRecord,
   SelectMealRecord,
@@ -47,4 +48,10 @@ export type CreateTargetKcalInput = Omit<
 export type UpdateTargetKcalInput = Omit<
   InsertTargetKcalPlansRecord,
   "userId" | "createdAt" | "updatedAt" | "deletedAt"
+>;
+
+//Profile
+export type CreateProfileInput = Omit<
+  InsertProfileRecord,
+  "id" | "createdAt" | "updatedAt" | "deletedAt"
 >;
