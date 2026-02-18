@@ -4,8 +4,8 @@ import { FetchErrorMessage } from "@/app/dashboard/_components/FetchErrorMessage
 import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodListItem";
 import { List, Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { SelectregularFood } from "@/db/schema";
 import { RegularFoodskeys, TErrCodes } from "@/lib/tanstack";
+import { fetchRegularFoods } from "@/services/regularFoods";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -24,23 +24,13 @@ export const RegularFoodLsits = ({
 }: RegularFoodSelectorProps) => {
   const router = useRouter();
 
-  const { data, isLoading, isError, refetch } = useQuery<SelectregularFood[]>({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: RegularFoodskeys.list(userId),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/regular-foods?userId=${userId}`,
-        { cache: "no-store" },
-      );
-      if (!res.ok) {
-        throw new Error("RegularFoods fetch failed");
-      }
-      return res.json();
-    },
+    queryFn: async () => await fetchRegularFoods(),
     enabled: isRegularOpen,
     meta: { errCode: TErrCodes.REGULAR_FOOD_SEARCH_FAILED },
   });
 
-  if (isLoading) return <Loading />;
   if (isLoading) return <Loading />;
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
