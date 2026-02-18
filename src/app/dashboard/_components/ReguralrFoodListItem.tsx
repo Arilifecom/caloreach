@@ -1,15 +1,17 @@
+"use client";
+
 import { List, Loading } from "@/components";
-import { SelectregularFood } from "@/db/schema";
 import { formatTime, formatUtcToJstYYMMDD } from "@/utils/format/date";
 import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo } from "react";
 import { toast } from "sonner";
 import { v7 as uuidv7 } from "uuid";
 import { addMealRecord } from "@/services/mealRecords";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { RegularFoodsResponse } from "@/shared/types";
 
 type ReguralrFoodItemProps = {
-  regularFood: SelectregularFood;
+  regularFood: RegularFoodsResponse;
   handleCloseAllWindows: () => void;
   date: string;
 };
@@ -45,9 +47,11 @@ const Component = ({
   });
 
   //Insert data to meralRecord
-  const handleAddMealRecords = (data: SelectregularFood) => {
+  const handleAddMealRecords = (data: RegularFoodsResponse) => {
     const time = formatTime(new Date());
-    const eatenAt = `${date} ${time}`;
+    const eatenAtLocal = `${date}T${time}:00`;
+    const local = new Date(eatenAtLocal);
+    const utsIso = local.toISOString();
 
     const sentDate = {
       id: uuidv7(),
@@ -55,7 +59,7 @@ const Component = ({
       foodName: data.foodName,
       gram: data.gram,
       kcal: data.kcal,
-      eatenAt: eatenAt,
+      eatenAt: utsIso,
     };
 
     if (addMutation.isPending) return;
