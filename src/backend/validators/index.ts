@@ -32,7 +32,11 @@ export const createRegularFoodSchema = z.object({
 
 // TargetKcalPlan CREATE用スキーマ
 export const createTargetKcalPlansSchema = z.object({
-  id: z.uuid(),
   targetKcal: z.number(),
   effectiveDate: z.string(),
+});
+
+// Profile CREATE用スキーマ
+export const createProfileSchema = z.object({
+  userName: z.string(),
 });
