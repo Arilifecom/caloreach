@@ -26,7 +26,7 @@ const mealRecordInputSchema = z
     foodName: data.foodName,
     gram: data.gram,
     kcal: data.kcal,
-    eatenAt: `${data.date} ${data.time}`,
+    eatenAtLocal: `${data.date}T${data.time}:00`,
   }));
 
 export const mealRecordSchemaResolver = zodResolver(mealRecordInputSchema);

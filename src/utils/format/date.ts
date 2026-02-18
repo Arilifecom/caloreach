@@ -41,3 +41,7 @@ export const formatUtcToJstTime = (utcDate: string) =>
 //UTC String to Tokyo String
 export const formatUtcToJstYYMMDD = (utcDate: string) =>
   formatInTimeZone(utcDate, JST, "yyyy-MM-dd", { locale: ja });
+
+export function getTodayJST() {
+  return formatInTimeZone(new Date(), JST, "yyyy-MM-dd");
+}
