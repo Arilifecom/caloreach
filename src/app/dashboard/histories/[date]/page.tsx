@@ -7,6 +7,7 @@ import { formatDateWithDay } from "@/utils/format/date";
 import { getQueryClient, mealRecordkeys } from "@/lib/tanstack";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getUserId } from "@/utils/db/auth";
+import { fetchMealRecordsServer } from "@/services/mealRecords";
 
 export default async function MealDetailPage({
   params,
@@ -19,13 +20,7 @@ export default async function MealDetailPage({
 
   await queryClient.prefetchQuery({
     queryKey: mealRecordkeys.dailyList(userId, targetDate),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/meal-records?userId=${userId}&date=${targetDate}`,
-      );
-      if (!res.ok) throw new Error("fetch failed");
-      return res.json();
-    },
+    queryFn: async () => await fetchMealRecordsServer(targetDate),
   });
 
   const dehydratedState = dehydrate(queryClient);

@@ -2,8 +2,8 @@ import {
   MealRecordSection,
   ProgressSection,
 } from "@/app/dashboard/_components";
-import { createServerRPC } from "@/lib/createServerRPC";
 import { getQueryClient, mealRecordkeys } from "@/lib/tanstack";
+import { fetchMealRecordsServer } from "@/services/mealRecords";
 import { getUserId } from "@/utils/db/auth";
 import { getTodayJST } from "@/utils/format/date";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -18,16 +18,7 @@ export default async function Dashboard() {
 
   await queryClient.prefetchQuery({
     queryKey: mealRecordkeys.dailyList(userId, date),
-    queryFn: async () => {
-      const client = await createServerRPC();
-
-      const res = await client.api.dashboard.mealrecords.$get({
-        query: { date },
-      });
-
-      const data = await res.json();
-      return data.mealRecords;
-    },
+    queryFn: async () => fetchMealRecordsServer(date),
   });
 
   const dehydratedState = dehydrate(queryClient);
