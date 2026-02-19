@@ -40,3 +40,12 @@ export const createTargetKcalPlansSchema = z.object({
 export const createProfileSchema = z.object({
   userName: z.string(),
 });
+
+// Histriesスキーマ
+export const historiesQuerySchema = z.object({
+  limit: z
+    .string()
+    .transform((val) => Number(val))
+    .refine((num) => !isNaN(num) && num > 0 && num <= 10),
+  currentCursor: z.string(),
+});

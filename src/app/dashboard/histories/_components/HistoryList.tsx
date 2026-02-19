@@ -4,64 +4,48 @@ import { memo, useState } from "react";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { HistoryListItem } from "@/app/dashboard/histories/_components/HistoryListItem";
 import { Button } from "@/components/ui";
-import { historieskeys, TErrCodes } from "@/lib/tanstack";
 import { Loading } from "@/components";
 import { FetchErrorMessage } from "@/app/dashboard/_components";
 import { toast } from "sonner";
-import { DailyKcalSummaryResponse } from "@/app/api/histories/route";
-import { formatYYMMDD } from "@/utils/format/date";
+import { historieskeys, TErrCodes } from "@/lib/tanstack";
+import { HistoriesResponse } from "@/shared/types";
+import { fetchHistroiesClient } from "@/services/histories";
 
 type HistoryListProps = {
   userId: string;
+  limit: string;
+  date: string;
 };
 
-const today = formatYYMMDD(new Date());
-
-const Component = ({ userId }: HistoryListProps) => {
+const Component = ({ userId, limit, date }: HistoryListProps) => {
   const queryClient = useQueryClient();
   const [fetchMoreLoading, setfetchMoreLoading] = useState(false);
-  const limit = 7;
 
-  const { data, isError, refetch } = useSuspenseQuery<DailyKcalSummaryResponse>(
-    {
-      queryKey: historieskeys.list(userId),
-      queryFn: async () => {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ORIGIN}/api/histories?userId=${userId}&limit=${limit}&currentCursor=${today}`,
-          { cache: "no-store" },
-        );
-        if (!res.ok) {
-          throw new Error("DailyKcalSummary fetch failed");
-        }
-
-        return res.json();
-      },
-      meta: { errCode: TErrCodes.HISTORY_FETCH_FAILED },
-    },
-  );
+  const { data, isError, refetch } = useSuspenseQuery({
+    queryKey: historieskeys.list(userId),
+    queryFn: async () => await fetchHistroiesClient(limit, date),
+    meta: { errCode: TErrCodes.HISTORY_FETCH_FAILED },
+  });
 
   if (isError) return <FetchErrorMessage onRetry={refetch} />;
 
   const nextCursor = data ? data.nextCursor : null;
 
   const fetchMore = async () => {
+    if (!nextCursor) return;
+
     try {
       setfetchMoreLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/histories?userId=${userId}&limit=${limit}&currentCursor=${nextCursor}`,
-        { cache: "no-store" },
-      );
-
-      if (!res.ok) {
-        throw new Error("lead more fetch failed");
-      }
-
-      const data: DailyKcalSummaryResponse = await res.json();
+      const data = await fetchHistroiesClient(limit, nextCursor);
 
       queryClient.setQueryData(
         historieskeys.list(userId),
-        (prevData: DailyKcalSummaryResponse) => ({
-          items: [...(prevData?.items || []), ...data.items],
+        (prevData: HistoriesResponse) => ({
+          ...prevData,
+          historiesRecord: [
+            ...(prevData?.historiesRecord || []),
+            ...data.historiesRecord,
+          ],
           nextCursor: data.nextCursor,
           hasNext: data.hasNext,
         }),
@@ -77,12 +61,12 @@ const Component = ({ userId }: HistoryListProps) => {
 
   return (
     <>
-      {data && data.items.length === 0 ? (
+      {data && data.historiesRecord.length === 0 ? (
         <p className="font-medium text-center mb-4">履歴はありません</p>
       ) : (
         <>
           <ul className="w-full">
-            {data?.items.map((item) => (
+            {data?.historiesRecord.map((item) => (
               <HistoryListItem key={item.date} data={item} />
             ))}
           </ul>

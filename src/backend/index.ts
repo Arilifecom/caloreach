@@ -8,7 +8,7 @@ import {
   targetKcalPlans,
   userFoodSelections,
 } from "@/db/schema";
-import { and, asc, eq, like, sql, sum } from "drizzle-orm";
+import { and, asc, desc, eq, like, lt, lte, sql, sum } from "drizzle-orm";
 import { Hono } from "hono";
 import { v7 as uuidv7 } from "uuid";
 import { zValidator } from "@hono/zod-validator";
@@ -18,6 +18,7 @@ import {
   createRegularFoodSchema,
   createTargetKcalPlansSchema,
   dateQuerySchema,
+  historiesQuerySchema,
   idParamSchema,
 } from "@/backend/validators";
 
@@ -302,6 +303,78 @@ const route = app
         .returning();
 
       return c.json(result, 201);
+    },
+  )
+
+  //Histories------------------------------------\
+  .get(
+    "/dashboard/histories",
+    zValidator("query", historiesQuerySchema),
+    async (c) => {
+      const user = c.get("user");
+      const { limit, currentCursor } = c.req.valid("query");
+
+      const eatenDate = sql<string>`DATE(${mealRecords.eatenAt} AT TIME ZONE 'Asia/Tokyo')`;
+
+      const totalKcalData = await db
+        .select({
+          date: eatenDate.as("date"),
+          totalKcal: sql<number>`SUM(${mealRecords.kcal})`.as("total_kcal"),
+        })
+        .from(mealRecords)
+        .where(
+          and(eq(mealRecords.userId, user.id), lt(eatenDate, currentCursor)),
+        )
+        .groupBy(eatenDate)
+        .orderBy(desc(eatenDate))
+        .limit(limit);
+
+      if (totalKcalData.length === 0) {
+        return c.json({
+          historiesRecord: [],
+          nextCursor: null,
+          hasNext: false,
+        });
+      }
+
+      //totalKcalDataに対してその日の目標カロリーを割り当てる
+      const targetPlans = await db
+        .select({
+          effectiveDate: targetKcalPlans.effectiveDate,
+          targetKcal: targetKcalPlans.targetKcal,
+        })
+        .from(targetKcalPlans)
+        .where(
+          and(
+            eq(targetKcalPlans.userId, user.id),
+            lte(targetKcalPlans.effectiveDate, currentCursor),
+          ),
+        )
+        .orderBy(desc(targetKcalPlans.effectiveDate));
+
+      //日ごとの合計カロリーにマージ
+      const historiesRecord = totalKcalData.map((dailyRecord) => {
+        const dailyTarget = targetPlans.find(
+          (plan) => plan.effectiveDate <= dailyRecord.date,
+        );
+
+        return {
+          date: dailyRecord.date,
+          totalKcal: dailyRecord.totalKcal,
+          targetKcal: dailyTarget?.targetKcal ?? 0,
+        };
+      });
+
+      //next cursor
+      const nextCursor =
+        historiesRecord.length === limit
+          ? historiesRecord[historiesRecord.length - 1].date
+          : null;
+
+      //has next
+      const hasNext = historiesRecord.length === limit;
+
+      return c.json({ historiesRecord, nextCursor, hasNext }, 200);
     },
   )
 

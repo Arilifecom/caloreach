@@ -55,3 +55,16 @@ export type CreateProfileInput = Omit<
   InsertProfileRecord,
   "id" | "createdAt" | "updatedAt" | "deletedAt"
 >;
+
+//Histories
+export type HistoryItem = {
+  date: string;
+  totalKcal: number;
+  targetKcal: number;
+};
+
+export type HistoriesResponse = {
+  historiesRecord: HistoryItem[];
+  nextCursor: string;
+  hasNext: boolean;
+};
