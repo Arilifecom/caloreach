@@ -2,7 +2,7 @@
 
 import { FetchErrorMessage, MealRecordItem } from "@/app/dashboard/_components";
 import { mealRecordkeys, TErrCodes } from "@/lib/tanstack";
-import { fetchMealRecords } from "@/services/mealRecords";
+import { fetchMealRecordsClient } from "@/services/mealRecords";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 
@@ -14,7 +14,7 @@ type MealRecordListsProps = {
 const Component = ({ userId, date }: MealRecordListsProps) => {
   const { data, isError, refetch } = useSuspenseQuery({
     queryKey: mealRecordkeys.dailyList(userId, date),
-    queryFn: async () => await fetchMealRecords(date),
+    queryFn: async () => await fetchMealRecordsClient(date),
     meta: { errCode: TErrCodes.MEAL_FETCH_FAILED },
   });
 
