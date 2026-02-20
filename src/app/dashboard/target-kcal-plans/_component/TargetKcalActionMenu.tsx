@@ -35,6 +35,10 @@ const Component = ({
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.list(sentData.userId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: TargetKcalkeys.effective(sentData.userId),
+      });
     },
     onError: () => {
       console.log("Error delete targetKcal");
