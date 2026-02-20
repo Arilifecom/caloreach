@@ -5,7 +5,7 @@ import { ReguralrFoodListItem } from "@/app/dashboard/_components/ReguralrFoodLi
 import { List, Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { RegularFoodskeys, TErrCodes } from "@/lib/tanstack";
-import { fetchRegularFoods } from "@/services/regularFoods";
+import { fetchRegularFoodsClient } from "@/services/regularFoods";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +26,7 @@ export const RegularFoodLsits = ({
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: RegularFoodskeys.list(userId),
-    queryFn: async () => await fetchRegularFoods(),
+    queryFn: async () => await fetchRegularFoodsClient(),
     enabled: isRegularOpen,
     meta: { errCode: TErrCodes.REGULAR_FOOD_SEARCH_FAILED },
   });
