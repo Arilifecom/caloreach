@@ -1,9 +1,17 @@
 import { createClientRPC } from "@/lib/createClientRPC";
+import { createServerRPC } from "@/lib/createServerRPC";
 import { RegularFoodsRequest } from "@/shared/types";
 
 //fetch
-export const fetchRegularFoods = async () => {
+export const fetchRegularFoodsClient = async () => {
   const client = await createClientRPC();
+  const res = await client.api.dashboard.regularfoods.$get();
+  const data = await res.json();
+  return data.mealRecords;
+};
+
+export const fetchRegularFoodsServer = async () => {
+  const client = await createServerRPC();
   const res = await client.api.dashboard.regularfoods.$get();
   const data = await res.json();
   return data.mealRecords;
