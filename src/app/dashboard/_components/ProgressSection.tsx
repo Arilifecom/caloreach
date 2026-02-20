@@ -10,6 +10,7 @@ import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/lib/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
 import { getDailyTotalKcal } from "@/services/mealRecords";
+import { getEffectiveTargetKcal } from "@/services/targetKcal";
 
 type ProgressSectionProps = {
   userId: string;
@@ -38,17 +39,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
     isError: targetKcalIsError,
   } = useQuery({
     queryKey: TargetKcalkeys.effective(userId),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/target-kcal/effective?userId=${userId}&date=${date}`,
-        { cache: "no-cache" },
-      );
-      if (!res.ok) {
-        throw new Error("taegetKcal fetch failed");
-      }
-      const data = await res.json();
-      return Number(data);
-    },
+    queryFn: async () => getEffectiveTargetKcal(date),
     meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
   });
 
