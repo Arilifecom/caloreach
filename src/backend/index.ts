@@ -107,11 +107,12 @@ const route = app
     async (c) => {
       const { id } = c.req.valid("param");
       const InputData = c.req.valid("json");
+      const user = c.get("user");
 
       const data = await db
         .update(mealRecords)
         .set(InputData)
-        .where(eq(mealRecords.id, id))
+        .where(and(eq(mealRecords.id, id), eq(mealRecords.userId, user.id)))
         .returning();
 
       return c.json({ data }, 201);
@@ -124,20 +125,28 @@ const route = app
     zValidator("param", idParamSchema),
     async (c) => {
       const { id } = c.req.valid("param");
+      const user = c.get("user");
 
       await db.transaction(async (tx) => {
         const [record] = await tx
           .select()
           .from(mealRecords)
-          .where(eq(mealRecords.id, id));
+          .where(and(eq(mealRecords.id, id), eq(mealRecords.userId, user.id)));
 
-        await tx.delete(mealRecords).where(eq(mealRecords.id, id));
+        await tx
+          .delete(mealRecords)
+          .where(and(eq(mealRecords.id, id), eq(mealRecords.userId, user.id)));
 
         // userFoodSelectionsテーブルから削除
         if (record.foodId) {
           await tx
             .delete(userFoodSelections)
-            .where(eq(userFoodSelections.foodId, record.foodId));
+            .where(
+              and(
+                eq(userFoodSelections.foodId, record.foodId),
+                eq(userFoodSelections.foodId, user.id),
+              ),
+            );
         }
       });
       return c.body(null, 204);
@@ -177,7 +186,10 @@ const route = app
     zValidator("param", idParamSchema),
     async (c) => {
       const { id } = c.req.valid("param");
-      await db.delete(regularFoods).where(eq(regularFoods.id, id));
+      const user = c.get("user");
+      await db
+        .delete(regularFoods)
+        .where(and(eq(regularFoods.id, id), eq(regularFoods.userId, user.id)));
 
       return c.body(null, 204);
     },
@@ -191,11 +203,12 @@ const route = app
     async (c) => {
       const { id } = c.req.valid("param");
       const InputData = c.req.valid("json");
+      const user = c.get("user");
 
       const data = await db
         .update(regularFoods)
         .set(InputData)
-        .where(eq(regularFoods.id, id))
+        .where(and(eq(regularFoods.id, id), eq(regularFoods.userId, user.id)))
         .returning();
 
       return c.json({ data }, 201);
