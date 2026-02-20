@@ -20,6 +20,17 @@ export const fetchTargetKcalRecordsServer = async () => {
   return data.targetkcalRecords;
 };
 
+//Get
+export const getEffectiveTargetKcal = async (date: string) => {
+  const client = await createClientRPC();
+  const res = await client.api.dashboard.targetkcalplans.current.$get({
+    query: { date },
+  });
+
+  const data = await res.json();
+  return data.targetKcal;
+};
+
 //Create
 export const createTargetKcal = async (InputData: CreateTargetKcalInput) => {
   const clinet = await createClientRPC();
