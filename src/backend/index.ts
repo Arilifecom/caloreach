@@ -237,7 +237,7 @@ const route = app
 
   //TargetKcalPlans------------------------------------\
 
-  // GET
+  // GET（一覧取得）
   .get("/dashboard/targetkcalplans", async (c) => {
     const user = c.get("user");
 
@@ -248,6 +248,28 @@ const route = app
 
     return c.json({ targetkcalRecords: data }, 200);
   })
+
+  // GET(該当の日付から過去の1番近い目標Kcalを返す)
+  .get(
+    "/dashboard/targetkcalplans/current",
+    zValidator("query", dateQuerySchema),
+    async (c) => {
+      const { date } = c.req.valid("query");
+      const user = c.get("user");
+
+      const result = await db.query.targetKcalPlans.findFirst({
+        where: and(
+          eq(targetKcalPlans.userId, user.id),
+          lte(targetKcalPlans.effectiveDate, date),
+        ),
+        orderBy: desc(targetKcalPlans.effectiveDate),
+      });
+
+      const targetKcal = result ? result.targetKcal : null;
+
+      return c.json({ targetKcal }, 200);
+    },
+  )
 
   //POST
   .post(
