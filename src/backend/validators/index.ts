@@ -21,6 +21,11 @@ export const dateQuerySchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
 });
 
+// 検索キーワードスキーマ
+export const stringQuerySchema = z.object({
+  q: z.string(),
+});
+
 // ReguralrFood CREATE用スキーマ
 export const createRegularFoodSchema = z.object({
   id: z.string(),

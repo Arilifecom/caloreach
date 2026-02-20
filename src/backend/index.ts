@@ -20,6 +20,7 @@ import {
   dateQuerySchema,
   historiesQuerySchema,
   idParamSchema,
+  stringQuerySchema,
 } from "@/backend/validators";
 
 const app = new Hono().basePath("/api");
@@ -403,8 +404,8 @@ const route = app
   //Foods------------------------------------\
 
   // GET
-  .get("/foods", async (c) => {
-    const q = c.req.query("q");
+  .get("/foods", zValidator("query", stringQuerySchema), async (c) => {
+    const { q } = c.req.valid("query");
 
     const result = await db.query.foods.findMany({
       where: like(foods.reading, `%${q}%`),
@@ -415,7 +416,7 @@ const route = app
         kcalPer100g: true,
       },
     });
-    return c.json({ data: result }, 200);
+    return c.json({ foods: result }, 200);
   });
 
 export default app;
