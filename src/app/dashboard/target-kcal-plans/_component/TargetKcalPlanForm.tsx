@@ -21,7 +21,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { formattedTomorrow, formatYYMMDD } from "@/utils/format/date";
-import { TargetKcalkeys } from "@/lib/tanstack";
+import { historieskeys, TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -93,6 +93,10 @@ export const TargetKcalPlanForm = ({
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.effective(userId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(userId),
+      });
       handleFormWindow();
     },
     onError: () => {
@@ -110,6 +114,10 @@ export const TargetKcalPlanForm = ({
 
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.effective(userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(userId),
       });
       handleCloseAllWindows?.();
     },
