@@ -2,33 +2,18 @@
 
 import { useDebounce } from "@/app/dashboard/_hooks/";
 import { foodskeys, TErrCodes } from "@/lib/tanstack";
+import { fetchFoodsByQuery } from "@/services/foods";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-
-type searchResultType = {
-  id: string;
-  foodName: string;
-  kcalPer100g: number;
-};
 
 export const useFoodSearch = () => {
   const [query, setQuery] = useState("");
   const debounced = useDebounce(query, 400);
 
   //incremental search
-  const searchResult = useQuery<searchResultType[]>({
+  const searchResult = useQuery({
     queryKey: foodskeys.list(debounced),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/foods/search?q=${debounced}`,
-        { cache: "no-store" },
-      );
-      if (!res.ok) {
-        throw new Error("Foods sarch fetch failed");
-      }
-
-      return res.json();
-    },
+    queryFn: async () => await fetchFoodsByQuery(debounced),
     enabled: debounced !== "",
     meta: { errCode: TErrCodes.FOOD_SEARCH_FAILED },
   });
