@@ -2,7 +2,7 @@ import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
 import { useModalControl } from "@/hooks";
-import { TargetKcalkeys } from "@/lib/tanstack";
+import { historieskeys, TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
@@ -38,6 +38,10 @@ const Component = ({
 
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.effective(sentData.userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(sentData.userId),
       });
     },
     onError: () => {
