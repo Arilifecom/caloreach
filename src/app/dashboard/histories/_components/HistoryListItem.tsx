@@ -1,16 +1,16 @@
 "use client";
 
-import { DailyKcalSummary } from "@/app/api/histories/route";
 import { List, Loading } from "@/components";
 import { Button } from "@/components/ui";
+import { HistoryItem } from '@/shared/types'
 import { formatDateWithDay } from "@/utils/format/date";
 import { BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { memo, useState } from "react";
 
 type HistoryListItemProps = {
-  data: DailyKcalSummary;
-};
+  data: HistoryItem
+}
 
 const Component = ({ data }: HistoryListItemProps) => {
   const router = useRouter();
