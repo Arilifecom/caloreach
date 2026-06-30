@@ -13,22 +13,17 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { createTargetKcal } from "@/utils/db/setup";
+import { createTargetKcal } from "@/services/targetKcal";
 import { formatYYMMDD } from "@/utils/format/date";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { v7 as uuidv7 } from "uuid";
-
-interface UserNameFormProps {
-  userId: string;
-}
 
 const defaultValues: TargetKcalInputSchemaInput = {
   targetKcal: "",
 };
 
-export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
+export const TargetKcalForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -47,8 +42,6 @@ export const TargetKcalForm = ({ userId }: UserNameFormProps) => {
     const effectiveDate = formatYYMMDD(today);
 
     const targetkcalData = {
-      id: uuidv7(),
-      userId: userId,
       targetKcal: value.targetKcal,
       effectiveDate: effectiveDate,
     };

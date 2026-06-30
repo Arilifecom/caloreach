@@ -1,11 +1,11 @@
 "use client";
 
 import { TargetKcalListItem } from "@/app/dashboard/target-kcal-plans/_component";
-import { SelectTargetKcalPlansRecord } from "@/db/schema";
+import { TargetKcalPlansResponse } from "@/shared/types";
 import { memo } from "react";
 
 type TargetKcalListsProps = {
-  data?: SelectTargetKcalPlansRecord[];
+  data: TargetKcalPlansResponse[];
   firstEffectiveDate?: string;
 };
 

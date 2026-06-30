@@ -1,17 +1,17 @@
 import { TargetKcalPlanForm } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalPlanForm";
 import { Loading } from "@/components";
 import { Button } from "@/components/ui";
-import { SelectTargetKcalPlansRecord } from "@/db/schema";
 import { useModalControl } from "@/hooks";
-import { deleteTargetKcal } from "@/utils/db/targetKcal";
-import { TargetKcalkeys } from "@/utils/tanstack";
+import { historieskeys, TargetKcalkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
 import { memo } from "react";
 import { toast } from "sonner";
+import { TargetKcalPlansResponse } from "@/shared/types";
+import { deleteTargetKcal } from "@/services/targetKcal";
 
 type TargetKcalActionMenuProps = {
-  targetKcal: SelectTargetKcalPlansRecord;
+  targetKcal: TargetKcalPlansResponse;
   firstEffectiveDate?: string;
 };
 
@@ -29,13 +29,19 @@ const Component = ({
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: async (sentData: SelectTargetKcalPlansRecord) => {
-      await deleteTargetKcal(sentData.id);
-      return targetKcal;
-    },
+    mutationFn: (sentData: TargetKcalPlansResponse) =>
+      deleteTargetKcal(sentData.id),
     onSuccess: (_, sentData) => {
       queryClient.invalidateQueries({
         queryKey: TargetKcalkeys.list(sentData.userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: TargetKcalkeys.effective(sentData.userId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: historieskeys.list(sentData.userId),
       });
     },
     onError: () => {
@@ -44,7 +50,7 @@ const Component = ({
     },
   });
 
-  const handleDelete = (sentData: SelectTargetKcalPlansRecord) => {
+  const handleDelete = (sentData: TargetKcalPlansResponse) => {
     if (deleteMutation.isPending) return;
     deleteMutation.mutate(sentData);
   };

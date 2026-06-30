@@ -2,12 +2,12 @@
 
 import { TargetKcalActionMenu } from "@/app/dashboard/target-kcal-plans/_component/TargetKcalActionMenu";
 import { List } from "@/components";
-import { SelectTargetKcalPlansRecord } from "@/db/schema";
+import { TargetKcalPlansResponse } from "@/shared/types";
 import { formatDateWithDay, formatYY } from "@/utils/format/date";
 import { memo } from "react";
 
 type TargetKcalListItemProps = {
-  data: SelectTargetKcalPlansRecord;
+  data: TargetKcalPlansResponse;
   firstEffectiveDate?: string;
 };
 

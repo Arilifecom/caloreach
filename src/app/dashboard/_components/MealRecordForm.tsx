@@ -20,21 +20,25 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { SelectMealRecord } from "@/db/schema";
-import { addMealRecord, editMealRecord } from "@/utils/db/mealRecords";
-import { formatTime, formatYYMMDD } from "@/utils/format/date";
-import { historieskeys, mealRecordkeys } from "@/utils/tanstack";
+import {
+  formatTime,
+  formatUtcToJstTime,
+  formatUtcToJstYYMMDD,
+} from "@/utils/format/date";
+import { historieskeys, mealRecordkeys } from "@/lib/tanstack";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
 import { toast } from "sonner";
 import { Loading } from "@/components";
+import { MealRecordResponse } from "@/shared/types/";
+import { addMealRecord, updateMealRecord } from "@/services/mealRecords";
 
 type MealRecordFormProps = {
   userId: string;
   mode: "add" | "edit";
-  editItem?: SelectMealRecord;
+  editItem?: MealRecordResponse;
   isFormOpen: boolean;
   handleFormWindow: () => void;
   handleCloseAllWindows: () => void;
@@ -85,9 +89,11 @@ export const MealRecordForm = ({
   useEffect(() => {
     if (!isFormOpen) return;
     if (mode === "edit" && editItem) {
+      const date = formatUtcToJstYYMMDD(editItem.eatenAt);
+      const time = formatUtcToJstTime(editItem.eatenAt);
       form.reset({
-        date: formatYYMMDD(editItem.eatenAt).toString(),
-        time: formatTime(editItem.eatenAt).toString(),
+        date: date,
+        time: time,
         foodName: editItem.foodName,
         gram: editItem.gram.toString(),
         kcal: editItem.kcal.toString(),
@@ -108,7 +114,7 @@ export const MealRecordForm = ({
 
     const eatenGramsToNum = Number(eatenGrams);
     const result = Math.floor(
-      (selectedFood.kcalPer100g * eatenGramsToNum) / 100
+      (selectedFood.kcalPer100g * eatenGramsToNum) / 100,
     );
     form.setValue("kcal", result.toString());
   }, [selectedFood, form, eatenGrams]);
@@ -128,16 +134,16 @@ export const MealRecordForm = ({
   //Mutations
   const addMutation = useMutation({
     mutationFn: addMealRecord,
-    onSuccess: (_, sentDate) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.dailyList(
-          sentDate.userId,
-          formatYYMMDD(sentDate.eatenAt)
+          data.userId,
+          formatUtcToJstYYMMDD(data.eatenAt),
         ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: historieskeys.list(sentDate.userId),
+        queryKey: historieskeys.list(data.userId),
       });
 
       handleCloseAllWindows();
@@ -149,7 +155,7 @@ export const MealRecordForm = ({
   });
 
   const editMutation = useMutation({
-    mutationFn: editMealRecord,
+    mutationFn: updateMealRecord,
     onSuccess: (_, sentDate) => {
       queryClient.invalidateQueries({
         queryKey: mealRecordkeys.all(),
@@ -168,21 +174,32 @@ export const MealRecordForm = ({
 
   //Submit form
   const submitMealRecordSent = async (data: mealRecordInputSchemaOutput) => {
-    const sentDate =
-      mode === "edit" && editItem
-        ? {
-            ...data,
-            id: editItem.id,
-            userId: editItem.userId,
-            foodId: selectedFood?.id,
-          }
-        : { ...data, id: uuidv7(), userId: userId, foodId: selectedFood?.id };
+    const local = new Date(data.eatenAtLocal);
+    const utsIso = local.toISOString();
 
     if (mode === "edit" && editItem) {
+      const sentDate = {
+        ...data,
+        id: editItem.id,
+        userId: editItem.userId,
+        eatenAt: utsIso,
+        foodId: selectedFood?.id,
+      };
+
       if (editMutation.isPending) return;
+
       editMutation.mutate(sentDate);
+
       return;
     }
+
+    const sentDate = {
+      ...data,
+      id: uuidv7(),
+      userId: userId,
+      eatenAt: utsIso,
+      foodId: selectedFood?.id,
+    };
 
     if (addMutation.isPending) return;
     addMutation.mutate(sentDate);

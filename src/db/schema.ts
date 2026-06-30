@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import {
   date,
   integer,
@@ -10,10 +9,10 @@ import {
 } from "drizzle-orm/pg-core";
 
 const timestamps = {
-  createdAt: timestamp()
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp().$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp().defaultNow().notNull(),
+  updatedAt: timestamp()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
   deletedAt: timestamp(),
 };
 

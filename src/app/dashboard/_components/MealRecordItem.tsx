@@ -2,12 +2,12 @@
 
 import { ActionMenu } from "@/app/dashboard/_components/";
 import { List } from "@/components";
-import { SelectMealRecord } from "@/db/schema";
-import { formatTime } from "@/utils/format/date";
+import { MealRecordResponse } from "@/shared/types/";
+import { formatUtcToJstTime } from "@/utils/format/date";
 import { memo } from "react";
 
 type MealRecordItemProps = {
-  mealRecord: SelectMealRecord;
+  mealRecord: MealRecordResponse;
 };
 
 const Component = ({ mealRecord }: MealRecordItemProps) => {
@@ -17,7 +17,7 @@ const Component = ({ mealRecord }: MealRecordItemProps) => {
         <List>
           <div className="flex w-full justify-between">
             <div className="flex items-center gap-3">
-              <p>{formatTime(mealRecord.eatenAt)}</p>
+              <p>{formatUtcToJstTime(mealRecord.eatenAt)}</p>
               <div>
                 <h3 className="font-bold text-sm">{mealRecord.foodName}</h3>
                 <p className="text-xs">

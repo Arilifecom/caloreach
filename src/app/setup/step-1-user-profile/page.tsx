@@ -3,7 +3,7 @@ import { getUserId } from "@/utils/db/auth";
 import React from "react";
 
 export default async function SetUserProfile() {
-  const userId = await getUserId();
+  await getUserId();
 
-  return <UserNameForm userId={userId} />;
+  return <UserNameForm />;
 }

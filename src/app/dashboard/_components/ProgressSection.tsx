@@ -6,9 +6,11 @@ import {
   RemainingKcal,
 } from "@/app/dashboard/_components/";
 import { formatYYMMDD } from "@/utils/format/date";
-import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/utils/tanstack";
+import { mealRecordkeys, TargetKcalkeys, TErrCodes } from "@/lib/tanstack";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
+import { getDailyTotalKcal } from "@/services/mealRecords";
+import { getEffectiveTargetKcal } from "@/services/targetKcal";
 
 type ProgressSectionProps = {
   userId: string;
@@ -26,17 +28,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
     isError: totalKcalIsError,
   } = useQuery({
     queryKey: mealRecordkeys.todayTotal(userId, date),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/meal-records/total-kcal?userId=${userId}&date=${date}`,
-        { cache: "no-store" }
-      );
-      if (!res.ok) {
-        throw new Error("totalKcal fetch failed");
-      }
-      const data = await res.json();
-      return Number(data.totalKcal);
-    },
+    queryFn: () => getDailyTotalKcal(date),
     meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
   });
 
@@ -47,17 +39,7 @@ const Component = ({ userId, targetDate }: ProgressSectionProps) => {
     isError: targetKcalIsError,
   } = useQuery({
     queryKey: TargetKcalkeys.effective(userId),
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORIGIN}/api/target-kcal/effective?userId=${userId}&date=${date}`,
-        { cache: "no-cache" }
-      );
-      if (!res.ok) {
-        throw new Error("taegetKcal fetch failed");
-      }
-      const data = await res.json();
-      return Number(data);
-    },
+    queryFn: async () => getEffectiveTargetKcal(date),
     meta: { errCode: TErrCodes.PROGRESS_FETCH_FAILED },
   });
 
